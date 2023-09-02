@@ -1,18 +1,23 @@
 <template>
-  <HelloWorld />
+  <div>
+    <AppHeader />
+    <HomeSection />
+    <AppFooter />
+  </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import AppHeader from '@/components/AppHeader.vue';
+import HomeSection from '@/components/HomeSection.vue';
+import AppFooter from '@/components/AppFooter.vue';
 
-// Components
-import HelloWorld from '../components/HelloWorld.vue';
-
-export default defineComponent({
+export default {
   name: 'HomeView',
-
   components: {
-    HelloWorld,
+    AppHeader,
+    HomeSection,
+    AppFooter,
   },
-});
+};
 </script>
+
