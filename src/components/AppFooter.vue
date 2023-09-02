@@ -15,7 +15,7 @@
       </v-row>
       <v-row justify="center">
         <v-col class="caption text-center text--secondary">
-          © 2019 - {{ new Date().getFullYear() }} — YourCompanyName
+          © 2019 - {{ new Date().getFullYear() }} — SEXYCODERS LIMITED
         </v-col>
       </v-row>
     </v-container>
