@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="bg-grey-lighten-1">
+  <v-footer class="bg-indigo-lighten-1">
     <v-row justify="center" no-gutters>
       <v-btn
         v-for="link in links"
@@ -12,7 +12,7 @@
         {{ link }}
       </v-btn>
       <v-col class="text-center mt-4" cols="12">
-        {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+        © 2019 - {{ new Date().getFullYear() }} — SEXYCODERS LIMITED
       </v-col>
     </v-row>
   </v-footer>
