@@ -1,26 +1,23 @@
 <template>
   <v-app-bar
     :class="{'opaque': scrolled}"
-    :color="scrolled ? 'white' : 'transparent'"
+    :color="getAppBarColor"
     :elevation="scrolled ? 4 : 0"
     app
     fixed
   >
-    <v-app-bar-nav-icon @click="drawer = !drawer" :color="scrolled ? 'black' : 'white'"></v-app-bar-nav-icon>
-    <v-toolbar-title class="mr-5" :style="{ color: scrolled ? 'black' : 'white' }">YourAppName</v-toolbar-title>
+    <v-app-bar-nav-icon v-if="userIsLoggedIn" @click="drawer = !drawer" :color="getIconColor"></v-app-bar-nav-icon>
+    <v-toolbar-title class="mr-5" :style="titleStyle">SEXYCODERS</v-toolbar-title>
     <SearchBar v-if="showSearchBar" />
     <v-spacer></v-spacer>
-    <v-btn icon :color="scrolled ? 'black' : 'white'">
-      <v-icon>mdi-bell</v-icon>
-    </v-btn>
-    <v-btn icon :color="scrolled ? 'black' : 'white'">
+    <v-btn icon :color="getIconColor">
       <v-icon>mdi-account-circle</v-icon>
     </v-btn>
   </v-app-bar>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import SearchBar from './SearchBar.vue'; // Adjust the path as necessary
 
 export default defineComponent({
@@ -31,16 +28,43 @@ export default defineComponent({
   setup() {
     const drawer = ref(false);
     const scrolled = ref(false);
+    const darkTheme = ref(false); // Replace this with your actual dark theme state
+    const userIsLoggedIn = 0; // Replace this with your actual logic for user authentication
     const showSearchBar = 0;
 
     window.addEventListener('scroll', () => {
       scrolled.value = window.scrollY > 0;
     });
 
+    const getAppBarColor = computed(() => {
+      return scrolled.value ? 'white' : darkTheme.value ? 'black' : 'transparent';
+    });
+
+    const getIconColor = computed(() => {
+      return scrolled.value || darkTheme.value ? 'black' : 'white';
+    });
+
+    const getTextColor = computed(() => {
+      return scrolled.value || darkTheme.value ? 'black' : 'white';
+    });
+
+    const titleStyle = computed(() => {
+      if (userIsLoggedIn.value) {
+        return { color: getTextColor.value, margin: '0', padding: '0' };
+      } else {
+        return { color: getTextColor.value };
+      }
+    });
+
     return {
       drawer,
       scrolled,
-      showSearchBar
+      showSearchBar,
+      getAppBarColor,
+      getIconColor,
+      getTextColor,
+      userIsLoggedIn,
+      titleStyle
     };
   },
 });
