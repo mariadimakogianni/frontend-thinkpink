@@ -3,7 +3,7 @@
     <AppHeader />
     <HomeSection />
     <HomeAbout />
-    <ContactSection />
+    <!--<ContactSection />-->
     <AppFooter />
   </div>
 </template>
@@ -13,14 +13,14 @@ import AppHeader from '@/components/AppHeader.vue';
 import HomeSection from '@/components/HomeSection.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import HomeAbout from '@/components/HomeAbout.vue';
-import ContactSection from '@/components/ContactSection.vue';
+//import ContactSection from '@/components/ContactSection.vue';
 
 export default {
   name: 'HomeView',
   components: {
     AppHeader,
     HomeSection,
-    ContactSection,
+ //   ContactSection,
     AppFooter,
     HomeAbout,
   },
