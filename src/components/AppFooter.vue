@@ -1,15 +1,15 @@
 <template>
   <v-footer class="pa-3">
     <v-container fluid>
-      <v-row align="center" justify="center">
+            <v-row align="center" justify="center">
         <v-col
           v-for="link in links"
-          :key="link"
+          :key="link.name"
           class="caption text-center"
           cols="auto"
         >
-          <a href="#" class="styled-link">
-            {{ link }}
+          <a :href="`${link.location}`" :target="link.target" class="styled-link">
+            {{ link.name }}
           </a>
         </v-col>
       </v-row>
@@ -29,12 +29,14 @@ export default defineComponent({
   name: 'AppFooter',
   data: () => ({
     links: [
-      'Home',
-      'About Us',
-      'Team',
-      'Services',
-      'Blog',
-      'Contact Us',
+      { name: 'Home', location: '#home'},
+      { name: 'About Us', location: '#about'},
+//      { name: 'Team', location: 'teamSection' },
+//      { name: 'Services', location: 'servicesSection' },
+      { name: 'Documentation', location: 'https://support.sexycoders.org' , target: '_blanc'},
+      { name: 'GitHub', location: 'https://github.com/SexyCoders' , target: '_blanc'},
+      { name: 'Contact Us', location: '#contact'},
+      { name: 'Community', location: 'https://mm.sexycoders.org' , target: '_blanc'},
     ],
   }),
 });
