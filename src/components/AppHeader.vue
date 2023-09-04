@@ -11,7 +11,7 @@
     <SearchBar v-if="showSearchBar" />
     <v-spacer></v-spacer>
     <v-btn icon :color="getIconColor">
-      <v-icon>mdi-account-circle</v-icon>
+      <!--<ProfileMenu />-->
     </v-btn>
   </v-app-bar>
 </template>
@@ -19,11 +19,13 @@
 <script>
 import { defineComponent, ref, computed } from 'vue';
 import SearchBar from './SearchBar.vue'; // Adjust the path as necessary
+//import ProfileMenu from './ProfileMenu.vue';
 
 export default defineComponent({
   name: 'AppHeader',
   components: {
-    SearchBar
+    SearchBar,
+//    ProfileMenu,
   },
   setup() {
     const drawer = ref(false);
