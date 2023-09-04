@@ -46,7 +46,6 @@ export default defineComponent({
     width: 100%;
     max-width: 1200px;
     margin: auto;
-    border-top: 1px solid #e0e0e0;
   }
 
   .styled-link {
