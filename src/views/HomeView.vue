@@ -1,13 +1,14 @@
 <template>
-  <div>
-    <AppHeader />
-    <NavMenu />
-    <!--<HomeSection />-->
+<v-container fluid>
+
+    <AppHeader /> 
+       <NavMenu class="mt-13"/> 
+    <!-- <HomeSection /> -->
     <!--<HomeAbout />-->
     <!--<ContactSection />-->
-    <HelloWorld v-if='this.$store.state.activeMenu=="profile"'/> <!-- Include HelloWorld.vue here -->
+  <!--  <HelloWorld v-if='this.$store.state.activeMenu=="profile"'/> -->
     <AppFooter />
-  </div>
+</v-container>
 </template>
 
 <script>
@@ -17,18 +18,18 @@ import AppFooter from '@/components/AppFooter.vue';
 //import HomeAbout from '@/components/HomeAbout.vue';
 import NavMenu from '@/components/NavMenu.vue';
 //import ContactSection from '@/components/ContactSection.vue';
-import HelloWorld from '@/components/HelloWorld.vue';
+//import HelloWorld from '@/components/HelloWorld.vue';
 
 export default {
   name: 'HomeView',
   components: {
     AppHeader,
- //   HomeSection,
- //   ContactSection,
+  //  HomeSection,
+  //  ContactSection,
     AppFooter,
  //   HomeAbout,
     NavMenu,
-    HelloWorld,
+  //  HelloWorld,
   },
 };
 </script>

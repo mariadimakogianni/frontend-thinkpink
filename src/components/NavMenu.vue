@@ -13,18 +13,38 @@
         </v-list>
         <v-divider></v-divider>
 
-        <v-list density="compact" nav>
-          <v-list-item @click="this.$store.state.activeMenu='calendar'" prepend-icon="mdi-calendar-range" title="Calendar" value="myfiles"></v-list-item>
-          <v-list-item @click="this.$store.state.activeMenu='profile'" prepend-icon="mdi-account" title="Profile" value="shared"></v-list-item>
-          <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item>
+        <v-list nav>
+           <v-list-item @click="this.$store.state.activeMenu='today'" value="today" >     <font-awesome-icon :icon="['fas', 'calendar-day']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Today</a>
+          </v-list-item>
+          
+     
+          <v-list-item @click="this.$store.state.activeMenu='calendar'" value="calendar" >     <font-awesome-icon :icon="['far', 'calendar-check']" size='lg' style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Calendar</a>
+          </v-list-item>
+
+          <v-list-item @click="this.$store.state.activeMenu='bills'" value="bills" >     <font-awesome-icon :icon="['fas', 'sack-dollar']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Bills</a>
+          </v-list-item>
+
+          <v-list-item @click="this.$store.state.activeMenu='eventsandbirthdays'" value="eventsandbirthdays" >     <font-awesome-icon :icon="['fas', 'cake-candles']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Events & Birthdays</a>
+          </v-list-item>
+
+           <v-list-item @click="this.$store.state.activeMenu='supermarket'" value="supermarket" >     <font-awesome-icon :icon="['fas', 'cart-shopping']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Supermarket</a>
+          </v-list-item>
+
+           <v-list-item @click="this.$store.state.activeMenu='pomodoro'" value="pomodoro" >    <font-awesome-icon :icon="['fas', 'stopwatch']" size="lg" style="color: #b362bf;" />&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Pomodoro</a>
+          </v-list-item>
+
+          <v-list-item @click="this.$store.state.activeMenu='spinningwheel'" value="spinningwheel" >   <font-awesome-icon :icon="['fas', 'shuffle']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Spinning Wheel</a>
+          </v-list-item>
+
+
+          
         </v-list>
-<div class="d-flex justify-center">
+        <div class="d-flex justify-center">
         <v-btn
           class="text-none text-subtitle-1 text-center"
-          color="#5865f2"
+          color="#b362bf"
           size="small"
           variant="flat"
-          v-if="this.$store.state.activeMenu=='calendar'"
         >
           Logout
         </v-btn>
@@ -32,7 +52,7 @@
 
       </v-navigation-drawer>
 
-      <v-main style="height: 250px"></v-main>
+      <v-main style="height: 100vh"></v-main>
     </v-layout>
   </v-card>
 </template>
@@ -41,5 +61,19 @@
 
   export default {
   // ... Other component options ...
+
+
+
+    /*
+    var t=[
+
+    {icon:'blabla',text:'blabla'},
+    {icon:'blabla',text:'blabla'},
+    {icon:'blabla',text:'blabla'},
+    {icon:'blabla',text:'blabla'},
+    {icon:'blabla',text:'blabla'},
+
+    ]
+    */
 };
   </script>

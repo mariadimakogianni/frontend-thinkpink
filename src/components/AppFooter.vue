@@ -1,7 +1,9 @@
 <template>
   <v-footer class="pa-3">
+ 
     <v-container fluid>
             <v-row align="center" justify="center">
+
         <v-col
           v-for="link in links"
           :key="link.name"
