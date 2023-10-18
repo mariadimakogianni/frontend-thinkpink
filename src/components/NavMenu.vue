@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <!--- <v-card> -->
     <v-layout>
       <v-navigation-drawer
         permanent
@@ -14,6 +14,17 @@
         <v-divider></v-divider>
 
         <v-list nav>
+          <v-list-item
+    v-for="(menuItem, index) in MenuItems"
+    :key="index"
+    @click="this.$store.state.activeMenu = menuItem.text"
+    :value="menuItem.text"
+  >
+  <font-awesome-icon :icon="['fas', 'calendar-day']" size="lg" style="color: #b362bf;" />
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a style="color: #b362bf;">{{ menuItem.text }}</a>
+  </v-list-item>
+
            <v-list-item @click="this.$store.state.activeMenu='today'" value="today" >     <font-awesome-icon :icon="['fas', 'calendar-day']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Today</a>
           </v-list-item>
           
@@ -54,7 +65,7 @@
 
       <v-main style="height: 100vh"></v-main>
     </v-layout>
-  </v-card>
+<!--  </v-card> -->
 </template>
 
 <script>
@@ -62,7 +73,10 @@
   export default {
   // ... Other component options ...
 
-
+      data: () => ({
+        MenuItems: [ {icon:"['fas', 'calendar-day']", text:"Calendar"},
+        ],
+    }),
 
     /*
     var t=[

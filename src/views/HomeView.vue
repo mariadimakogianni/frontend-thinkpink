@@ -2,7 +2,14 @@
 <v-container fluid>
 
     <AppHeader /> 
-       <NavMenu class="mt-13"/> 
+      <v-row>
+        <v-col class="custom-col" style="flex: .1;">
+          <NavMenu class="mt-13"/> 
+        </v-col>
+        <v-col>
+          <PageContent class="mt-13"/>
+        </v-col>
+      </v-row>
     <!-- <HomeSection /> -->
     <!--<HomeAbout />-->
     <!--<ContactSection />-->
@@ -13,6 +20,7 @@
 
 <script>
 import AppHeader from '@/components/AppHeader.vue';
+import PageContent from '@/components/PageContent.vue';
 //import HomeSection from '@/components/HomeSection.vue';
 import AppFooter from '@/components/AppFooter.vue';
 //import HomeAbout from '@/components/HomeAbout.vue';
@@ -29,8 +37,16 @@ export default {
     AppFooter,
  //   HomeAbout,
     NavMenu,
+    PageContent,
   //  HelloWorld,
   },
 };
 </script>
 
+
+<style>
+.custom-col {
+  padding: 0; /* Remove padding to prevent extra space */
+  box-sizing: border-box;
+}
+</style>
