@@ -56,8 +56,9 @@
           color="#b362bf"
           size="small"
           variant="flat"
+          @click="this.$store.state.activeMenu='createNewEvent'"
         >
-          Logout
+          New
         </v-btn>
       </div>
 
