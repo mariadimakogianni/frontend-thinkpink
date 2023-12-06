@@ -5,37 +5,53 @@
 <br>
   <v-sheet width="800" class="mx-auto">
 
-    <v-date-picker ref="datePicker" v-if="formSelector==1" v-model='date'></v-date-picker>
+    <!-- <v-date-picker ref="datePicker" v-if="formSelector==1" v-model='date'></v-date-picker> -->
+    <v-date-picker v-if="formSelector==1" v-model='date' @click:save="onDatePickerChange"></v-date-picker>
 
     <v-form ref="form1" v-if="formSelector==2">
+
+      <v-text-field
+        v-model="formattedDate"
+        label="Date"
+        disabled
+    
+      ></v-text-field>
+
       <v-text-field
         v-model="name"
-        :rules="[v => '1' || '10 chars or less please']"
         label="Name"
         required
       ></v-text-field>
 
       <v-text-field
         v-model="description"
-        :rules="[name.lenth <= 10 || '10 chars or less please']"
         label="Description"
       ></v-text-field>
 
       <v-select
         v-model="type"
-        :items="['Today','Bills','Birthdays & Events']"
+        :items="['Today','Bills','Events & Birthdays']"
         :rules="[v => !!v || 'Item is required']"
         label="Type"
         required
       ></v-select>
 
+         <v-select
+         v-if="type=='Today'"
+        v-model="todayTime"
+        :items="['morning','afternoon','night']"
+        label="Time of the day"
+        required
+      ></v-select>
+
       <v-checkbox
         v-model="allday"
+        v-if="type!='Today' && type!='Bills'"
         label="All Day"
       ></v-checkbox>
 
       <v-text-field
-        v-if="!allday"
+        v-if="!allday && type!='Today' && type!='Bills'"
           v-model="startTime"
           type="time"
           suffix="EET"
@@ -43,7 +59,7 @@
         ></v-text-field>
 
           <v-text-field
-        v-if="!allday"          
+        v-if="!allday && type!='Today' && type!='Bills'"          
           v-model="endTime"
           type="time"
           suffix="EET"
@@ -53,7 +69,6 @@
       <v-select
         v-model="frequency"
         :items="['Every Day','Every Week','Every Month','Every Year','Custom']"
-        :rules="[v => !!v || 'Item is required']"
         label="Frequency"
         required
       ></v-select>
@@ -61,15 +76,14 @@
       <v-text-field
       v-if="frequency=='Custom'"
         v-model="frequency2"
-        :rules="[v => '1' || '10 chars or less please']"
         label="Number of Days"
         required
       ></v-text-field>
 
       <v-select
         v-model="importance"
+        v-if="type!='Today'  && type!='Bills'"
         :items="['1','2','3']"
-        :rules="[v => !!v || 'Item is required']"
         label="Importance"
         required
       ></v-select>
@@ -79,9 +93,9 @@
           color="success"
           class="mt-4"
           block
-          @click="validate"
+          @click="create(data)"
         >
-          Validate
+          Create
         </v-btn>
 
         <v-btn
@@ -93,14 +107,6 @@
           Reset Form
         </v-btn>
 
-        <v-btn
-          color="warning"
-          class="mt-4"
-          block
-          @click="resetValidation"
-        >
-          Reset Validation
-        </v-btn>
       </div>
     </v-form>
   </v-sheet>
@@ -108,7 +114,7 @@
 
 
 <script>
-//import axios from 'axios';
+import axios from 'axios';
     import { VDatePicker } from 'vuetify/labs/VDatePicker'
 
 export default {
@@ -117,7 +123,7 @@ export default {
     },
     data() {
         return {
-		name:"",
+	name:"",
         description:"",
         type:"",
         allday:"",
@@ -126,8 +132,10 @@ export default {
         startTime:"",
         endTime:"",
         formSelector:"1",
-        frequency2:"3",
+        frequency2:"",
         date:new Date(),
+        formattedDate:"",
+        todayTime:"",
 
 	}
     },
@@ -135,8 +143,52 @@ export default {
     // Event handler for date picker input
     onDatePickerChange() {
       // Change the formSelector to 2 when the user selects a date
-      this.formSelector = 2;
+    setTimeout(() => {
+            this.formSelector++;
+            this.formattedDate=this.date.toLocaleDateString();
+            console.log(this.date); // This should now log the updated date
+        }, 10);
+        },
+    reset(){
+        this.name=""
+        this.description=""
+        this.type=""
+        this.allday=""
+        this.frequency=""
+        this.importance="3"
+        this.startTime=""
+        this.endTime=""
+        this.frequency2=""
+        this.date=new Date()
+        this.formSelector=1;
     },
+
+    async create(){
+      try {
+
+         var mydata={};
+          if (this.$data.type=="Bills") 
+              this.$data.importance="";
+         Object.keys(this.$data).forEach((key) => {
+          if(key=="formattedDate" || key=="formSelector")
+            return;
+          if (this.$data[key] !== "" && this.$data[key] !== undefined) {
+          mydata[key] = this.$data[key];
+          }});
+         mydata.timestamp=new Date();
+      console.log(JSON.stringify(mydata));
+       // Set the content type header to indicate JSON data
+    const headers = { 'Content-Type': 'application/json' };
+
+      var response = await axios.post("http://localhost:3000/createEvent",mydata, { headers });
+      console.log(response)
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  }
+       
+
+ 
   },
 async mounted() {
     /*try {
@@ -148,11 +200,7 @@ async mounted() {
       console.error("An error occurred:", error);
     }*/
      // Access the "OK" button inside the v-date-picker component
-    const okButton = this.$refs.datePicker.$el.querySelector('span.v-btn__content[data-no-activator="OK"]');
-    if (okButton) {
-      // Attach a click event listener to the "OK" button
-      okButton.addEventListener('click', this.formSelector=2);
-    }
+    console.log(this.date);          
   },
 }
 

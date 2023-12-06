@@ -14,16 +14,16 @@
         <v-divider></v-divider>
 
         <v-list nav>
-          <v-list-item
+          <!--<v-list-item
     v-for="(menuItem, index) in MenuItems"
     :key="index"
     @click="this.$store.state.activeMenu = menuItem.text"
     :value="menuItem.text"
   >
-  <font-awesome-icon :icon="['fas', 'calendar-day']" size="lg" style="color: #b362bf;" />
+   <font-awesome-icon :icon="['fas', 'calendar-day']" size="lg" style="color: #b362bf;" />
     &nbsp;&nbsp;&nbsp;&nbsp;
     <a style="color: #b362bf;">{{ menuItem.text }}</a>
-  </v-list-item>
+  </v-list-item> -->
 
            <v-list-item @click="this.$store.state.activeMenu='today'" value="today" >     <font-awesome-icon :icon="['fas', 'calendar-day']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Today</a>
           </v-list-item>
@@ -39,6 +39,9 @@
           </v-list-item>
 
            <v-list-item @click="this.$store.state.activeMenu='supermarket'" value="supermarket" >     <font-awesome-icon :icon="['fas', 'cart-shopping']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Supermarket</a>
+          </v-list-item>
+
+          <v-list-item @click="this.$store.state.activeMenu='studynwork'" value="studynwork" >     <font-awesome-icon :icon="['fas', 'cart-shopping']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Study & Work</a>
           </v-list-item>
 
            <v-list-item @click="this.$store.state.activeMenu='pomodoro'" value="pomodoro" >    <font-awesome-icon :icon="['fas', 'stopwatch']" size="lg" style="color: #b362bf;" />&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Pomodoro</a>
@@ -75,8 +78,8 @@
   // ... Other component options ...
 
       data: () => ({
-        MenuItems: [ {icon:"['fas', 'calendar-day']", text:"Calendar"},
-        ],
+        //MenuItems: [ {icon:"['fas', 'calendar-day']", text:"Calendar"},
+        //],
     }),
 
     /*
