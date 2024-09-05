@@ -17,7 +17,7 @@
       </v-row>
       <v-row justify="center">
         <v-col class="caption text-center text--secondary">
-          © 2019 - {{ new Date().getFullYear() }} — SEXYCODERS LIMITED
+          © 2023 - {{ new Date().getFullYear() }} — THINKPINK
         </v-col>
       </v-row>
     </v-container>

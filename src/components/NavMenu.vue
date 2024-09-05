@@ -25,34 +25,25 @@
     <a style="color: #b362bf;">{{ menuItem.text }}</a>
   </v-list-item> -->
 
-           <v-list-item @click="this.$store.state.activeMenu='today'" value="today" >     <font-awesome-icon :icon="['fas', 'calendar-day']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Today</a>
+          <v-list-item @click="this.$store.state.activeMenu='today'" value="today" >     <font-awesome-icon :icon="['fas', 'calendar-day']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Today</a>
           </v-list-item>
           
      
-          <v-list-item @click="this.$store.state.activeMenu='calendar'" value="calendar" >     <font-awesome-icon :icon="['far', 'calendar-check']" size='lg' style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Calendar</a>
+          <v-list-item @click="this.$store.state.activeMenu='tasks'" value="tasks" >     <font-awesome-icon :icon="['far', 'calendar-check']" size='lg' style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Tasks</a>
           </v-list-item>
 
-          <v-list-item @click="this.$store.state.activeMenu='bills'" value="bills" >     <font-awesome-icon :icon="['fas', 'sack-dollar']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Bills</a>
+          <v-list-item @click="this.$store.state.activeMenu='routine'" value="routine" >     <font-awesome-icon :icon="['fas', 'mountain-sun']" size='lg' style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >EveryDay Routines</a>
           </v-list-item>
 
-          <v-list-item @click="this.$store.state.activeMenu='eventsandbirthdays'" value="eventsandbirthdays" >     <font-awesome-icon :icon="['fas', 'cake-candles']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Events & Birthdays</a>
-          </v-list-item>
-
-           <v-list-item @click="this.$store.state.activeMenu='supermarket'" value="supermarket" >     <font-awesome-icon :icon="['fas', 'cart-shopping']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Supermarket</a>
-          </v-list-item>
-
-          <v-list-item @click="this.$store.state.activeMenu='studynwork'" value="studynwork" >     <font-awesome-icon :icon="['fas', 'cart-shopping']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Study & Work</a>
-          </v-list-item>
-
-           <v-list-item @click="this.$store.state.activeMenu='pomodoro'" value="pomodoro" >    <font-awesome-icon :icon="['fas', 'stopwatch']" size="lg" style="color: #b362bf;" />&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Pomodoro</a>
+          <v-list-item @click="this.$store.state.activeMenu='lists'" value="lists" >     <font-awesome-icon :icon="['fas', 'list-check']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Lists</a>
           </v-list-item>
 
           <v-list-item @click="this.$store.state.activeMenu='spinningwheel'" value="spinningwheel" >   <font-awesome-icon :icon="['fas', 'shuffle']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Spinning Wheel</a>
           </v-list-item>
 
 
-          
         </v-list>
+
         <div class="d-flex justify-center">
         <v-btn
           class="text-none text-subtitle-1 text-center"
@@ -64,7 +55,24 @@
           New
         </v-btn>
       </div>
+        <v-list nav>
+          <v-list-item-title :style="{ color: '#b362bf' }">School</v-list-item-title>
 
+          <v-list-item @click="this.$store.state.activeMenu='stprojects'" value="stprojects" >   <font-awesome-icon :icon="['fas', 'bars-progress']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Projects </a>
+          </v-list-item>
+
+          <v-list-item @click="this.$store.state.activeMenu='pomodoro'" value="pomodoro" >   <font-awesome-icon :icon="['fas', 'school']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Pomodoro </a>
+          </v-list-item>
+
+          <v-list-item-title :style="{ color: '#b362bf' }">Work</v-list-item-title>
+
+          <v-list-item @click="this.$store.state.activeMenu='wprojects'" value="wprojects" >   <font-awesome-icon :icon="['fas', 'bars-progress']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Projects </a>
+          </v-list-item>
+
+          <v-list-item @click="this.$store.state.activeMenu='schedule'" value="schedule" >   <font-awesome-icon :icon="['fas', 'clock']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Schedule </a>
+          </v-list-item>
+
+        </v-list>
       </v-navigation-drawer>
 
       <v-main style="height: 100vh"></v-main>
