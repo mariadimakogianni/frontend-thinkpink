@@ -4,17 +4,18 @@
 <br>
 <br>
 
+<h2 class="title"> View All Tasks & Events</h2>
 
 <!-- <a>{{$data.Events[3]}}</a> -->
 
 
 <v-container>
     <v-row>
-      <!-- TODAY -->
+      <!-- To Do List -->
       <v-col cols="12" md="6" v-if="tasksToDo.length">
         <v-card class="column">
           <v-card-title>
-            <h3>Today</h3>
+            <h3>To Do</h3>
           </v-card-title>
           <v-card-text>
             <v-list class="innerSquare">
@@ -26,7 +27,7 @@
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-icon class="editIcon" @click="editTask(task, 'tasksToDo')">mdi-pencil</v-icon>
-                    <v-icon class="delIcon" @click="delTask(task, 'tasksToDo')">mdi-delete</v-icon>
+                    <v-icon class="delIcon" @click="delTask(task, 'tasksEvents')">mdi-delete</v-icon>
                 </v-list-item-action>
               </v-list-item>
             </v-list>
@@ -34,36 +35,11 @@
         </v-card>
       </v-col>
 
-<!-- This Week -->
-      <v-col cols="12" md="6" v-if="tasksEvents.length" >
+<!-- Dates Events List -->
+      <v-col cols="12" md="6" v-if="tasksEvents.length">
         <v-card class="column">
           <v-card-title>
-            <h3>This Week</h3>
-          </v-card-title>
-          <v-card-text>
-            <v-list class="innerSquare">
-            <v-list-item v-for="task in tasksEvents" :key="task.title" class="showTask">
-                <v-list-item-content class="textForTask">
-                  <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
-                  <v-list-item-subtitle class="textForTask description-text"> {{ task.description }} </v-list-item-subtitle>
-                    <v-list-item-subtitle class="textForTask">Time: {{ task.time }}</v-list-item-subtitle>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <v-icon class="editIcon" @click="editTask(task, 'tasksEvents')">mdi-pencil</v-icon>
-                  <v-icon class="delIcon" @click="delTask(task, 'tasksEvents')">mdi-delete</v-icon>
-                </v-list-item-action>
-              </v-list-item>
-            </v-list>
-          </v-card-text>
-        </v-card>
-      </v-col>
-
-      <!-- This Month -->
-
-      <v-col cols="12" md="6" v-if="tasksEvents.length" style="margin-left:auto">
-        <v-card class="column">
-          <v-card-title>
-            <h3>This Month</h3>
+            <h3>Dates & Events</h3>
           </v-card-title>
           <v-card-text>
             <v-list class="innerSquare">
@@ -126,7 +102,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+//import axios from 'axios';
 
 export default {
 
@@ -158,7 +134,7 @@ export default {
           time: "7pm",
         },
       ],
-      Events:"",
+      //Events:"",
       editDialog: false, // To toggle the edit dialog visibility
       editedTask: null, // To hold the task being edited
       originalTask: null, // Reference to the original task object
@@ -185,20 +161,19 @@ export default {
       this.originalList = null;
     },
   },
-
-
-async mounted() {
-
-   try {
-   const response = await axios.get("http://localhost:3000/getEvents");
-    const res = response.data; // Assuming the response is JSON data
-    this.$data.Events = res; // Update the component data with the fetched data
-  console.log(this.$data.Events[0]);
-   } catch (error) {
-    console.error("An error occurred:", error);
-   }
- } 
 };
+
+//async mounted() {
+
+   // try {
+  //    const response = await axios.get("http://localhost:3000/getEvents");
+   //   const res = response.data; // Assuming the response is JSON data
+   //   this.$data.Events = res; // Update the component data with the fetched data
+  //    console.log(this.$data.Events[0]);
+  //  } catch (error) {
+ //     console.error("An error occurred:", error);
+  //  }
+ // }
 
 
 
@@ -214,6 +189,8 @@ async mounted() {
         background-color: #b362bf;
         color: #fff;
         max-width: 700px;
+
+        
         display: flex;
         flex-direction: column; /* Stack the content vertically */
         align-items: center; /* Center content horizontally */

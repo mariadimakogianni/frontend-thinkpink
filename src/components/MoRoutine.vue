@@ -4,29 +4,29 @@
 <br>
 <br>
 
+<h2 class="title"> Morning & Night Routine</h2>
 
 <!-- <a>{{$data.Events[3]}}</a> -->
 
 
 <v-container>
     <v-row>
-      <!-- TODAY -->
+      <!-- Morning Routine -->
       <v-col cols="12" md="6" v-if="tasksToDo.length">
-        <v-card class="column">
+        <v-card class="column morning-routine">
           <v-card-title>
-            <h3>Today</h3>
+            <h3>Morning Routine</h3>
           </v-card-title>
           <v-card-text>
             <v-list class="innerSquare">
-              <v-list-item v-for="task in tasksToDo" :key="task.title" class="showTask">
+              <v-list-item v-for="task in tasksToDo" :key="task.title" class="showTaskRoutine">
                 <v-list-item-content class="textForTask">
                   <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
                   <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
-                  <v-list-item-subtitle class="textForTask">Due: {{ task.dueDate }}</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-icon class="editIcon" @click="editTask(task, 'tasksToDo')">mdi-pencil</v-icon>
-                    <v-icon class="delIcon" @click="delTask(task, 'tasksToDo')">mdi-delete</v-icon>
+                  <v-icon class="editIconRoutine" @click="editTask(task, 'tasksToDo')">mdi-pencil</v-icon>
+                    <v-icon class="delIcon" @click="delTask(task, 'tasksEvents')">mdi-delete</v-icon>
                 </v-list-item-action>
               </v-list-item>
             </v-list>
@@ -34,47 +34,21 @@
         </v-card>
       </v-col>
 
-<!-- This Week -->
-      <v-col cols="12" md="6" v-if="tasksEvents.length" >
-        <v-card class="column">
+<!-- Night Routine -->
+      <v-col cols="12" md="6" v-if="tasksEvents.length">
+        <v-card class="column night-routine">
           <v-card-title>
-            <h3>This Week</h3>
+            <h3>Night Routine</h3>
           </v-card-title>
           <v-card-text>
             <v-list class="innerSquare">
-            <v-list-item v-for="task in tasksEvents" :key="task.title" class="showTask">
+            <v-list-item v-for="task in tasksEvents" :key="task.title" class="showTaskRoutine">
                 <v-list-item-content class="textForTask">
                   <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
                   <v-list-item-subtitle class="textForTask description-text"> {{ task.description }} </v-list-item-subtitle>
-                    <v-list-item-subtitle class="textForTask">Time: {{ task.time }}</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-icon class="editIcon" @click="editTask(task, 'tasksEvents')">mdi-pencil</v-icon>
-                  <v-icon class="delIcon" @click="delTask(task, 'tasksEvents')">mdi-delete</v-icon>
-                </v-list-item-action>
-              </v-list-item>
-            </v-list>
-          </v-card-text>
-        </v-card>
-      </v-col>
-
-      <!-- This Month -->
-
-      <v-col cols="12" md="6" v-if="tasksEvents.length" style="margin-left:auto">
-        <v-card class="column">
-          <v-card-title>
-            <h3>This Month</h3>
-          </v-card-title>
-          <v-card-text>
-            <v-list class="innerSquare">
-            <v-list-item v-for="task in tasksEvents" :key="task.title" class="showTask">
-                <v-list-item-content class="textForTask">
-                  <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
-                  <v-list-item-subtitle class="textForTask description-text"> {{ task.description }} </v-list-item-subtitle>
-                    <v-list-item-subtitle class="textForTask">Time: {{ task.time }}</v-list-item-subtitle>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <v-icon class="editIcon" @click="editTask(task, 'tasksEvents')">mdi-pencil</v-icon>
+                  <v-icon class="editIconRoutine" @click="editTask(task, 'tasksEvents')">mdi-pencil</v-icon>
                   <v-icon class="delIcon" @click="delTask(task, 'tasksEvents')">mdi-delete</v-icon>
                 </v-list-item-action>
               </v-list-item>
@@ -126,7 +100,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+//import axios from 'axios';
 
 export default {
 
@@ -158,7 +132,7 @@ export default {
           time: "7pm",
         },
       ],
-      Events:"",
+      //Events:"",
       editDialog: false, // To toggle the edit dialog visibility
       editedTask: null, // To hold the task being edited
       originalTask: null, // Reference to the original task object
@@ -185,20 +159,19 @@ export default {
       this.originalList = null;
     },
   },
-
-
-async mounted() {
-
-   try {
-   const response = await axios.get("http://localhost:3000/getEvents");
-    const res = response.data; // Assuming the response is JSON data
-    this.$data.Events = res; // Update the component data with the fetched data
-  console.log(this.$data.Events[0]);
-   } catch (error) {
-    console.error("An error occurred:", error);
-   }
- } 
 };
+
+//async mounted() {
+
+   // try {
+  //    const response = await axios.get("http://localhost:3000/getEvents");
+   //   const res = response.data; // Assuming the response is JSON data
+   //   this.$data.Events = res; // Update the component data with the fetched data
+  //    console.log(this.$data.Events[0]);
+  //  } catch (error) {
+ //     console.error("An error occurred:", error);
+  //  }
+ // }
 
 
 
@@ -214,6 +187,8 @@ async mounted() {
         background-color: #b362bf;
         color: #fff;
         max-width: 700px;
+
+        
         display: flex;
         flex-direction: column; /* Stack the content vertically */
         align-items: center; /* Center content horizontally */
@@ -221,8 +196,40 @@ async mounted() {
 
     }
 
-    .showTask{
-        border: 1px solid #b362bf; 
+    .morning-routine{
+      border-radius: 10px;
+        border-radius: 50% 30% 60% 30% / 40% 60% 40% 60%;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 16px;
+        margin: 16px 0;
+        background-color: #FFA500;
+        color: #fff;
+        max-width: 700px;
+
+        
+        display: flex;
+        flex-direction: column; /* Stack the content vertically */
+        align-items: center; /* Center content horizontally */
+    }
+
+        .night-routine{
+      border-radius: 10px;
+        border-radius: 50% 30% 60% 30% / 40% 60% 40% 60%;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 16px;
+        margin: 16px 0;
+        background-color: #090254;
+        color: #fff;
+        max-width: 700px;
+
+        
+        display: flex;
+        flex-direction: column; /* Stack the content vertically */
+        align-items: center; /* Center content horizontally */
+    }
+
+    .showTaskRoutine{
+        border: 1px solid #FFA500; 
         border-radius: 10px; 
         margin: 10px auto;
          margin-right: 100px;
@@ -230,6 +237,8 @@ async mounted() {
         align-items: flex-start;
 
     }
+
+
 
     .title{
         padding-left: 20px;
@@ -241,11 +250,11 @@ async mounted() {
 
     }
 
-    .editIcon{
+    .editIconRoutine{
         align-self: flex-start;
         margin-right: 60px;
         margin-top: 8px; 
-        color: #b362bf;
+        color: #090254;
 
     }
 

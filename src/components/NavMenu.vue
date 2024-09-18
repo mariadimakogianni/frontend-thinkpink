@@ -32,7 +32,7 @@
           <v-list-item @click="this.$store.state.activeMenu='tasks'" value="tasks" >     <font-awesome-icon :icon="['far', 'calendar-check']" size='lg' style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Tasks</a>
           </v-list-item>
 
-          <v-list-item @click="this.$store.state.activeMenu='routine'" value="routine" >     <font-awesome-icon :icon="['fas', 'mountain-sun']" size='lg' style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >EveryDay Routines</a>
+          <v-list-item @click="this.$store.state.activeMenu='routine'" value="routine" >     <font-awesome-icon :icon="['fas', 'mountain-sun']" size='lg' style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Morning & Night Routine</a>
           </v-list-item>
 
           <v-list-item @click="this.$store.state.activeMenu='lists'" value="lists" >     <font-awesome-icon :icon="['fas', 'list-check']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Lists</a>

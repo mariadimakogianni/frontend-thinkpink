@@ -28,7 +28,7 @@
 
       <v-text-field
         v-model="date"
-        label="Date"
+        label="Date & Due Date"
         v-if="type=='Tasks' ||  type=='Dates & Events'"
         @click="this.showDatePicker=1"
         :rules="[v => !!v || 'Item is required']"
@@ -50,6 +50,14 @@
         required
       ></v-select>
 
+      <v-select
+        v-model="frequency"
+        :items="['Every Day','One Time','Sometime This Week', 'Sometime This Month','Every Week','Every Month','Every Year','Custom']"
+        label="Frequency"
+        required
+        v-if="type=='Tasks' || type=='Dates & Events'"
+      ></v-select>
+
       <v-checkbox
         v-model="allday"
         v-if="type=='Dates & Events'"
@@ -57,7 +65,7 @@
       ></v-checkbox>
 
       <v-text-field
-        v-if="!allday && type=='Dates & Events'"
+        v-if="!allday && type == 'Dates & Events'"
           v-model="startTime"
           type="time"
           suffix="EET"
@@ -71,14 +79,6 @@
           suffix="EET"
           label="End Time"
         ></v-text-field>
-
-      <v-select
-        v-model="frequency"
-        :items="['Every Day','One Time','Sometime This Week', 'Sometime This Month','Every Week','Every Month','Every Year','Custom']"
-        label="Frequency"
-        required
-        v-if="type=='Tasks' || type=='Dates & Events'"
-      ></v-select>
 
       <v-text-field
       v-if="frequency=='Custom'"
