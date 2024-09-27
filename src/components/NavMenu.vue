@@ -14,16 +14,6 @@
         <v-divider></v-divider>
 
         <v-list nav>
-          <!--<v-list-item
-    v-for="(menuItem, index) in MenuItems"
-    :key="index"
-    @click="this.$store.state.activeMenu = menuItem.text"
-    :value="menuItem.text"
-  >
-   <font-awesome-icon :icon="['fas', 'calendar-day']" size="lg" style="color: #b362bf;" />
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a style="color: #b362bf;">{{ menuItem.text }}</a>
-  </v-list-item> -->
 
           <v-list-item @click="this.$store.state.activeMenu='today'" value="today" >     <font-awesome-icon :icon="['fas', 'calendar-day']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Today</a>
           </v-list-item>
@@ -35,28 +25,19 @@
           <v-list-item @click="this.$store.state.activeMenu='routine'" value="routine" >     <font-awesome-icon :icon="['fas', 'mountain-sun']" size='lg' style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Morning & Night Routine</a>
           </v-list-item>
 
+          <div class="d-flex justify-center">
+            <v-btn
+              class="text-none text-subtitle-1 text-left"
+              color="#b362bf"
+              size="small"
+              variant="flat"
+              @click="this.$store.state.activeMenu='createNewEvent'" >
+              New
+            </v-btn>
+          </div>
+
           <v-list-item @click="this.$store.state.activeMenu='lists'" value="lists" >     <font-awesome-icon :icon="['fas', 'list-check']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Lists</a>
           </v-list-item>
-
-          <v-list-item @click="this.$store.state.activeMenu='spinningwheel'" value="spinningwheel" >   <font-awesome-icon :icon="['fas', 'shuffle']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Spinning Wheel</a>
-          </v-list-item>
-
-
-        </v-list>
-
-        <div class="d-flex justify-center">
-        <v-btn
-          class="text-none text-subtitle-1 text-center"
-          color="#b362bf"
-          size="small"
-          variant="flat"
-          @click="this.$store.state.activeMenu='createNewEvent'"
-        >
-          New
-        </v-btn>
-      </div>
-        <v-list nav>
-          <v-list-item-title :style="{ color: '#b362bf' }">School</v-list-item-title>
 
           <v-list-item @click="this.$store.state.activeMenu='stprojects'" value="stprojects" >   <font-awesome-icon :icon="['fas', 'bars-progress']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Projects </a>
           </v-list-item>
@@ -64,13 +45,9 @@
           <v-list-item @click="this.$store.state.activeMenu='pomodoro'" value="pomodoro" >   <font-awesome-icon :icon="['fas', 'school']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Pomodoro </a>
           </v-list-item>
 
-          <v-list-item-title :style="{ color: '#b362bf' }">Work</v-list-item-title>
-
-          <v-list-item @click="this.$store.state.activeMenu='wprojects'" value="wprojects" >   <font-awesome-icon :icon="['fas', 'bars-progress']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Projects </a>
+          <v-list-item @click="this.$store.state.activeMenu='spinningwheel'" value="spinningwheel" >   <font-awesome-icon :icon="['fas', 'shuffle']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Spinning Wheel</a>
           </v-list-item>
 
-          <v-list-item @click="this.$store.state.activeMenu='schedule'" value="schedule" >   <font-awesome-icon :icon="['fas', 'clock']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Schedule </a>
-          </v-list-item>
 
         </v-list>
       </v-navigation-drawer>

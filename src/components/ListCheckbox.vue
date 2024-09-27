@@ -1,194 +1,178 @@
 <template>
-<br>
-<br>
-<br>
-<br>
+  <br />
+  <br />
 
-<h2 class="title"> Lists</h2>
-
-<!-- <a>{{$data.Events[3]}}</a> -->
-
-
-<v-container>
-    <v-row>
-      <!-- To Do List -->
-      <v-col cols="12" md="6" v-if="tasksToDo.length">
-        <v-card class="column">
-          <v-card class="innerSquare">
-            <v-card-text>
-            <div class="d-flex pa-4">
-              <v-checkbox-btn v-model="enabled" class="pe-2"></v-checkbox-btn>
-              <v-text-field label="Include files" hide-details></v-text-field>
-            </div>
-    </v-card-text>
-  </v-card>
-        </v-card>
+  <v-container>
+    <v-row class="align-center">
+      <v-col cols="12" class="d-flex justify-space-between align-center">
+        <h2 class="title">My Lists</h2>
+        <v-btn class="newbutton" @click="createNewList">Create New List</v-btn>
       </v-col>
-
-
     </v-row>
 
-   
+    <v-container>
+      <v-row dense>
+        <v-col
+          v-for="(list, listIndex) in itemlists"
+          :key="listIndex"
+          cols="12" md="4" sm="6"
+        >
+          <v-card class="column">
+            <v-card-title class="d-flex align-center">
+              <h3>{{ list.title }}</h3>
+              <v-icon
+                class="delIconList"
+                @click="deleteList(listIndex)"
+              >
+                mdi-delete
+              </v-icon>
+            </v-card-title>
 
+            <v-card-text>
+              <v-list class="innerSquare">
+                <v-list-item
+                  v-for="(item, idx) in list.items"
+                  :key="idx"
+                  class="showItemlist">
+
+                  <div style="width: 100%; display: flex; align-items: center;">
+                    <v-checkbox
+                      v-model="item.done"
+                      class="pe-2" >
+                    </v-checkbox>
+
+                    <v-list-item-title
+                      class="itemtitle"
+                      :class="{ crossed: item.done }" >
+                      {{ item.title }}
+                    </v-list-item-title>
+
+                    <v-icon
+                      class="delIconItem"
+                      @click="deleteItem(listIndex, idx)">
+                      mdi-delete
+                    </v-icon>
+                  </div>
+                </v-list-item>
+              </v-list>
+
+              <v-btn class="itembutton" @click="addItem(listIndex)">
+                Add Item
+              </v-btn>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-container>
-
-  
-
 </template>
 
+
 <script>
-//import axios from 'axios';
-
 export default {
-
-    data() {
-        return {
-            tasksToDo: [
+  data() {
+    return {
+      itemlists: [
         {
-          title: "Buy groceries",
-          description: "Milk, Bread, Butter",
-          dueDate: "2024-09-20",
-        },
-        {
-          title: "Finish project report",
-          description: "Prepare the monthly performance report",
-          dueDate: "2024-09-22",
-        },
-      ],
-      tasksEvents: [
-        {
-          title: "Morning exercise",
-          description: "30 minutes of cardio",
-          dueDate: "2024-09-21",
-          time: "7pm",
-        },
-        {
-          title: "Read a book",
-          description: "Read 20 pages of a new book",
-          dueDate: "2024-09-21",
-          time: "7pm",
+          title: "To Do List",
+          items: [
+            {
+              title: "Buy groceries",
+              done: false,
+            },
+            {
+              title: "Finish project report",
+              done: false,
+            },
+          ],
         },
       ],
-      //Events:"",
-      editDialog: false, // To toggle the edit dialog visibility
-      editedTask: null, // To hold the task being edited
-      originalTask: null, // Reference to the original task object
-      originalList: null, // To keep track of which list the task belongs to
-            includeFiles: true,
-      enabled: false,
     };
   },
-
-   methods: {
-    editTask(task, listName) {
-      this.editedTask = { ...task }; // Create a copy of the task
-      this.originalTask = task; // Reference to the original task
-      this.originalList = listName;
-      this.editDialog = true;
+  methods: {
+    // Add a new item to the specific list
+    addItem(listIndex) {
+      const newItem = prompt("Enter a new item:");
+      if (newItem) {
+        this.itemlists[listIndex].items.push({ title: newItem, done: false });
+      }
     },
-    saveEdit() {
-      // Update the original task with the edited values
-      Object.assign(this.originalTask, this.editedTask);
-      this.closeEdit();
+    // Create a new list (adds a new empty list)
+    createNewList() {
+      const newListTitle = prompt("Enter the title of the new list:");
+      if (newListTitle) {
+        this.itemlists.push({
+          title: newListTitle,
+          items: [], // Start with an empty list of tasks
+        });
+      }
     },
-    closeEdit() {
-      this.editDialog = false;
-      this.editedTask = null;
-      this.originalTask = null;
-      this.originalList = null;
+    // Delete a specific item from a list
+    deleteItem(listIndex, itemIndex) {
+      this.itemlists[listIndex].items.splice(itemIndex, 1);
+    },
+    // Delete an entire list
+    deleteList(listIndex) {
+      this.itemlists.splice(listIndex, 1);
     },
   },
 };
-
-//async mounted() {
-
-   // try {
-  //    const response = await axios.get("http://localhost:3000/getEvents");
-   //   const res = response.data; // Assuming the response is JSON data
-   //   this.$data.Events = res; // Update the component data with the fetched data
-  //    console.log(this.$data.Events[0]);
-  //  } catch (error) {
- //     console.error("An error occurred:", error);
-  //  }
- // }
-
-
-
 </script>
 
-<style>
-    .column{
-        border-radius: 10px;
-        border-radius: 50% 30% 60% 30% / 40% 60% 40% 60%;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 16px;
-        margin: 16px 0;
-        background-color: #b362bf;
-        color: #fff;
-        max-width: 700px;
-
-        
-        display: flex;
-        flex-direction: column; /* Stack the content vertically */
-        align-items: center; /* Center content horizontally */
 
 
-    }
-
-    .showTask{
-        border: 1px solid #b362bf; 
-        border-radius: 10px; 
-        margin: 10px auto;
-         margin-right: 100px;
-        margin-left: 100px;
-        align-items: flex-start;
-
-    }
-
-    .title{
-        padding-left: 20px;
-        color: #b362bf ;
-    }
-
-    .innerSquare{
-          border-radius: 40px; 
-          min-width: 400px;
-
-    }
-
-    .editIcon{
-        align-self: flex-start;
-        margin-right: 60px;
-        margin-top: 8px; 
-        color: #b362bf;
-
-    }
-
-    .delIcon{
-        align-self: flex-start;
-        margin-left: auto;
-        margin-top: 8px; 
-        color: red;
-
-    }
-
-    .textForTask{
-        white-space: normal;
-        display: block;
-
-    }
-
-    .description-text {
-        /* Allow text to wrap and prevent truncation */
-        overflow: visible !important;
-        text-overflow: initial !important;
+<style scoped>
+.column {
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin: 16px 0;
+  background-color: #b362bf; /* Light pink background */
+  color: #ffe3ec; /* Dark purple text */
+  max-width: 600px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
-   @import '../../node_modules/qalendar/dist/style.css';
-   .custom-light-theme {
-  /* Override the styles to create a light theme */
-  background-color: white;
-  color: black;
-  /* Add more styles to customize the appearance as needed */
+.showItemlist {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
 }
+
+.crossed {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.delIconItem {
+  color: #e57373; 
+  font-size: 24px;
+  margin-top: -20px;
+  cursor: pointer;
+}
+
+.delIconList {
+  align-self: flex-start;
+  margin-left: auto;
+  margin-top: 1px !important;
+  color: #e57373; 
+  cursor: pointer;
+}
+
+.itemtitle {
+  margin-top: -19px;
+  margin-right: 20px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #000; 
+}
+
+
+.innerSquare {
+  background-color: #f3e5f5; /* Light purple */
+  border-radius: 8px;
+  padding: 8px;
+}
+
+
 </style>

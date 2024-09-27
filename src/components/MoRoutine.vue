@@ -25,7 +25,7 @@
                   <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-icon class="editIconRoutine" @click="editTask(task, 'tasksToDo')">mdi-pencil</v-icon>
+                  <v-icon class="editIcon" @click="editTask(task, 'tasksToDo')">mdi-pencil</v-icon>
                     <v-icon class="delIcon" @click="delTask(task, 'tasksEvents')">mdi-delete</v-icon>
                 </v-list-item-action>
               </v-list-item>
@@ -48,7 +48,7 @@
                   <v-list-item-subtitle class="textForTask description-text"> {{ task.description }} </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-icon class="editIconRoutine" @click="editTask(task, 'tasksEvents')">mdi-pencil</v-icon>
+                  <v-icon class="editIcon" @click="editTask(task, 'tasksEvents')">mdi-pencil</v-icon>
                   <v-icon class="delIcon" @click="delTask(task, 'tasksEvents')">mdi-delete</v-icon>
                 </v-list-item-action>
               </v-list-item>
@@ -177,112 +177,61 @@ export default {
 
 </script>
 
-<style>
-    .column{
-        border-radius: 10px;
-        border-radius: 50% 30% 60% 30% / 40% 60% 40% 60%;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 16px;
-        margin: 16px 0;
-        background-color: #b362bf;
-        color: #fff;
-        max-width: 700px;
-
-        
-        display: flex;
-        flex-direction: column; /* Stack the content vertically */
-        align-items: center; /* Center content horizontally */
-
-
+<style scoped>
+    .morning-routine {
+      border-radius: 50% 30% 60% 30% / 40% 60% 40% 60%;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px; 
+      margin: 20px auto; 
+      background-color: #FFA500 !important;
+      color: #ffffff;
+      max-width: 700px;
+      display: flex;
+      flex-direction: column; 
+      align-items: center;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
     }
 
-    .morning-routine{
-      border-radius: 10px;
-        border-radius: 50% 30% 60% 30% / 40% 60% 40% 60%;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 16px;
-        margin: 16px 0;
-        background-color: #FFA500;
-        color: #fff;
-        max-width: 700px;
 
-        
-        display: flex;
-        flex-direction: column; /* Stack the content vertically */
-        align-items: center; /* Center content horizontally */
+    .night-routine {
+
+      border-radius: 50% 30% 60% 30% / 40% 60% 40% 60%;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px; 
+      margin: 20px auto; 
+      background-color: #090254 !important; 
+      color: #ffffff;
+      max-width: 700px;
+      display: flex;
+      flex-direction: column; 
+      align-items: center; 
+      font-family: 'Helvetica Neue', Arial, sans-serif;
     }
 
-        .night-routine{
-      border-radius: 10px;
-        border-radius: 50% 30% 60% 30% / 40% 60% 40% 60%;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 16px;
-        margin: 16px 0;
-        background-color: #090254;
-        color: #fff;
-        max-width: 700px;
 
-        
-        display: flex;
-        flex-direction: column; /* Stack the content vertically */
-        align-items: center; /* Center content horizontally */
-    }
-
-    .showTaskRoutine{
-        border: 1px solid #FFA500; 
-        border-radius: 10px; 
-        margin: 10px auto;
-         margin-right: 100px;
-        margin-left: 100px;
-        align-items: flex-start;
-
+    .showTaskRoutine {
+      border: 1px solid #FFA500; /* Keep the orange border */
+      border-radius: 10px; /* Keep the original border-radius */
+      margin: 10px auto;
+      margin-right: 100px;
+      margin-left: 100px;
+      align-items: flex-start;
+      padding: 10px;
+      background-color: #ffffff; 
+      color: #333333; 
+      font-family: 'Helvetica Neue', Arial, sans-serif;
     }
 
 
 
-    .title{
-        padding-left: 20px;
-        color: #b362bf ;
+    /* Calendar Customization */
+    @import '../../node_modules/qalendar/dist/style.css';
+
+    .custom-light-theme {
+      /* Override the styles to create a light theme */
+      background-color: #ffffff;
+      color: #000000;
+      /* Additional custom styles can be added here */
     }
-
-    .innerSquare{
-          border-radius: 40px; 
-
-    }
-
-    .editIconRoutine{
-        align-self: flex-start;
-        margin-right: 60px;
-        margin-top: 8px; 
-        color: #090254;
-
-    }
-
-    .delIcon{
-        align-self: flex-start;
-        margin-left: auto;
-        margin-top: 8px; 
-        color: red;
-
-    }
-
-    .textForTask{
-        white-space: normal;
-        display: block;
-
-    }
-
-    .description-text {
-        /* Allow text to wrap and prevent truncation */
-        overflow: visible !important;
-        text-overflow: initial !important;
-}
-
-   @import '../../node_modules/qalendar/dist/style.css';
-   .custom-light-theme {
-  /* Override the styles to create a light theme */
-  background-color: white;
-  color: black;
-  /* Add more styles to customize the appearance as needed */
-}
 </style>
+

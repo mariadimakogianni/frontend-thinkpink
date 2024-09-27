@@ -26,8 +26,9 @@
                   <v-list-item-subtitle class="textForTask">Due: {{ task.dueDate }}</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
+                  <v-icon class="doneIcon" @click="doneTask(task, 'tasksToDo')">mdi-check</v-icon>
                   <v-icon class="editIcon" @click="editTask(task, 'tasksToDo')">mdi-pencil</v-icon>
-                    <v-icon class="delIcon" @click="delTask(task, 'tasksEvents')">mdi-delete</v-icon>
+                    <v-icon class="delIcon" @click="delTask(task, 'tasksToDo')">mdi-delete</v-icon>
                 </v-list-item-action>
               </v-list-item>
             </v-list>
@@ -35,7 +36,7 @@
         </v-card>
       </v-col>
 
-<!-- Dates Events List -->
+<!-- Dates Events Task -->
       <v-col cols="12" md="6" v-if="tasksEvents.length">
         <v-card class="column">
           <v-card-title>
@@ -50,6 +51,7 @@
                     <v-list-item-subtitle class="textForTask">Time: {{ task.time }}</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
+                  <v-icon class="doneIcon" @click="doneTask(task, 'tasksToDo')">mdi-check</v-icon>
                   <v-icon class="editIcon" @click="editTask(task, 'tasksEvents')">mdi-pencil</v-icon>
                   <v-icon class="delIcon" @click="delTask(task, 'tasksEvents')">mdi-delete</v-icon>
                 </v-list-item-action>
@@ -59,6 +61,29 @@
         </v-card>
       </v-col>
     </v-row>
+
+<!-- Done Task -->
+    <v-col cols="12" md="6" v-if="tasksEvents.length" style="margin-left:auto">
+        <v-card class="column">
+          <v-card-title>
+            <h3>Done</h3>
+          </v-card-title>
+          <v-card-text>
+            <v-list class="innerSquare">
+            <v-list-item v-for="task in tasksEvents" :key="task.title" class="showTask">
+                <v-list-item-content class="textForTask">
+                  <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
+                  <v-list-item-subtitle class="textForTask description-text"> {{ task.description }} </v-list-item-subtitle>
+                    <v-list-item-subtitle class="textForTask">Time: {{ task.time }}</v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-icon class="delIcon" @click="delTask(task, 'tasksEvents')">mdi-delete</v-icon>
+                </v-list-item-action>
+              </v-list-item>
+            </v-list>
+          </v-card-text>
+        </v-card>
+      </v-col>
 
     <v-row v-if="!tasksToDo.length && !tasksEveryDay.length">
       <v-col cols="12">
@@ -149,6 +174,13 @@ export default {
       this.originalList = listName;
       this.editDialog = true;
     },
+    doneTask(task, listName){
+      this.editedTask = { ...task }; // Create a copy of the task
+      this.originalTask = task; // Reference to the original task
+      this.originalList = listName;
+      this.editDialog = true;
+
+    },
     saveEdit() {
       // Update the original task with the edited values
       Object.assign(this.originalTask, this.editedTask);
@@ -179,78 +211,3 @@ export default {
 
 </script>
 
-<style>
-    .column{
-        border-radius: 10px;
-        border-radius: 50% 30% 60% 30% / 40% 60% 40% 60%;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 16px;
-        margin: 16px 0;
-        background-color: #b362bf;
-        color: #fff;
-        max-width: 700px;
-
-        
-        display: flex;
-        flex-direction: column; /* Stack the content vertically */
-        align-items: center; /* Center content horizontally */
-
-
-    }
-
-    .showTask{
-        border: 1px solid #b362bf; 
-        border-radius: 10px; 
-        margin: 10px auto;
-         margin-right: 100px;
-        margin-left: 100px;
-        align-items: flex-start;
-
-    }
-
-    .title{
-        padding-left: 20px;
-        color: #b362bf ;
-    }
-
-    .innerSquare{
-          border-radius: 40px; 
-
-    }
-
-    .editIcon{
-        align-self: flex-start;
-        margin-right: 60px;
-        margin-top: 8px; 
-        color: #b362bf;
-
-    }
-
-    .delIcon{
-        align-self: flex-start;
-        margin-left: auto;
-        margin-top: 8px; 
-        color: red;
-
-    }
-
-    .textForTask{
-        white-space: normal;
-        display: block;
-
-    }
-
-    .description-text {
-        /* Allow text to wrap and prevent truncation */
-        overflow: visible !important;
-        text-overflow: initial !important;
-}
-
-   @import '../../node_modules/qalendar/dist/style.css';
-   .custom-light-theme {
-  /* Override the styles to create a light theme */
-  background-color: white;
-  color: black;
-  /* Add more styles to customize the appearance as needed */
-}
-</style>
