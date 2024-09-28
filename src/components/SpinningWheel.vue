@@ -150,7 +150,7 @@ export default {
         this.isWheelSpinning = false;
         this.selectedTask = this.tasks[selectedIndex];
         this.isTaskSelected = true;
-      }, 5000); // Match this duration with CSS animation duration
+      }, 5000); 
     },
     markTaskAsDone() {
       const index = this.tasks.indexOf(this.selectedTask);

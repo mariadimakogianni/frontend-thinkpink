@@ -209,7 +209,7 @@ export default {
       this.notificationVisible = false;
     },
     openLofiMusic() {
-      window.open('https://www.youtube.com/watch?v=5qap5aO4i9A', '_blank');
+      window.open('https://www.youtube.com/watch?v=lTRiuFIWV54', '_blank');
     },
   },
   beforeUnmount() {

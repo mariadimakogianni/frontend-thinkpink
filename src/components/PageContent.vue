@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import TodayTasks from "./TodayTasks"
 import ViewTasks from "./ViewTasks"
 import CreateTasks from "./CreateTasks"
@@ -34,6 +35,18 @@ export default {
 
   data: () => ({
 }),
+
+  async mounted() {
+
+   try {
+      const response = await axios.get("http://localhost:3000/getEvents");
+      const res = response.data;
+      this.$store.Events = res; // Update the component data with the fetched data
+      console.log(JSON.stringify(this.$store.Events));
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  }
 }
 </script>
 
@@ -55,6 +68,8 @@ export default {
       display: flex;
       flex-direction: column; 
       align-items: center; 
+      
+
     }
 
     .showTask {
@@ -70,11 +85,54 @@ export default {
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
+   
+
+    .showTask1 {
+      border: 1px solid #FF0000; 
+      border-radius: 10px;
+      margin: 10px auto;
+      margin-right: 100px;
+      margin-left: 100px;
+      align-items: flex-start;
+      padding: 10px;
+      background-color: #ffffff; 
+      color: #333333; 
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .showTask2 {
+      border: 1px solid #B8860B; 
+      border-radius: 10px;
+      margin: 10px auto;
+      margin-right: 100px;
+      margin-left: 100px;
+      align-items: flex-start;
+      padding: 10px;
+      background-color: #ffffff; 
+      color: #333333; 
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .showTask3 {
+      border: 1px solid #008000; 
+      border-radius: 10px;
+      margin: 10px auto;
+      margin-right: 100px;
+      margin-left: 100px;
+      align-items: flex-start;
+      padding: 10px;
+      background-color: #ffffff; 
+      color: #333333; 
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+
     .innerSquare {
       border-radius: 40px; 
       min-width: 500px;
       background-color: #f3e5f5; 
       padding: 16px;
+      max-height: 500px;
+      overflow-y: auto;
     }
 
     .title {

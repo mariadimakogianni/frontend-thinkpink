@@ -6,27 +6,24 @@
 
 <h2 class="title"> Morning & Night Routine</h2>
 
-<!-- <a>{{$data.Events[3]}}</a> -->
-
-
 <v-container>
     <v-row>
       <!-- Morning Routine -->
-      <v-col cols="12" md="6" v-if="tasksToDo.length">
+      <v-col cols="12" md="6" v-if="morningRoutine.length">
         <v-card class="column morning-routine">
           <v-card-title>
             <h3>Morning Routine</h3>
           </v-card-title>
           <v-card-text>
             <v-list class="innerSquare">
-              <v-list-item v-for="task in tasksToDo" :key="task.title" class="showTaskRoutine">
+              <v-list-item v-for="task in morningRoutine" :key="task.title" class="showTask">
                 <v-list-item-content class="textForTask">
                   <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
                   <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-icon class="editIcon" @click="editTask(task, 'tasksToDo')">mdi-pencil</v-icon>
-                    <v-icon class="delIcon" @click="delTask(task, 'tasksEvents')">mdi-delete</v-icon>
+                  <v-icon class="editIcon" @click="editTask(task, 'morningRoutine')">mdi-pencil</v-icon>
+                    <v-icon class="delIcon" @click="delTask(task, 'morningRoutine')">mdi-delete</v-icon>
                 </v-list-item-action>
               </v-list-item>
             </v-list>
@@ -35,32 +32,26 @@
       </v-col>
 
 <!-- Night Routine -->
-      <v-col cols="12" md="6" v-if="tasksEvents.length">
+      <v-col cols="12" md="6" v-if="nightRoutine.length">
         <v-card class="column night-routine">
           <v-card-title>
             <h3>Night Routine</h3>
           </v-card-title>
           <v-card-text>
             <v-list class="innerSquare">
-            <v-list-item v-for="task in tasksEvents" :key="task.title" class="showTaskRoutine">
+            <v-list-item v-for="task in nightRoutine" :key="task.title" class="showTask">
                 <v-list-item-content class="textForTask">
                   <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
                   <v-list-item-subtitle class="textForTask description-text"> {{ task.description }} </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-icon class="editIcon" @click="editTask(task, 'tasksEvents')">mdi-pencil</v-icon>
-                  <v-icon class="delIcon" @click="delTask(task, 'tasksEvents')">mdi-delete</v-icon>
+                  <v-icon class="editIcon" @click="editTask(task, 'nightRoutine')">mdi-pencil</v-icon>
+                  <v-icon class="delIcon" @click="delTask(task, 'nightRoutine')">mdi-delete</v-icon>
                 </v-list-item-action>
               </v-list-item>
             </v-list>
           </v-card-text>
         </v-card>
-      </v-col>
-    </v-row>
-
-    <v-row v-if="!tasksToDo.length && !tasksEveryDay.length">
-      <v-col cols="12">
-        <v-alert type="info">No tasks available</v-alert>
       </v-col>
     </v-row>
 
@@ -78,7 +69,7 @@
               <v-col cols="12">
                 <v-text-field v-model="editedTask.description" label="Description" ></v-text-field>
               </v-col>
-              <v-col cols="12" v-if="originalList === 'tasksToDo'">
+              <v-col cols="12" v-if="originalList === 'morningRoutine'">
                 <v-text-field v-model="editedTask.dueDate" label="Due Date" ></v-text-field>
               </v-col>
               <v-col cols="12" v-else>
@@ -106,33 +97,9 @@ export default {
 
     data() {
         return {
-            tasksToDo: [
-        {
-          title: "Buy groceries",
-          description: "Milk, Bread, Butter",
-          dueDate: "2024-09-20",
-        },
-        {
-          title: "Finish project report",
-          description: "Prepare the monthly performance report",
-          dueDate: "2024-09-22",
-        },
-      ],
-      tasksEvents: [
-        {
-          title: "Morning exercise",
-          description: "30 minutes of cardio",
-          dueDate: "2024-09-21",
-          time: "7pm",
-        },
-        {
-          title: "Read a book",
-          description: "Read 20 pages of a new book",
-          dueDate: "2024-09-21",
-          time: "7pm",
-        },
-      ],
-      //Events:"",
+            morningRoutine: [],
+            nightRoutine: [],
+
       editDialog: false, // To toggle the edit dialog visibility
       editedTask: null, // To hold the task being edited
       originalTask: null, // Reference to the original task object
@@ -141,6 +108,12 @@ export default {
   },
 
    methods: {
+    filtermorningRoutine () {
+      this.$store.Events.filter(event => event.todayTime == "morning").forEach(event => this.$data.morningRoutine.push(event));
+    },
+    filternightRoutine () {
+      this.$store.Events.filter(event => event.todayTime == "night").forEach(event => this.$data.nightRoutine.push(event));
+    },
     editTask(task, listName) {
       this.editedTask = { ...task }; // Create a copy of the task
       this.originalTask = task; // Reference to the original task
@@ -159,19 +132,12 @@ export default {
       this.originalList = null;
     },
   },
+
+  async beforeMount() {
+  this.filtermorningRoutine();
+  this.filternightRoutine();
+ }
 };
-
-//async mounted() {
-
-   // try {
-  //    const response = await axios.get("http://localhost:3000/getEvents");
-   //   const res = response.data; // Assuming the response is JSON data
-   //   this.$data.Events = res; // Update the component data with the fetched data
-  //    console.log(this.$data.Events[0]);
-  //  } catch (error) {
- //     console.error("An error occurred:", error);
-  //  }
- // }
 
 
 
@@ -205,20 +171,6 @@ export default {
       display: flex;
       flex-direction: column; 
       align-items: center; 
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-    }
-
-
-    .showTaskRoutine {
-      border: 1px solid #FFA500; /* Keep the orange border */
-      border-radius: 10px; /* Keep the original border-radius */
-      margin: 10px auto;
-      margin-right: 100px;
-      margin-left: 100px;
-      align-items: flex-start;
-      padding: 10px;
-      background-color: #ffffff; 
-      color: #333333; 
       font-family: 'Helvetica Neue', Arial, sans-serif;
     }
 
