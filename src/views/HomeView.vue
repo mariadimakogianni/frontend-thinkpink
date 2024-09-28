@@ -10,10 +10,6 @@
           <PageContent class="mt-13"/>
         </v-col>
       </v-row>
-    <!-- <HomeSection /> -->
-    <!--<HomeAbout />-->
-    <!--<ContactSection />-->
-  <!--  <HelloWorld v-if='this.$store.state.activeMenu=="profile"'/> -->
     <AppFooter />
 </v-container>
 </template>
@@ -21,24 +17,16 @@
 <script>
 import AppHeader from '@/components/AppHeader.vue';
 import PageContent from '@/components/PageContent.vue';
-//import HomeSection from '@/components/HomeSection.vue';
 import AppFooter from '@/components/AppFooter.vue';
-//import HomeAbout from '@/components/HomeAbout.vue';
 import NavMenu from '@/components/NavMenu.vue';
-//import ContactSection from '@/components/ContactSection.vue';
-//import HelloWorld from '@/components/HelloWorld.vue';
 
 export default {
   name: 'HomeView',
   components: {
     AppHeader,
-  //  HomeSection,
-  //  ContactSection,
     AppFooter,
- //   HomeAbout,
     NavMenu,
     PageContent,
-  //  HelloWorld,
   },
 };
 </script>

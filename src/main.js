@@ -26,9 +26,9 @@ library.add(far)
 loadFonts()
 
 keycloak.init({
-  onLoad: 'login-required', // Use 'check-sso' for SSO mode
+  onLoad: 'login-required', 
   checkLoginIframe: false,
-  promiseType: 'native' // Optional: for modern promise support
+  promiseType: 'native',
 }).then((authenticated) => {
   console.log(authenticated);
   if (authenticated) {
@@ -73,25 +73,3 @@ keycloak.init({
 }).catch((error) => {
   console.error('Failed to initialize Keycloak', error);
 });
-
-
-
-// // Initialize Keycloak
-// keycloak.init({
-//   onLoad: 'check-sso',
-// //  checkLoginIframe: false // Set to true if you want to enable the login status check
-// }).then((authenticated) => {
-//   if (authenticated) {
-//     console.log('Authenticated');
-//     createApp(App)
-//       .use(router)
-//       .use(store)
-//       .use(vuetify)
-//       .component('font-awesome-icon', FontAwesomeIcon)
-//       .mount('#app');
-//   } else {
-//     window.location.reload();
-//   }
-// }).catch((error) => {
-//   console.error('Failed to initialize Keycloak', error);
-// });
