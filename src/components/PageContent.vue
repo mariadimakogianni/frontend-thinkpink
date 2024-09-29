@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import TodayTasks from "./TodayTasks"
 import ViewTasks from "./ViewTasks"
 import CreateTasks from "./CreateTasks"
@@ -35,18 +34,11 @@ export default {
 
   data: () => ({
 }),
-
   async mounted() {
 
-   try {
-      const response = await axios.get("http://localhost:3000/getEvents");
-      const res = response.data;
-      this.$store.Events = res; // Update the component data with the fetched data
-      console.log(JSON.stringify(this.$store.Events));
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
+  //console.log("Hello im page content");
   }
+
 }
 </script>
 

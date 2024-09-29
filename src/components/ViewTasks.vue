@@ -7,33 +7,33 @@
 <h2 class="title"> View All Tasks & Events</h2>
 
 <v-container>
-    <v-row>
-      <!-- Tasks List -->
-      <v-col cols="12" md="6" v-if="tasksToDo.length">
-        <v-card class="column">
-          <v-card-title>
-            <h3>Tasks</h3>
-          </v-card-title>
-          <v-card-text>
-            <v-list class="innerSquare">
-              <v-list-item v-for="task in tasksToDo" :key="task.title" class="showTask">
-                <v-list-item-content class="textForTask">
-                  <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
-                  <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
-                  <v-list-item-subtitle class="textForTask">Due: {{ task.date }}</v-list-item-subtitle>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <v-icon class="doneIcon" @click="doneTask(task, 'tasksToDo')">mdi-check</v-icon>
-                  <v-icon class="editIcon" @click="editTask(task, 'tasksToDo')">mdi-pencil</v-icon>
-                    <v-icon class="delIcon" @click="delTask(task, 'tasksToDo')">mdi-delete</v-icon>
-                </v-list-item-action>
+  <v-row>
+    <!-- Tasks List -->
+    <v-col cols="12" md="6" v-if="tasksToDo.length">
+      <v-card class="column">
+        <v-card-title>
+          <h3>Tasks</h3>
+        </v-card-title>
+        <v-card-text>
+          <v-list class="innerSquare">
+            <v-list-item v-for="task in tasksToDo" :key="task.title" class="showTask">
+              <v-list-item-content class="textForTask">
+                <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
+                <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
+                <v-list-item-subtitle class="textForTask">Due: {{ new Date(task.date).toDateString() }}</v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-icon class="doneIcon" @click="doneTask(task)">mdi-check</v-icon>
+                <v-icon class="editIcon" @click="editTask(task, 'tasksToDo')">mdi-pencil</v-icon>
+                <v-icon class="delIcon" @click="delTask(task, 'tasksToDo')">mdi-delete</v-icon>
+              </v-list-item-action>
               </v-list-item>
             </v-list>
           </v-card-text>
         </v-card>
       </v-col>
 
-<!-- Dates Events Task -->
+      <!-- Dates Events Task -->
       <v-col cols="12" md="6" v-if="tasksEvents.length">
         <v-card class="column">
           <v-card-title>
@@ -41,14 +41,14 @@
           </v-card-title>
           <v-card-text>
             <v-list class="innerSquare">
-            <v-list-item v-for="task in tasksEvents" :key="task.title" class="showTask">
+              <v-list-item v-for="task in tasksEvents" :key="task.title" class="showTask">
                 <v-list-item-content class="textForTask">
                   <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
-                  <v-list-item-subtitle class="textForTask description-text"> {{ task.description }} </v-list-item-subtitle>
-                  <v-list-item-subtitle v-if="task.allday" class="textForTask" >  All Day </v-list-item-subtitle> 
+                  <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
                   <v-list-item-subtitle v-if="!task.allday" class="textForTask">Start Time: {{ task.startTime }}</v-list-item-subtitle>
                   <v-list-item-subtitle v-if="!task.allday" class="textForTask">End Time: {{ task.endTime }}</v-list-item-subtitle>
-                  <v-list-item-subtitle class="textForTask">Date: {{ task.date }}</v-list-item-subtitle>
+                  <v-list-item-subtitle class="textForTask">Date: {{ new Date(task.date).toDateString() }}</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-icon class="doneIcon" @click="doneTask(task, 'tasksEvents')">mdi-check</v-icon>
@@ -62,23 +62,23 @@
       </v-col>
     </v-row>
 
-<!-- Done Task -->
+    <!-- Done Task -->
     <v-col cols="12" md="6" v-if="tasksToDo.length" style="margin-left:auto">
-        <v-card class="column">
-          <v-card-title>
-            <h3>Done</h3>
-          </v-card-title>
-          <v-card-text>
-            <v-list class="innerSquare">
+      <v-card class="column">
+        <v-card-title>
+          <h3>Done</h3>
+        </v-card-title>
+        <v-card-text>
+          <v-list class="innerSquare">
             <v-list-item v-for="task in tasksToDo" :key="task.title" class="showTask">
-                <v-list-item-content class="textForTask">
-                  <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
-                  <v-list-item-subtitle class="textForTask description-text"> {{ task.description }} </v-list-item-subtitle>
-                    <v-list-item-subtitle class="textForTask">Time: {{ task.startTime }}</v-list-item-subtitle>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <v-icon class="delIcon" @click="delTask(task, 'tasksToDo')">mdi-delete</v-icon>
-                </v-list-item-action>
+              <v-list-item-content class="textForTask">
+                <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
+                <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
+                <v-list-item-subtitle class="textForTask">Time: {{ task.startTime }}</v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-icon class="delIcon" @click="delTask(task, 'tasksToDo')">mdi-delete</v-icon>
+              </v-list-item-action>
               </v-list-item>
             </v-list>
           </v-card-text>
@@ -115,35 +115,49 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
   </v-container>
-
 </template>
 
 <script>
-//import axios from 'axios';
-
+  import axios from 'axios'
 export default {
-
-    data() {
-        return {
-            tasksToDo: [],
-            tasksEvents: [],
-      //Events:"",
-      editDialog: false, // To toggle the edit dialog visibility
-      editedTask: null, // To hold the task being edited
-      originalTask: null, // Reference to the original task object
-      originalList: null, // To keep track of which list the task belongs to
+  data() {
+    return {
+      tasksToDo: [],
+      tasksEvents: [],
+      editDialog: false,
+      editedTask: null,
+      originalTask: null,
+      originalList: null,
     };
   },
 
-   methods: {
+  computed: {
+    events() {
+      return this.$store.state.Events;
+    }
+  },
 
-    filterToDo () {
-      this.$store.Events.filter(event => event.type == "Tasks").forEach(event => this.$data.tasksToDo.push(event));
+  watch: {
+    events: {
+      handler() {
+        this.filterToDo();
+        this.filterEvents();
+      },
+      immediate: true
+    }
+  },
+
+  methods: {
+    filterToDo() {
+      if (this.events) {
+        this.tasksToDo = this.events.filter(event => event.type === "Tasks" && !event.done);
+      }
     },
-    filterEvents () {
-      this.$store.Events.filter(event => event.type == "Dates & Events").forEach(event => this.$data.tasksEvents.push(event));
+    filterEvents() {
+      if (this.events) {
+        this.tasksEvents = this.events.filter(event => event.type === "Dates & Events");
+      }
     },
     editTask(task, listName) {
       this.editedTask = { ...task }; // Create a copy of the task
@@ -151,15 +165,24 @@ export default {
       this.originalList = listName;
       this.editDialog = true;
     },
-    doneTask(task, listName){
-      this.editedTask = { ...task }; // Create a copy of the task
-      this.originalTask = task; // Reference to the original task
-      this.originalList = listName;
-      this.editDialog = true;
+    doneTask(task) {
+      console.log("task",task)
+      const eventId = task._id;  // Assuming your task object contains the event_id
 
-    },
+      // Send a PUT request to the API to mark the event as done
+      axios.put(`http://localhost:3000/doneEvent/${eventId}`)
+        .then(response => {
+          // Handle the success - mark the task as done in the UI if needed
+          console.log('Event marked as done:', response.data);
+
+        })
+        .catch(error => {
+          console.error('Failed to update event as done:', error);
+          // Optionally, handle the error in the UI
+        });
+        this.$store.commit('setEventDone', eventId);
+      },
     saveEdit() {
-      // Update the original task with the edited values
       Object.assign(this.originalTask, this.editedTask);
       this.closeEdit();
     },
@@ -169,24 +192,24 @@ export default {
       this.originalTask = null;
       this.originalList = null;
     },
+    async delTask(event) {
+      try {
+        const response = await axios.delete(`http://localhost:3000/deleteEvent/${event._id}`);
+        if (response.status === 200) {
+          console.log('Task deleted:', response.data.message);
+        } else {
+          console.error('Error deleting task:', response.data.message);
+        }
+      } catch (error) {
+        console.error('Error:', error.response ? error.response.data.message : error.message);
+      }
+      this.$store.commit('deleteEvent', event._id);
+    }
+        
   },
 
-
-async beforeMount() {
-  this.filterToDo();
-  this.filterEvents();
-
-   // try {
-   //   const response = await axios.get("http://localhost:3000/getEvents");
-   //   const res = response.data; // Assuming the response is JSON data
-   //   this.$data.Events = res; // Update the component data with the fetched data
-   //   console.log(this.$data.Events[0]);
-   // } catch (error) {
-   //   console.error("An error occurred:", error);
- //   // }
- }
+  async mounted() {
+    this.$store.dispatch('fetchEvents');
+  }
 };
-
-
 </script>
-

@@ -1,21 +1,20 @@
 <template>
-<v-container fluid>
-
+  <v-container fluid>
     <AppHeader /> 
-      <v-row>
-        <v-col class="custom-col" style="flex: .1;">
-          <NavMenu class="mt-13"/> 
-        </v-col>
-        <v-col>
-          <PageContent class="mt-13"/>
-        </v-col>
-      </v-row>
+    <v-row>
+      <v-col class="custom-col" style="flex: .1;">
+        <NavMenu class="mt-13"/> 
+      </v-col>
+      <v-col>
+        <PageContent v-if="$store.state.Events" class="mt-13"/>
+        <div v-else>Loading events...</div>
+      </v-col>
+    </v-row>
     <AppFooter />
-</v-container>
+  </v-container>
 </template>
 
 <script>
-import axios from 'axios';
 import AppHeader from '@/components/AppHeader.vue';
 import PageContent from '@/components/PageContent.vue';
 import AppFooter from '@/components/AppFooter.vue';
@@ -30,23 +29,11 @@ export default {
     PageContent,
   },
   async mounted() {
-
-   try {
-      const response = await axios.get("http://localhost:3000/getEvents");
-      const res = response.data;
-      this.$store.Events = res; // Update the component data with the fetched data
-      console.log(JSON.stringify(this.$store.Events));
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
+    // Dispatch Vuex action to fetch events from the API
+    this.$store.dispatch('fetchEvents');
   }
-
 };
-
-
-
 </script>
-
 
 <style>
 .custom-col {
