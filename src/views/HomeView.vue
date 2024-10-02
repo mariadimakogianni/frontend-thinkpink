@@ -28,6 +28,7 @@ export default {
     NavMenu,
     PageContent,
   },
+  
   async mounted() {
     // Dispatch Vuex action to fetch events from the API
     this.$store.dispatch('fetchEvents');

@@ -63,21 +63,21 @@
     </v-row>
 
     <!-- Done Task -->
-    <v-col cols="12" md="6" v-if="tasksToDo.length" style="margin-left:auto">
+    <v-col cols="12" md="6" v-if="tasksDone.length" style="margin-left:auto">
       <v-card class="column">
         <v-card-title>
           <h3>Done</h3>
         </v-card-title>
         <v-card-text>
           <v-list class="innerSquare">
-            <v-list-item v-for="task in tasksToDo" :key="task.title" class="showTask">
+            <v-list-item v-for="task in tasksDone" :key="task.title" class="showTask">
               <v-list-item-content class="textForTask">
                 <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
                 <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
                 <v-list-item-subtitle class="textForTask">Time: {{ task.startTime }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
-                <v-icon class="delIcon" @click="delTask(task, 'tasksToDo')">mdi-delete</v-icon>
+                <v-icon class="delIcon" @click="delTask(task, 'tasksDone')">mdi-delete</v-icon>
               </v-list-item-action>
               </v-list-item>
             </v-list>
@@ -125,6 +125,7 @@ export default {
     return {
       tasksToDo: [],
       tasksEvents: [],
+      tasksDone: [],
       editDialog: false,
       editedTask: null,
       originalTask: null,
@@ -154,44 +155,53 @@ export default {
         this.tasksToDo = this.events.filter(event => event.type === "Tasks" && !event.done);
       }
     },
+
     filterEvents() {
       if (this.events) {
         this.tasksEvents = this.events.filter(event => event.type === "Dates & Events");
       }
     },
+
+    filterDone() {
+      if (this.events) {
+        this.tasksDone = this.events.filter(event => event.done === true);
+        console.log(this.tasksDone);
+      }
+    },
+
     editTask(task, listName) {
       this.editedTask = { ...task }; // Create a copy of the task
       this.originalTask = task; // Reference to the original task
       this.originalList = listName;
       this.editDialog = true;
     },
+
     doneTask(task) {
       console.log("task",task)
-      const eventId = task._id;  // Assuming your task object contains the event_id
+      const eventId = task._id;  
 
-      // Send a PUT request to the API to mark the event as done
       axios.put(`http://localhost:3000/doneEvent/${eventId}`)
         .then(response => {
-          // Handle the success - mark the task as done in the UI if needed
           console.log('Event marked as done:', response.data);
-
         })
         .catch(error => {
           console.error('Failed to update event as done:', error);
-          // Optionally, handle the error in the UI
         });
         this.$store.commit('setEventDone', eventId);
       },
+
     saveEdit() {
       Object.assign(this.originalTask, this.editedTask);
       this.closeEdit();
     },
+    
     closeEdit() {
       this.editDialog = false;
       this.editedTask = null;
       this.originalTask = null;
       this.originalList = null;
     },
+
     async delTask(event) {
       try {
         const response = await axios.delete(`http://localhost:3000/deleteEvent/${event._id}`);

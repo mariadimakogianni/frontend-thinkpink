@@ -1,5 +1,7 @@
 import { createStore } from 'vuex'
+//import { del } from 'vue';
 import axios from 'axios'
+
 
 export default createStore({
   state: {
@@ -24,8 +26,11 @@ export default createStore({
     state.events[eventId].done = true;
   },
     deleteEvent(state, eventId) {
-      Vue.delete(state.events, eventId); 
-    },
+          delete state.events[eventId];
+      },
+    // deleteEvent(state, eventId) {
+    //   Vue.delete(state.events, eventId); 
+    // },
   },
 
   actions: {
