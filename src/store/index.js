@@ -23,14 +23,14 @@ export default createStore({
       state.Events = events;
     },
     setEventDone(state, eventId) {
-    state.events[eventId].done = true;
-  },
+      state.Events[eventId].done = true;
+    },
     deleteEvent(state, eventId) {
-          delete state.events[eventId];
-      },
-    // deleteEvent(state, eventId) {
-    //   Vue.delete(state.events, eventId); 
-    // },
+    const eventIndex = state.Events.findIndex(event => event._id === eventId);
+    if (eventIndex !== -1) {
+      state.Events.splice(eventIndex, 1); 
+    }
+  }
   },
 
   actions: {

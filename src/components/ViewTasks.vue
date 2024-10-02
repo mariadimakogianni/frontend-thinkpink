@@ -194,7 +194,7 @@ export default {
       Object.assign(this.originalTask, this.editedTask);
       this.closeEdit();
     },
-    
+
     closeEdit() {
       this.editDialog = false;
       this.editedTask = null;
@@ -206,9 +206,9 @@ export default {
       try {
         const response = await axios.delete(`http://localhost:3000/deleteEvent/${event._id}`);
         if (response.status === 200) {
-          console.log('Task deleted:', response.data.message);
+          console.log('Task deleted:', response.data);
         } else {
-          console.error('Error deleting task:', response.data.message);
+          console.error('Error deleting task:', response.data);
         }
       } catch (error) {
         console.error('Error:', error.response ? error.response.data.message : error.message);
