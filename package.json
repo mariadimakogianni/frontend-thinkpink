@@ -17,6 +17,7 @@
     "core-js": "^3.8.3",
     "keycloak-js": "^25.0.6",
     "leaflet": "^1.9.4",
+    "lodash": "^4.17.21",
     "qalendar": "^3.5.0",
     "roboto-fontface": "*",
     "vee-validate": "^4.11.3",

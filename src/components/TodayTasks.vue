@@ -126,14 +126,35 @@
                     </v-col>
                         <!-- Title -->
                   <v-col cols="12">
-                    <v-text-field
+                      <v-text-field
                       v-model="editedTask.title"
                       label="Title"
-                      :rules="[v => !!v || 'Title is required']"
+                      :rules="[v => !!v || 'Item is required']"
                       required
                       class="form-field"
                     ></v-text-field>
                   </v-col>
+
+                   <!-- Date / due date -->
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="editedTask.date" 
+                      label="Date & Due Date"
+                      v-if="editedTask.type=='Tasks' ||  editedTask.type=='Dates & Events'"
+                      @click="showDatePicker=true"
+                      :rules="[v => !!v || 'Item is required']"
+                      required
+                      class="form-field"
+                    ></v-text-field>
+                    <v-date-picker
+                      v-if="showDatePicker"
+                      v-model="editedTask.date"
+                      @click:save="onDatePickerChange"
+                      class="date-picker"
+                      ></v-date-picker>
+                  </v-col>
+
+
                       <!-- Description -->
                   <v-col cols="12">
                     <v-text-field
@@ -194,7 +215,7 @@
                     <v-col cols="12">
                       <v-select
                         v-model="editedTask.todayTime"
-                        :items="['Morning', 'Night']"
+                        :items="['morning', 'night']"
                         label="Time of the Day"
                         :rules="[v => !!v || 'Time of the day is required']"
                         required
@@ -282,9 +303,9 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="closeEdit">Cancel</v-btn>
+            <v-btn color="blue" text @click="closeEdit">Cancel</v-btn>
             <v-btn
-              color="blue darken-1"
+              color="blue"
               text
               @click="saveEdit"> Save </v-btn>
           </v-card-actions>
@@ -296,12 +317,15 @@
 
 <script>
    import axios from 'axios'
-export default {
+   import { cloneDeep } from 'lodash';
+  export default {
+
   data() {
     return {
       todayView: [],
       thisweekView: [],
       thismonthView: [],
+      showDatePicker: false,
       editDialog: false, // To toggle the edit dialog visibility
       editedTask: null, // To hold the task being edited
     };
@@ -326,6 +350,13 @@ export default {
   },
 
   methods: {
+    onDatePickerChange(date) {
+        setTimeout(() => {
+          this.formattedDate = new Date(date).toLocaleDateString();
+          this.$data.showDatePicker = false;
+        }, 10);
+      },
+
     formatDate(date) {
       const parsedDate = new Date(date);
       return parsedDate.toDateString();  
@@ -434,12 +465,38 @@ export default {
       this.$store.commit('deleteEvent', event._id);
     },
 
-    saveEdit() {
-      Object.assign(this.originalTask, this.editedTask);
-      this.closeEdit();
-    },
+    async saveEdit() {
+    if (!this.editedTask || !this.editedTask._id) {
+      console.error('No task selected for editing.');
+      return;
+    }
 
-     editTask() {
+    const eventId = this.editedTask._id;
+    const updatedEvent = { ...this.editedTask };
+
+    try {
+      const response = await axios.patch(`http://localhost:3000/editEvent/${eventId}`, updatedEvent);
+
+      if (response.status === 200) {
+         this.$store.commit('updateEvent', response.data);
+        console.log('Event updated successfully:', response.data);
+        this.closeEdit();
+      } else {
+        console.error('Failed to update event:', response.data);
+      }
+    } catch (error) {
+      console.error('Error updating event:', error.response ? error.response.data.message : error.message);
+    }
+   
+  },
+
+    // saveEdit() {
+    //   Object.assign(this.originalTask, this.editedTask);
+    //   this.closeEdit();
+    // },
+
+     editTask(task) {
+      this.editedTask = cloneDeep(task);
       this.editDialog = true;
     },
         
@@ -453,3 +510,27 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  /* Date Picker */
+  .date-picker .v-picker__body {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .date-picker .v-date-picker-header {
+    background-color: #b362bf !important; 
+    color: #ffffff !important;
+  }
+
+  .date-picker .v-btn:not(.v-btn--active) {
+    color: #7a318c !important; 
+  }
+
+  .date-picker .v-btn--active {
+    background-color: #b362bf !important; 
+    color: #ffffff !important;
+  }
+
+</style>
