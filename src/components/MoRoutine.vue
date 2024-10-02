@@ -91,7 +91,7 @@
 </template>
 
 <script>
-//import axios from 'axios';
+import axios from 'axios';
 
 export default {
 
@@ -107,13 +107,51 @@ export default {
     };
   },
 
+  computed: {
+    events() {
+      return this.$store.state.Events;
+    }
+  },
+
+  watch: {
+    events: {
+      handler() {
+        this.filtermorningRoutine();
+        this.filternightRoutine();
+      },
+
+      immediate: true
+    }
+  },
+
    methods: {
-    filtermorningRoutine () {
-      this.$store.Events.filter(event => event.todayTime == "morning").forEach(event => this.$data.morningRoutine.push(event));
+    filtermorningRoutine() {
+      if (this.events) {
+        this.morningRoutine = this.events.filter(event => event.todayTime == "morning");
+      }
     },
-    filternightRoutine () {
-      this.$store.Events.filter(event => event.todayTime == "night").forEach(event => this.$data.nightRoutine.push(event));
+
+    filternightRoutine() {
+      if (this.events) {
+        this.nightRoutine = this.events.filter(event => event.todayTime == "night");
+      }
     },
+
+    async delTask(event) {
+      try {
+        const response = await axios.delete(`http://localhost:3000/deleteEvent/${event._id}`);
+        if (response.status === 200) {
+          console.log('Task deleted:', response.data);
+        } else {
+          console.error('Error deleting task:', response.data);
+        }
+      } catch (error) {
+        console.error('Error:', error.response ? error.response.data.message : error.message);
+      }
+      this.$store.commit('deleteEvent', event._id);
+    },
+      
+
     editTask(task, listName) {
       this.editedTask = { ...task }; // Create a copy of the task
       this.originalTask = task; // Reference to the original task
@@ -133,10 +171,9 @@ export default {
     },
   },
 
-  async beforeMount() {
-  this.filtermorningRoutine();
-  this.filternightRoutine();
- }
+  async mounted() {
+    this.$store.dispatch('fetchEvents');
+  }
 };
 
 

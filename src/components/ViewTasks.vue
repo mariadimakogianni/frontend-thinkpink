@@ -144,6 +144,7 @@ export default {
       handler() {
         this.filterToDo();
         this.filterEvents();
+        this.filterDone();
       },
       immediate: true
     }
@@ -158,7 +159,7 @@ export default {
 
     filterEvents() {
       if (this.events) {
-        this.tasksEvents = this.events.filter(event => event.type === "Dates & Events");
+        this.tasksEvents = this.events.filter(event => event.type === "Dates & Events" && !event.done);
       }
     },
 
@@ -176,17 +177,34 @@ export default {
       this.editDialog = true;
     },
 
-    doneTask(task) {
-      console.log("task",task)
-      const eventId = task._id;  
+    // doneTask(task) {
+    //   console.log("task",task)
+    //   const eventId = task._id;  
 
-      axios.put(`http://localhost:3000/doneEvent/${eventId}`)
-        .then(response => {
-          console.log('Event marked as done:', response.data);
-        })
-        .catch(error => {
-          console.error('Failed to update event as done:', error);
-        });
+    //   axios.put(`http://localhost:3000/doneEvent/${eventId}`)
+    //     .then(response => {
+    //       console.log('Event marked as done:', response.data);
+    //     })
+    //     .catch(error => {
+    //       console.error('Failed to update event as done:', error);
+    //     });
+    //     this.$store.commit('setEventDone', eventId);
+    //   },
+
+      async doneTask(task) {
+        const eventId = task._id;
+
+        try {
+          const response = await axios.put(`http://localhost:3000/doneEvent/${eventId}`);
+          if (response.status === 200) {
+            console.log('Event marked as done:', response.data);
+          } else {
+            console.error('Failed to mark event as done:', response.data);
+          }
+        } catch (error) {
+          console.error('Error:', error.response ? error.response.data.message : error.message);
+        }
+        
         this.$store.commit('setEventDone', eventId);
       },
 

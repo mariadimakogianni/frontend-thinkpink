@@ -133,7 +133,6 @@
 </template>
 
 <script>
-  // Your existing script code remains unchanged
   import axios from 'axios';
   import { VDatePicker } from 'vuetify/labs/VDatePicker';
 
@@ -199,11 +198,7 @@
           mydata.timestamp = new Date();
           console.log(JSON.stringify(mydata));
           const headers = { 'Content-Type': 'application/json' };
-          var response = await axios.post(
-            'http://localhost:3000/createEvent',
-            mydata,
-            { headers }
-          );
+          var response = await axios.post( 'http://localhost:3000/createEvent', mydata, { headers } );
           console.log(response);
         } catch (error) {
           console.error('An error occurred:', error);
@@ -285,7 +280,7 @@
   }
 
   .form-button:hover {
-    background-color: #944ba0 !important; /* Darker shade on hover */
+    background-color: #944ba0 !important;
   }
 
 

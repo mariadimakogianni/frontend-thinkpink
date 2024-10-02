@@ -109,41 +109,193 @@
       </v-col>
     </v-row>
 
-    <!-- Edit Dialog -->
-    <v-dialog v-model="editDialog" persistent max-width="500px">
-      <v-card>
-        <v-card-title>
-          <span class="title">Edit Task</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field v-model="editedTask.title" label="Title"></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field v-model="editedTask.description" label="Description"></v-text-field>
-              </v-col>
-              <v-col cols="12" v-if="originalList === 'tasksToDo'">
-                <v-text-field v-model="editedTask.dueDate" label="Due Date"></v-text-field>
-              </v-col>
-              <v-col cols="12" v-else>
-                <v-text-field v-model="editedTask.time" label="Time"></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeEdit">Cancel</v-btn>
-          <v-btn color="blue darken-1" text @click="saveEdit">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+      <!-- Edit Dialog -->
+      <v-dialog v-model="editDialog" persistent max-width="800px">
+        <v-card>
+          <v-card-title>
+            <span class="title">Edit Task</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-form ref="editForm" v-model="editFormValid">
+                <v-row>
+                        <!-- Type -->
+                   <v-col cols="12">
+                          <v-text class="title" >Type: </v-text>
+                          <v-text > {{ editedTask.type }} </v-text>
+                    </v-col>
+                        <!-- Title -->
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="editedTask.title"
+                      label="Title"
+                      :rules="[v => !!v || 'Title is required']"
+                      required
+                      class="form-field"
+                    ></v-text-field>
+                  </v-col>
+                      <!-- Description -->
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="editedTask.description"
+                      label="Description"
+                      class="form-field"
+                    ></v-text-field>
+                  </v-col>
+
+                    <!-- Tasks -->
+                  <template v-if="editedTask.type === 'Tasks'">
+                    <v-col cols="12">
+                      <v-text-field
+                        v-model="editedTask.dueDate"
+                        label="Due Date"
+                        type="date"
+                        :rules="[v => !!v || 'Due Date is required']"
+                        required
+                        class="form-field"
+                      ></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12">
+                      <v-select
+                        v-model="editedTask.frequency"
+                        :items="frequencyOptions"
+                        label="Frequency"
+                        :rules="[v => !!v || 'Frequency is required']"
+                        required
+                        class="form-field"
+                      ></v-select>
+                    </v-col>
+
+                    <v-col cols="12">
+                      <v-select
+                        v-model="editedTask.importance"
+                        :items="importanceOptions"
+                        label="Importance"
+                        :rules="[v => !!v || 'Importance is required']"
+                        required
+                        class="form-field"
+                      ></v-select>
+                    </v-col>
+
+                    <v-col cols="12" v-if="editedTask.frequency === 'Custom'">
+                      <v-text-field
+                        v-model="editedTask.frequency2"
+                        label="Every X Number of Days"
+                        type="number"
+                        :rules="[v => !!v || 'This field is required']"
+                        required
+                        class="form-field"
+                      ></v-text-field>
+                    </v-col>
+                  </template>
+                      <!-- Routine -->
+                  <template v-else-if="editedTask.type === 'Routine'">
+                    <v-col cols="12">
+                      <v-select
+                        v-model="editedTask.todayTime"
+                        :items="['Morning', 'Night']"
+                        label="Time of the Day"
+                        :rules="[v => !!v || 'Time of the day is required']"
+                        required
+                        class="form-field"
+                      ></v-select>
+                    </v-col>
+                  </template>
+                    <!-- Dates & Events -->
+                  <template v-else-if="editedTask.type === 'Dates & Events'">
+                    <v-col cols="12">
+                      <v-text-field
+                        v-model="editedTask.date"
+                        label="Date & Due Date"
+                        type="date"
+                        :rules="[v => !!v || 'Date is required']"
+                        required
+                        class="form-field"
+                      ></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12">
+                      <v-select
+                        v-model="editedTask.frequency"
+                        :items="frequencyOptions"
+                        label="Frequency"
+                        :rules="[v => !!v || 'Frequency is required']"
+                        required
+                        class="form-field"
+                      ></v-select>
+                    </v-col>
+
+                    <v-col cols="12">
+                      <v-checkbox
+                        v-model="editedTask.allday"
+                        label="All Day"
+                        class="form-field"
+                      ></v-checkbox>
+                    </v-col>
+
+                    <v-col cols="6" v-if="!editedTask.allday">
+                      <v-text-field
+                        v-model="editedTask.startTime"
+                        type="time"
+                        label="Start Time"
+                        required
+                        class="form-field"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="6" v-if="!editedTask.allday">
+                      <v-text-field
+                        v-model="editedTask.endTime"
+                        type="time"
+                        label="End Time"
+                        required
+                        class="form-field"
+                      ></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12">
+                      <v-select
+                        v-model="editedTask.importance"
+                        :items="importanceOptions"
+                        label="Importance"
+                        :rules="[v => !!v || 'Importance is required']"
+                        required
+                        class="form-field"
+                      ></v-select>
+                    </v-col>
+
+                    <v-col cols="12" v-if="editedTask.frequency === 'Custom'">
+                      <v-text-field
+                        v-model="editedTask.frequency2"
+                        label="Every X Number of Days"
+                        type="number"
+                        :rules="[v => !!v || 'This field is required']"
+                        required
+                        class="form-field"
+                      ></v-text-field>
+                    </v-col>
+                  </template>
+                </v-row>
+              </v-form>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="closeEdit">Cancel</v-btn>
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="saveEdit"> Save </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
   </v-container>
 </template>
 
 <script>
+   import axios from 'axios'
 export default {
   data() {
     return {
@@ -152,8 +304,6 @@ export default {
       thismonthView: [],
       editDialog: false, // To toggle the edit dialog visibility
       editedTask: null, // To hold the task being edited
-      originalTask: null, // Reference to the original task object
-      originalList: null, // To keep track of which list the task belongs to
     };
   },
 
@@ -191,20 +341,20 @@ export default {
                date1.getUTCDate() === date2.getUTCDate();
       };
 
-      // Filter "Tasks" for today by date
-      this.events?.filter(e => e.type === "Tasks" && isSameDay(new Date(e.date), today))
+      // Filter Tasks for today by date
+      this.events?.filter(e => e.type === "Tasks" && !e.done && isSameDay(new Date(e.date), today))
         .forEach(e => this.todayView.push(e));
 
-      // Filter tasks with "morning" time
-      this.events?.filter(e => e.todayTime === "morning" && !this.todayView.includes(e))
+      // Filter tasks with morning time
+      this.events?.filter(e => e.todayTime === "morning" && !e.done && !this.todayView.includes(e))
         .forEach(e => this.todayView.push(e));
 
-      // Filter "Dates & Events" for today or all-day events
-      this.events?.filter(e => e.type === "Dates & Events" && isSameDay(new Date(e.date), today) && !this.todayView.includes(e))
+      // Filter Dates & Events for today or all-day events
+      this.events?.filter(e => e.type === "Dates & Events" && isSameDay(new Date(e.date), today) && !e.done && !this.todayView.includes(e))
         .forEach(e => this.todayView.push(e));
 
-      // Filter tasks with "night" time
-      this.events?.filter(e => e.todayTime === "night" && !this.todayView.includes(e))
+      // Filter tasks with night time
+      this.events?.filter(e => e.todayTime === "night" && !e.done && !this.todayView.includes(e))
         .forEach(e => this.todayView.push(e));
     },
 
@@ -220,15 +370,16 @@ export default {
       let endOfWeek = sunday.toISOString().split('T')[0];
 
       this.events?.forEach((item) => {
-        if (item.type === "Tasks" || item.type === "Dates & Events") {
+        if ((item.type === "Tasks" || item.type === "Dates & Events") && !item.done ) {
           if (item.date >= startOfWeek && item.date <= endOfWeek) {
             this.thisweekView.push(item);
+            console.log("thisweek",this.thisweekView)
           }
         }
       });
       this.thisweekView.sort((a, b) => {
       return new Date(a.date) - new Date(b.date);
-  });
+      });
     },
 
     filterthismonthView() {
@@ -241,21 +392,46 @@ export default {
           let eventDate = new Date(item.date);
           let eventMonth = eventDate.getMonth() + 1;
           let eventYear = eventDate.getFullYear();
-          if (eventMonth === currentMonth && eventYear === currentYear) {
+          if (eventMonth === currentMonth && eventYear === currentYear && !item.done) {
             this.thismonthView.push(item);
           }
         }
       });
       this.thismonthView.sort((a, b) => {
       return new Date(a.date) - new Date(b.date);
-  });
+        });
     },
 
-    editTask(task, listName) {
-      this.editedTask = { ...task };
-      this.originalTask = task;
-      this.originalList = listName;
-      this.editDialog = true;
+
+    async doneTask(task) {
+        const eventId = task._id;
+
+        try {
+          const response = await axios.put(`http://localhost:3000/doneEvent/${eventId}`);
+          if (response.status === 200) {
+            console.log('Event marked as done:', response.data);
+          } else {
+            console.error('Failed to mark event as done:', response.data);
+          }
+        } catch (error) {
+          console.error('Error:', error.response ? error.response.data.message : error.message);
+        }
+        
+        this.$store.commit('setEventDone', eventId);
+      },
+
+      async delTask(event) {
+      try {
+        const response = await axios.delete(`http://localhost:3000/deleteEvent/${event._id}`);
+        if (response.status === 200) {
+          console.log('Task deleted:', response.data);
+        } else {
+          console.error('Error deleting task:', response.data);
+        }
+      } catch (error) {
+        console.error('Error:', error.response ? error.response.data.message : error.message);
+      }
+      this.$store.commit('deleteEvent', event._id);
     },
 
     saveEdit() {
@@ -263,19 +439,17 @@ export default {
       this.closeEdit();
     },
 
-    doneTask(task, listName) {
-      this.editedTask = { ...task };
-      this.originalTask = task;
-      this.originalList = listName;
+     editTask() {
       this.editDialog = true;
     },
-
+        
     closeEdit() {
       this.editDialog = false;
-      this.editedTask = null;
-      this.originalTask = null;
-      this.originalList = null;
     }
+  },
+
+  async mounted() {
+    this.$store.dispatch('fetchEvents');
   }
 };
 </script>

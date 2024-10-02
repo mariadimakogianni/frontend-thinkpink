@@ -23,8 +23,11 @@ export default createStore({
       state.Events = events;
     },
     setEventDone(state, eventId) {
-      state.Events[eventId].done = true;
-    },
+      const eventIndex = state.Events.findIndex(event => event._id === eventId);
+      if (eventIndex !== -1) {
+      state.Events[eventIndex].done = true;
+    }
+  },
     deleteEvent(state, eventId) {
     const eventIndex = state.Events.findIndex(event => event._id === eventId);
     if (eventIndex !== -1) {
