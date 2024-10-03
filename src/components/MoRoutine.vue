@@ -100,10 +100,10 @@ export default {
             morningRoutine: [],
             nightRoutine: [],
 
-      editDialog: false, // To toggle the edit dialog visibility
-      editedTask: null, // To hold the task being edited
-      originalTask: null, // Reference to the original task object
-      originalList: null, // To keep track of which list the task belongs to
+      editDialog: false, 
+      editedTask: null, 
+      originalTask: null, 
+      originalList: null, 
     };
   },
 
@@ -119,7 +119,7 @@ export default {
         this.filtermorningRoutine();
         this.filternightRoutine();
       },
-
+      deep: true,
       immediate: true
     }
   },

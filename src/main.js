@@ -8,7 +8,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { fas } from '@fortawesome/free-solid-svg-icons' // Import all solid icons
 import { far } from '@fortawesome/free-regular-svg-icons' // Import all regular icons
-//import axios from 'axios';
+import axios from 'axios';
 import Keycloak from 'keycloak-js';
 
 const keycloak = new Keycloak({
@@ -54,10 +54,27 @@ keycloak.init({
         .use(vuetify)
         .component('font-awesome-icon', FontAwesomeIcon);
 
-      // Provide auth object to all components
-      app.provide('$auth', auth);
+      // app.config.globalProperties.$api = api
 
       console.log(auth);
+
+// Create an Axios instance
+const api = axios.create({
+  baseURL: 'http://localhost:3000', 
+})
+
+// Add a request interceptor to include the Authorization header
+api.interceptors.request.use(
+  async config => {
+      // Attach the token to the Authorization header
+      config.headers.Authorization = `Bearer ${keycloak.token}`
+    return config
+  },
+  error => Promise.reject(error)
+)
+
+   //   app.provide('$api', api);
+
 
       // Mount the app
       app.mount('#app');

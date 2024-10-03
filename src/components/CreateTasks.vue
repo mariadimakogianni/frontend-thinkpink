@@ -188,9 +188,8 @@
 
         try {
           var mydata = {};
-          if (this.$data.type == 'Bills') this.$data.importance = '';
           Object.keys(this.$data).forEach((key) => {
-            if (key == 'formattedDate' || key == 'formSelector') return;
+            if (key == 'formattedDate' || key == 'formSelector'|| key == 'formValid'|| key == 'showDatePicker') return;
             if (this.$data[key] !== '' && this.$data[key] !== undefined) {
               mydata[key] = this.$data[key];
             }

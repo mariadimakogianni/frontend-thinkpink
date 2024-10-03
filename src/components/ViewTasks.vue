@@ -146,6 +146,7 @@ export default {
         this.filterEvents();
         this.filterDone();
       },
+      deep: true,
       immediate: true
     }
   },

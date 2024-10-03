@@ -138,7 +138,7 @@
                    <!-- Date / due date -->
                   <v-col cols="12">
                     <v-text-field
-                      v-model="editedTask.date" 
+                      v-model="date" 
                       label="Date & Due Date"
                       v-if="editedTask.type=='Tasks' ||  editedTask.type=='Dates & Events'"
                       @click="showDatePicker=true"
@@ -148,14 +148,14 @@
                     ></v-text-field>
                     <v-date-picker
                       v-if="showDatePicker"
-                      v-model="editedTask.date"
+                      v-model="date"
                       @click:save="onDatePickerChange"
                       class="date-picker"
                       ></v-date-picker>
                   </v-col>
 
 
-                      <!-- Description -->
+                 <!--     
                   <v-col cols="12">
                     <v-text-field
                       v-model="editedTask.description"
@@ -164,7 +164,7 @@
                     ></v-text-field>
                   </v-col>
 
-                    <!-- Tasks -->
+                   
                   <template v-if="editedTask.type === 'Tasks'">
                     <v-col cols="12">
                       <v-text-field
@@ -210,7 +210,7 @@
                       ></v-text-field>
                     </v-col>
                   </template>
-                      <!-- Routine -->
+                    
                   <template v-else-if="editedTask.type === 'Routine'">
                     <v-col cols="12">
                       <v-select
@@ -223,9 +223,9 @@
                       ></v-select>
                     </v-col>
                   </template>
-                    <!-- Dates & Events -->
+                  
                   <template v-else-if="editedTask.type === 'Dates & Events'">
-                    <v-col cols="12">
+                   
                       <v-text-field
                         v-model="editedTask.date"
                         label="Date & Due Date"
@@ -295,7 +295,7 @@
                         class="form-field"
                       ></v-text-field>
                     </v-col>
-                  </template>
+                  </template> -->
                 </v-row>
               </v-form>
             </v-container>
@@ -317,9 +317,12 @@
 
 <script>
    import axios from 'axios'
-   import { cloneDeep } from 'lodash';
+ //  import { cloneDeep } from 'lodash';
+     import { VDatePicker } from 'vuetify/labs/VDatePicker';
   export default {
-
+    components: {
+      VDatePicker,
+    },
   data() {
     return {
       todayView: [],
@@ -327,7 +330,9 @@
       thismonthView: [],
       showDatePicker: false,
       editDialog: false, // To toggle the edit dialog visibility
-      editedTask: null, // To hold the task being edited
+      editedTask: [], // To hold the task being edited
+      formattedDate:"",
+      date:new Date(),
     };
   },
 
@@ -345,21 +350,27 @@
         this.filterthisweekView();
         this.filterthismonthView();
       },
+      deep: true,
       immediate: true, // Trigger the handler immediately on component mount
     }
   },
 
   methods: {
-    onDatePickerChange(date) {
+    onDatePickerChange() {
         setTimeout(() => {
-          this.formattedDate = new Date(date).toLocaleDateString();
+          this.formattedDate = new Date(this.date).toLocaleDateString();
+          this.editedTask.date=this.date;
+          console.log(this.date);
           this.$data.showDatePicker = false;
         }, 10);
       },
 
     formatDate(date) {
-      const parsedDate = new Date(date);
-      return parsedDate.toDateString();  
+      console.log("formatDate:",date)
+      //const parsedDate = new Date(date);
+      //console.log("parsedDate:",parsedDate)
+      var t=new Date(date);  
+      return t.toDateString();
     },
 
     filtertodayView() {
@@ -496,7 +507,10 @@
     // },
 
      editTask(task) {
-      this.editedTask = cloneDeep(task);
+      console.log(task.date);
+      this.editedTask = JSON.parse(JSON.stringify(task));
+          this.date=new Date(this.editedTask.date);
+      console.log("editedtask",this.editedTask);
       this.editDialog = true;
     },
         
@@ -507,6 +521,7 @@
 
   async mounted() {
     this.$store.dispatch('fetchEvents');
+
   }
 };
 </script>
