@@ -46,7 +46,7 @@
 
                     <v-icon
                       class="delIconItem"
-                      @click="deleteItem(listIndex, idx)">
+                      @click="deleteItem(listIndex, itemIndex)">
                       mdi-delete
                     </v-icon>
                   </div>
@@ -120,8 +120,15 @@ export default {
     async addItem(listIndex) {
         const newItemTitle = prompt("Enter a new item:");
         if (newItemTitle) {
-          const listId = this.lists[listIndex]._id;
-          const newItem = { title: newItemTitle };
+          const list = this.lists[listIndex];
+           if (!list) {
+              console.error('List not found at index:', listIndex);
+              return;
+            }
+            const listId = list._id;
+            console.log('List ID:', listId); 
+            const newItem = { title: newItemTitle };
+            //const newItem = { newItemTitle };
           try {
 
             const response = await axios.post(`http://localhost:3000/addItemToList/${listId}`, newItem);
@@ -138,22 +145,28 @@ export default {
         }
       },
     
-    async deleteItem(listIndex, itemIndex) {
-      const listId = this.lists[listIndex]._id;
-      try {
-        const response = await axios.delete(`http://localhost:3000/deleteItemFromList/${listId}/${itemIndex}`);
-        if (response.status === 200) {
-          this.$store.commit('deleteItemFromList', { listId, itemIndex });
-          console.log('Item deleted successfully from list:', listId);
-        } else {
-          console.error('Failed to delete item on the server');
+      async deleteItem(listIndex, itemIndex) {
+        const list = this.lists[listIndex];
+        if (!list) {
+          console.error('List not found at index:', listIndex);
+          return;
         }
-      } catch (error) {
-        console.error('Error deleting item:', error);
-      }
-    },
+        const listId = list._id;
+        try {
+          const response = await axios.delete(`http://localhost:3000/deleteItemFromList/${listId}/${itemIndex}`);
+          if (response.status === 200) {
+            this.$store.commit('deleteItemFromList', { listId, itemIndex });
+            console.log('Item deleted successfully from list:', listId);
+          } else {
+            console.error('Failed to delete item on the server');
+          }
+        } catch (error) {
+          console.error('Error deleting item:', error);
+        }
+      },
+
   },
-  async mounted() {
+   mounted() {
     this.$store.dispatch('fetchLists');
   }
 };

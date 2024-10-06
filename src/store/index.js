@@ -45,7 +45,7 @@ export default createStore({
         state.Events.splice(eventIndex, 1); 
       }
     },
-    
+
     SET_LISTS(state, lists) {
       state.Lists = lists;
     },
@@ -62,6 +62,9 @@ export default createStore({
     addItemToList(state, { listId, item }) {
       const list = state.Lists.find(list => list._id === listId);
       if (list) {
+        if (!Array.isArray(list.items)) {
+        list.items = [];
+      }
         list.items.push(item);
       }
     },
