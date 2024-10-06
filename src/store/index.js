@@ -29,7 +29,7 @@ export default createStore({
       state.Events[eventIndex].done = true;
     }
   },
-  updateEvent(state, updatedEvent) {
+    updateEvent(state, updatedEvent) {
       const index = state.Events.findIndex(event => event._id === updatedEvent._id);
       if (index !== -1) {
         state.Events[index] = updatedEvent;
