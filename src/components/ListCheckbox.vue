@@ -13,10 +13,7 @@
     <v-container>
       <v-row dense>
         <v-col
-          v-for="(list, listIndex) in itemlists"
-          :key="listIndex"
-          cols="12" md="4" sm="6"
-        >
+          v-for="(list, listIndex) in lists" :key="list._id" cols="12" md="4" sm="6">
           <v-card class="column">
             <v-card-title class="d-flex align-center">
               <h3>{{ list.title }}</h3>
@@ -31,19 +28,19 @@
             <v-card-text>
               <v-list class="innerSquare">
                 <v-list-item
-                  v-for="(item, idx) in list.items"
-                  :key="idx"
+                  v-for="(item, itemIndex) in list.items"
+                  :key="itemIndex"
                   class="showItemlist">
 
                   <div style="width: 100%; display: flex; align-items: center;">
                     <v-checkbox
-                      v-model="item.done"
+                      v-model="list.items[itemIndex].done"
                       class="pe-2" >
                     </v-checkbox>
 
                     <v-list-item-title
                       class="itemtitle"
-                      :class="{ crossed: item.done }" >
+                      :class="{ crossed: list.items[itemIndex].done }" >
                       {{ item.title }}
                     </v-list-item-title>
 
@@ -69,53 +66,96 @@
 
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
-      itemlists: [
-        {
-          title: "To Do List",
-          items: [
-            {
-              title: "Buy groceries",
-              done: false,
-            },
-            {
-              title: "Finish project report",
-              done: false,
-            },
-          ],
-        },
-      ],
     };
   },
-  methods: {
-    // Add a new item to the specific list
-    addItem(listIndex) {
-      const newItem = prompt("Enter a new item:");
-      if (newItem) {
-        this.itemlists[listIndex].items.push({ title: newItem, done: false });
-      }
-    },
-    // Create a new list (adds a new empty list)
-    createNewList() {
-      const newListTitle = prompt("Enter the title of the new list:");
-      if (newListTitle) {
-        this.itemlists.push({
-          title: newListTitle,
-          items: [], // Start with an empty list of tasks
-        });
-      }
-    },
-    // Delete a specific item from a list
-    deleteItem(listIndex, itemIndex) {
-      this.itemlists[listIndex].items.splice(itemIndex, 1);
-    },
-    // Delete an entire list
-    deleteList(listIndex) {
-      this.itemlists.splice(listIndex, 1);
+
+  computed: {
+    lists() {
+      return this.$store.state.Lists;
+    }
+  },
+
+  watch: {
+    lists: {
+      handler() {
+        console.log('Lists updated:', this.lists);
+      },
+      deep: true,
+      immediate: true,
     },
   },
+
+  // created() {
+  //   this.fetchLists();
+  // },
+
+  methods: {
+    async createNewList() {
+      const newListTitle = prompt("Enter the title of the new list:");
+      if (newListTitle) {
+        const newList = { title: newListTitle, items: [] };
+        await this.$store.dispatch('createList', newList);
+      }
+    },
+   async deleteList(listIndex) {
+      const listId = this.lists[listIndex]._id;
+      try {
+        const response = await axios.delete(`http://localhost:3000/deleteList/${listId}`);
+        if (response.status === 200) {
+          this.$store.commit('deleteList', listId);
+          console.log('List deleted successfully:', listId);
+        } else {
+          console.error('Failed to delete list on the server');
+        }
+      } catch (error) {
+        console.error('Error deleting list:', error);
+      }
+    },
+
+    async addItem(listIndex) {
+        const newItemTitle = prompt("Enter a new item:");
+        if (newItemTitle) {
+          const listId = this.lists[listIndex]._id;
+          const newItem = { title: newItemTitle };
+          try {
+
+            const response = await axios.post(`http://localhost:3000/addItemToList/${listId}`, newItem);
+            if (response.status === 200) {
+              const addedItem = response.data.newItem; 
+              this.$store.commit('addItemToList', { listId, item: addedItem });
+              console.log('Item added successfully:', newItem);
+            } else {
+              console.error('Failed to add item on the server');
+            }
+          } catch (error) {
+            console.error('Error adding item:', error);
+          }
+        }
+      },
+    
+    async deleteItem(listIndex, itemIndex) {
+      const listId = this.lists[listIndex]._id;
+      try {
+        const response = await axios.delete(`http://localhost:3000/deleteItemFromList/${listId}/${itemIndex}`);
+        if (response.status === 200) {
+          this.$store.commit('deleteItemFromList', { listId, itemIndex });
+          console.log('Item deleted successfully from list:', listId);
+        } else {
+          console.error('Failed to delete item on the server');
+        }
+      } catch (error) {
+        console.error('Error deleting item:', error);
+      }
+    },
+  },
+  async mounted() {
+    this.$store.dispatch('fetchLists');
+  }
 };
 </script>
 
