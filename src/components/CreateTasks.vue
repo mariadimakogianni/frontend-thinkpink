@@ -196,7 +196,7 @@
           });
           mydata.timestamp = new Date();
           console.log(JSON.stringify(mydata));
-          const headers = { 'Content-Type': 'application/json' };
+          const headers = this.auth.headers;
           var response = await axios.post( 'http://localhost:3000/createEvent', mydata, { headers } );
           console.log(response);
         } catch (error) {

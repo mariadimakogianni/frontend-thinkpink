@@ -12,9 +12,9 @@ import axios from 'axios';
 import Keycloak from 'keycloak-js';
 
 const keycloak = new Keycloak({
-  url: 'http://localhost:8081', // Keycloak URL
-  realm: 'ThinkPink',                // Replace with your realm name
-  clientId: 'thesis-thinkpink'          // Replace with your client ID
+  url: 'http://localhost:8081',
+  realm: 'ThinkPink',               
+  clientId: 'thesis-thinkpink'          
 });
 
 // Add all solid icons to the library
@@ -44,8 +44,13 @@ keycloak.init({
         refreshToken: keycloak.refreshToken,
         username: keycloak.tokenParsed.preferred_username,
         userId: keycloak.tokenParsed.sub,
-        roles: keycloak.tokenParsed.realm_access.roles
+        roles: keycloak.tokenParsed.realm_access.roles,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${keycloak.token}`
+          }
       };
+      //store.dispatch('initializeAuth', auth);
 
       // Create the app instance
       const app = createApp(App)
@@ -56,7 +61,7 @@ keycloak.init({
 
       // app.config.globalProperties.$api = api
 
-      console.log(auth);
+      console.log("AuthObj",auth);
 
 // Create an Axios instance
 const api = axios.create({
@@ -90,3 +95,6 @@ api.interceptors.request.use(
 }).catch((error) => {
   console.error('Failed to initialize Keycloak', error);
 });
+
+//const headers = this.auth.headers;
+//, { headers }

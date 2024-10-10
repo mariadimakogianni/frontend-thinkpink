@@ -333,7 +333,8 @@ export default {
         const eventId = task._id;
 
         try {
-          const response = await axios.put(`http://localhost:3000/doneEvent/${eventId}`);
+          const headers = this.auth.headers;
+          const response = await axios.put(`http://localhost:3000/doneEvent/${eventId}`, { headers });
           if (response.status === 200) {
             console.log('Event marked as done:', response.data);
           } else {
@@ -348,7 +349,8 @@ export default {
 
     async delTask(event) {
       try {
-        const response = await axios.delete(`http://localhost:3000/deleteEvent/${event._id}`);
+        const headers = this.auth.headers;
+        const response = await axios.delete(`http://localhost:3000/deleteEvent/${event._id}`, { headers });
         if (response.status === 200) {
           console.log('Task deleted:', response.data);
         } else {
@@ -372,7 +374,8 @@ export default {
       delete updatedEvent.showDatePicker;
 
       try {
-        const response = await axios.patch(`http://localhost:3000/editEvent/${eventId}`, updatedEvent);
+        const headers = this.auth.headers;
+        const response = await axios.patch(`http://localhost:3000/editEvent/${eventId}`, updatedEvent, { headers });
 
         if (response.status === 200) {
            this.$store.commit('updateEvent', response.data);

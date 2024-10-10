@@ -80,7 +80,8 @@ export default createStore({
     async fetchEvents({ commit }) {
       try {
        // const response = await this.$api.get('/getEvents');
-        const response = await axios.get('http://localhost:3000/getEvents');
+        const headers = this.auth.headers;
+        const response = await axios.get('http://localhost:3000/getEvents', { headers });
         console.log(response);
         commit('SET_EVENTS', response.data); 
       } catch (error) {
@@ -89,7 +90,8 @@ export default createStore({
     },
     async fetchLists({ commit }) {
       try {
-        const response = await axios.get('http://localhost:3000/getLists');
+        const headers = this.auth.headers;
+        const response = await axios.get('http://localhost:3000/getLists', { headers });
         console.log('fetchLists response:', response);
         commit('SET_LISTS', response.data);
       } catch (error) {
@@ -98,7 +100,8 @@ export default createStore({
     },
      async createList({ commit }, newList) {
       try {
-        const response = await axios.post('http://localhost:3000/createList', newList);
+        const headers = this.auth.headers;
+        const response = await axios.post('http://localhost:3000/createList', newList, { headers });
         if (response.status === 201) {
           newList._id = response.data.listId;
           commit('addList', newList);
