@@ -179,7 +179,7 @@
                   <v-col cols="12">
                       <v-select
                       v-model="editedTask.frequency"
-                      :items="['Every Day','One Time','Sometime This Week', 'Sometime This Month','Every Week','Every Month','Every Year','Custom']"
+                      :items="['Every Day','One Time','Every Week','Every Month','Every Year','Custom']"
                       label="Frequency"
                       required
                       v-if="editedTask.type=='Tasks' || editedTask.type=='Dates & Events'"
@@ -301,6 +301,12 @@
   },
 
   methods: {
+    convertUTCtoLocalTime (date) {
+        let today = new Date();
+        let offset = today.getTimezoneOffset() * 60000; 
+        return new Date(date.getTime() - offset);
+      },
+
     onDatePickerChange() {
         setTimeout(() => {
           this.formattedDate = new Date(this.date).toLocaleDateString();
@@ -311,10 +317,8 @@
       },
 
     formatDate(date) {
-      //console.log("formatDate:",date)
-      //const parsedDate = new Date(date);
-      //console.log("parsedDate:",parsedDate)
       var t=new Date(date);  
+      t=this.convertUTCtoLocalTime(t);
       return t.toDateString();
     },
 
@@ -322,19 +326,27 @@
       this.todayView = []; 
       let today = new Date();
 
-      const convertUTCtoLocalTime = (date) => {
-         let offset = today.getTimezoneOffset() * 60000; 
-          return new Date(date.getTime() - offset);
-      };
-      
       const isSameDay = (date1, date2) => {
+        console.log("eventdate",date1);
+        console.log("today",date2);
         return date1.getUTCFullYear() === date2.getUTCFullYear() &&
                date1.getUTCMonth() === date2.getUTCMonth() &&
                date1.getUTCDate() === date2.getUTCDate();
       };
 
+      // Filter past task not done
+        this.events?.filter(e => 
+            e.type === "Tasks" && e.noShow &&
+            !e.done && 
+            new Date(e.date.getUTCDate()) < today.getUTCDate() // Check if e.date is before today
+        ).forEach(e => {
+            this.todayView.push(e);
+            console.log("Today:", today);
+            console.log("Task date:", e.date);
+        });
+
       // Filter Tasks for today by date
-      this.events?.filter(e => e.type === "Tasks" && !e.done && isSameDay(convertUTCtoLocalTime(new Date(e.date)), today))
+      this.events?.filter(e => e.type === "Tasks" && !e.done && isSameDay(this.convertUTCtoLocalTime(new Date(e.date)), today))
         .forEach(e => this.todayView.push(e));
 
       // Filter tasks with morning time
@@ -342,7 +354,7 @@
         .forEach(e => this.todayView.push(e));
 
       // Filter Dates & Events for today or all-day events
-      this.events?.filter(e => e.type === "Dates & Events" && isSameDay(convertUTCtoLocalTime(new Date(e.date)), today) && !e.done && !this.todayView.includes(e))
+      this.events?.filter(e => e.type === "Dates & Events" && isSameDay(this.convertUTCtoLocalTime(new Date(e.date)), today) && !e.done && !this.todayView.includes(e))
         .forEach(e => this.todayView.push(e));
 
       // Filter tasks with night time
@@ -352,29 +364,31 @@
     },
 
     filterthisweekView() {
-      this.thisweekView = [];
-      let today = new Date();
-      let dayOfWeek = today.getDay();
-      let monday = new Date(today);
-      monday.setDate(today.getDate() - ((dayOfWeek + 6) % 7));
-      let sunday = new Date(monday);
-      sunday.setDate(monday.getDate() + 6);
-      let startOfWeek = monday.toISOString().split('T')[0];
-      let endOfWeek = sunday.toISOString().split('T')[0];
+    this.thisweekView = [];
+    let today = new Date();
+    let dayOfWeek = today.getDay();
+    let monday = new Date(today);
+    monday.setDate(today.getDate() - ((dayOfWeek + 6) % 7)); 
+    let sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6); 
 
-      this.events?.forEach((item) => {
-        if ((item.type === "Tasks" || item.type === "Dates & Events") && !item.done ) {
-          if (item.date >= startOfWeek && item.date <= endOfWeek) {
-            this.thisweekView.push(item);
-            console.log("thisweek",this.thisweekView)
-          }
+    this.events?.forEach((item) => {
+        let itemDate = new Date(item.date);
+        
+        if ((item.type === "Tasks" || item.type === "Dates & Events") && !item.done) {
+            if (itemDate >= monday && itemDate <= sunday) {
+                this.thisweekView.push(item);
+            }
         }
-      });
-      this.thisweekView.sort((a, b) => {
-      return new Date(a.date) - new Date(b.date);
-      });
-      console.log("thisweek",this.thisweekView)
-    },
+    });
+
+    this.thisweekView.sort((a, b) => {
+        return new Date(a.date) - new Date(b.date);
+    });
+
+    console.log("thisweek", this.thisweekView);
+},
+
 
     filterthismonthView() {
       this.thismonthView = [];
@@ -386,7 +400,7 @@
           let eventDate = new Date(item.date);
           let eventMonth = eventDate.getMonth() + 1;
           let eventYear = eventDate.getFullYear();
-          if (eventMonth === currentMonth && eventYear === currentYear && !item.done) {
+          if (eventMonth === currentMonth && eventYear === currentYear && !item.done && (item.type === "Tasks" || item.type === "Dates & Events")) {
             this.thismonthView.push(item);
           }
         }
@@ -401,7 +415,7 @@
         const eventId = task._id;
 
         try {
-          const headers = this.auth.headers;
+          const headers = this.$store.getters.getAuth.headers;
           const response = await axios.put(`http://localhost:3000/doneEvent/${eventId}`, { headers });
           if (response.status === 200) {
             console.log('Event marked as done:', response.data);
@@ -417,7 +431,7 @@
 
       async delTask(event) {
       try {
-        const headers = this.auth.headers;
+        const headers = this.$store.getters.getAuth.headers;
         const response = await axios.delete(`http://localhost:3000/deleteEvent/${event._id}`, { headers });
         if (response.status === 200) {
           console.log('Task deleted:', response.data);
@@ -442,7 +456,7 @@
     delete updatedEvent.showDatePicker;
 
     try {
-      const headers = this.auth.headers;
+      const headers = this.$store.getters.getAuth.headers;
       const response = await axios.patch(`http://localhost:3000/editEvent/${eventId}`, updatedEvent, { headers });
 
       if (response.status === 200) {
@@ -474,7 +488,7 @@
   },
 
   async mounted() {
-    this.$store.dispatch('fetchEvents');
+    this.$store.dispatch('fetchEvents',this.$auth);
 
   }
 };

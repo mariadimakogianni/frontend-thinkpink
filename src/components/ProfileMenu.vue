@@ -22,6 +22,7 @@
         :key="i"
         :value="item"
         color="primary"
+        @click="logOut"
       >
       <div>
         <a v-text="item.text" class="pr-2"></a>
@@ -40,12 +41,21 @@ export default {
   name: 'ProfileMenu',
   data: () => ({
     menu: false,
-    items:{login:{text:'Login',icon:"mdi-login"}},
+    items:{login:{text:'Logout',icon:"mdi-login"}},
   }),
   methods: {
     doSomething(action) {
       console.log(`Doing something with ${action}`);
       // Your logic here
+    },
+    logOut(){
+      var idToken = this.$store.getters.getAuth.idToken;
+      var logoutUrl = 'http://localhost:8081/realms/ThinkPink/protocol/openid-connect/logout' +
+                      '?id_token_hint=' + idToken +
+                      '&post_logout_redirect_uri=http://localhost:8080';
+
+      window.location.href = logoutUrl;
+
     },
   },
 };

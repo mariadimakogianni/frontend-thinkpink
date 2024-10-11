@@ -165,7 +165,7 @@
                   <v-col cols="12">
                       <v-select
                       v-model="editedTask.frequency"
-                      :items="['Every Day','One Time','Sometime This Week', 'Sometime This Month','Every Week','Every Month','Every Year','Custom']"
+                      :items="['Every Day','One Time','Every Week','Every Month','Every Year','Custom']"
                       label="Frequency"
                       required
                       v-if="editedTask.type=='Tasks' || editedTask.type=='Dates & Events'"
@@ -321,7 +321,7 @@ export default {
 
     filterDone() {
       if (this.events) {
-        this.tasksDone = this.events.filter(event => event.done === true);
+        this.tasksDone = this.events.filter(event => event.done === true && !event.noShow );
         console.log(this.tasksDone);
       }
       this.tasksDone.sort((a, b) => {
@@ -333,7 +333,7 @@ export default {
         const eventId = task._id;
 
         try {
-          const headers = this.auth.headers;
+          const headers = this.$store.getters.getAuth.headers;
           const response = await axios.put(`http://localhost:3000/doneEvent/${eventId}`, { headers });
           if (response.status === 200) {
             console.log('Event marked as done:', response.data);
@@ -349,7 +349,7 @@ export default {
 
     async delTask(event) {
       try {
-        const headers = this.auth.headers;
+        const headers = this.$store.getters.getAuth.headers;
         const response = await axios.delete(`http://localhost:3000/deleteEvent/${event._id}`, { headers });
         if (response.status === 200) {
           console.log('Task deleted:', response.data);
@@ -374,7 +374,7 @@ export default {
       delete updatedEvent.showDatePicker;
 
       try {
-        const headers = this.auth.headers;
+        const headers = this.$store.getters.getAuth.headers;
         const response = await axios.patch(`http://localhost:3000/editEvent/${eventId}`, updatedEvent, { headers });
 
         if (response.status === 200) {
@@ -405,7 +405,7 @@ export default {
   },
 
   async mounted() {
-    this.$store.dispatch('fetchEvents');
+    this.$store.dispatch('fetchEvents',this.$auth);
   }
 };
 </script>

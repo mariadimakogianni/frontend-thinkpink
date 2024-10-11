@@ -105,7 +105,8 @@ export default {
    async deleteList(listIndex) {
       const listId = this.lists[listIndex]._id;
       try {
-        const response = await axios.delete(`http://localhost:3000/deleteList/${listId}`);
+        const headers = this.$store.getters.getAuth.headers;
+        const response = await axios.delete(`http://localhost:3000/deleteList/${listId}`, {headers});
         if (response.status === 200) {
           this.$store.commit('deleteList', listId);
           console.log('List deleted successfully:', listId);
@@ -130,8 +131,8 @@ export default {
             const newItem = { title: newItemTitle };
             //const newItem = { newItemTitle };
           try {
-
-            const response = await axios.post(`http://localhost:3000/addItemToList/${listId}`, newItem);
+            const headers = this.$store.getters.getAuth.headers;
+            const response = await axios.post(`http://localhost:3000/addItemToList/${listId}`, newItem, {headers});
             if (response.status === 200) {
               const addedItem = response.data.newItem; 
               this.$store.commit('addItemToList', { listId, item: addedItem });
@@ -153,7 +154,8 @@ export default {
         }
         const listId = list._id;
         try {
-          const response = await axios.delete(`http://localhost:3000/deleteItemFromList/${listId}/${itemIndex}`);
+          const headers = this.$store.getters.getAuth.headers;
+          const response = await axios.delete(`http://localhost:3000/deleteItemFromList/${listId}/${itemIndex}`, {headers});
           if (response.status === 200) {
             this.$store.commit('deleteItemFromList', { listId, itemIndex });
             console.log('Item deleted successfully from list:', listId);

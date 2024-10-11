@@ -30,7 +30,6 @@ export default {
   },
   
   async mounted() {
-    // Dispatch Vuex action to fetch events from the API
     this.$store.dispatch('fetchEvents');
   }
 };
