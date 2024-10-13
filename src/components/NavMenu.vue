@@ -13,7 +13,7 @@
         </v-list>
         <v-divider></v-divider>
 
-        <v-list nav>
+        <!-- <v-list nav>
 
           <v-list-item @click="this.$store.state.activeMenu='today'" value="today" >     <font-awesome-icon :icon="['fas', 'calendar-day']" size="lg" style="color: #b362bf;" /> &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;" >Today</a>
           </v-list-item>
@@ -49,7 +49,57 @@
           </v-list-item>
 
 
+        </v-list> -->
+          <v-list nav>
+        <v-list-item @click="navigateTo('today')" value="today">
+        <font-awesome-icon :icon="['fas', 'calendar-day']" size="lg" style="color: #b362bf;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;">Today</a>
+        </v-list-item>
+
+        <v-list-item @click="navigateTo('tasks')" value="tasks">
+        <font-awesome-icon :icon="['far', 'calendar-check']" size='lg' style="color: #b362bf;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;">Tasks</a>
+        </v-list-item>
+
+        <v-list-item @click="navigateTo('routine')" value="routine">
+        <font-awesome-icon :icon="['fas', 'mountain-sun']" size='lg' style="color: #b362bf;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;">Morning & Night Routine</a>
+        </v-list-item>
+
+        <div class="d-flex justify-center">
+        <v-btn
+        class="text-none text-subtitle-1 text-left"
+        color="#b362bf"
+        size="small"
+        variant="flat"
+        @click="navigateTo('createNewEvent')"
+        >
+        New
+        </v-btn>
+        </div>
+
+        <v-list-item @click="navigateTo('lists')" value="lists">
+        <font-awesome-icon :icon="['fas', 'list-check']" size="lg" style="color: #b362bf;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;">Lists</a>
+        </v-list-item>
+
+        <v-list-item @click="navigateTo('stprojects')" value="stprojects">
+        <font-awesome-icon :icon="['fas', 'bars-progress']" size="lg" style="color: #b362bf;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;">Projects</a>
+        </v-list-item>
+
+        <v-list-item @click="navigateTo('pomodoro')" value="pomodoro">
+        <font-awesome-icon :icon="['fas', 'school']" size="lg" style="color: #b362bf;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;">Pomodoro</a>
+        </v-list-item>
+
+        <v-list-item @click="navigateTo('spinningwheel')" value="spinningwheel">
+        <font-awesome-icon :icon="['fas', 'shuffle']" size="lg" style="color: #b362bf;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;">Spinning Wheel</a>
+        </v-list-item>
         </v-list>
+
+
       </v-navigation-drawer>
 
       <v-main style="height: 100vh"></v-main>
@@ -60,6 +110,14 @@
 <script>
 
   export default {
+
+     methods: {
+      navigateTo(menu) {
+        this.$store.state.activeMenu = menu;
+
+        this.$router.push({ name: menu });
+      }
+    },
   // ... Other component options ...
 
       data: () => ({

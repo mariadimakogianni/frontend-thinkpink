@@ -334,7 +334,7 @@ export default {
 
         try {
           const headers = this.$store.getters.getAuth.headers;
-          const response = await axios.put(`http://localhost:3000/doneEvent/${eventId}`, { headers });
+          const response = await axios.put(`http://localhost:3000/doneEvent/${eventId}`, {}, { headers });
           if (response.status === 200) {
             console.log('Event marked as done:', response.data);
           } else {

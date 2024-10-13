@@ -21,8 +21,8 @@ const keycloak = new Keycloak({
 // Activity and refresh settings
 let activityTimeout;
 let refreshInterval;
-const ACTIVITY_TIMEOUT = 30000; // 30 seconds of inactivity
-const REFRESH_INTERVAL = 15000; // 15 seconds refresh interval
+const ACTIVITY_TIMEOUT = 90000; 
+const REFRESH_INTERVAL = 20000; 
 
 // Add all solid and regular icons to the library
 library.add(fas, far);

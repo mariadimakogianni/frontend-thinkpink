@@ -125,7 +125,7 @@
                   <v-col cols="12">
                       <v-select
                       v-model="editedTask.frequency"
-                      :items="['Every Day','One Time','Sometime This Week', 'Sometime This Month','Every Week','Every Month','Every Year','Custom']"
+                      :items="['Every Day','One Time','Every Week','Every Month','Every Year','Custom']"
                       label="Frequency"
                       required
                       v-if="editedTask.type=='Tasks' || editedTask.type=='Dates & Events'"
@@ -398,15 +398,5 @@ export default {
         color: #ffffff !important;
       }
 
-
-    /* Calendar Customization */
-    @import '../../node_modules/qalendar/dist/style.css';
-
-    .custom-light-theme {
-      /* Override the styles to create a light theme */
-      background-color: #ffffff;
-      color: #000000;
-      /* Additional custom styles can be added here */
-    }
 </style>
 

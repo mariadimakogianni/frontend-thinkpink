@@ -79,7 +79,7 @@ export default {
 
    
 
-    .showTask1 {
+    .showTask3 {
       border: 1px solid #FF0000; 
       border-radius: 10px;
       margin: 10px auto;
@@ -105,7 +105,7 @@ export default {
       font-family: 'Helvetica Neue', Arial, sans-serif;
     }
 
-    .showTask3 {
+    .showTask1 {
       border: 1px solid #008000; 
       border-radius: 10px;
       margin: 10px auto;
@@ -155,26 +155,26 @@ export default {
     .editIcon {
       margin-left: auto; 
       margin-top: 8px;
-      color: #b362bf;
+      color: #b362bf !important ; 
       cursor: pointer;
     }
 
     .delIcon {
       margin-left: 5px;
       margin-top: 8px;
-      color: #e53935;
+      color: #e53935 !important ;
       cursor: pointer;
     }
 
     .doneIcon {
       margin-top: 8px;
-      color: #43a047; 
+      color: #43a047 !important ; 
       cursor: pointer;
     }
 
     .newbutton {
       background-color: #b362bf; /* Primary purple color */
-      color: #fff;
+      color: #fff !important ;
       font-size: 16px;
       text-align: center;
       text-transform: none;
@@ -196,7 +196,7 @@ export default {
       margin: 10px;
       float: right;
       background-color: #944ba0; 
-      color: #fff;
+      color: #fff !important ;
       font-size: 14px;
       padding: 8px 16px;
       border: none;
@@ -207,16 +207,6 @@ export default {
     .itembutton:hover {
       background-color: #b362bf;
     }
-
-    /* Calendar Customization */
-    @import '../../node_modules/qalendar/dist/style.css';
-
-    .custom-light-theme {
-      
-      background-color: #ffffff;
-      color: #000000;
-    }
-
 
 
 </style>

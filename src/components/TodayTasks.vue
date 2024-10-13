@@ -336,7 +336,8 @@
 
       // Filter past task not done
         this.events?.filter(e => 
-            e.type === "Tasks" && e.noShow &&
+            e.noShow &&
+            e.type === "Tasks" && 
             !e.done && 
             new Date(e.date.getUTCDate()) < today.getUTCDate() // Check if e.date is before today
         ).forEach(e => {
@@ -416,7 +417,7 @@
 
         try {
           const headers = this.$store.getters.getAuth.headers;
-          const response = await axios.put(`http://localhost:3000/doneEvent/${eventId}`, { headers });
+          const response = await axios.put(`http://localhost:3000/doneEvent/${eventId}`, {} ,{ headers });
           if (response.status === 200) {
             console.log('Event marked as done:', response.data);
           } else {
