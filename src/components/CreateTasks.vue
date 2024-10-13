@@ -227,7 +227,7 @@ async create() {
   
 
   .form-container {
-    background-color: #ffffff; /* White background */
+    background-color: #ffffff; 
     border-radius: 15px;
     padding: 30px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
@@ -281,7 +281,7 @@ async create() {
   }
 
 
-  .form-button {
+  .v-btn.form-button {
     background-color: #b362bf !important; 
     color: #ffffff !important;
     font-size: 16px;
@@ -290,7 +290,7 @@ async create() {
     border-radius: 8px;
   }
 
-  .form-button:hover {
+  .v-btn.form-button:hover {
     background-color: #944ba0 !important;
   }
 

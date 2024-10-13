@@ -1,7 +1,7 @@
 <template>
   <TodayTasks  v-if='this.$store.state.activeMenu=="today"'/>
   <ViewTasks  v-if='this.$store.state.activeMenu=="tasks"'/>
-  <CreateTasks  v-if='this.$store.state.activeMenu=="createNewEvent"'/>
+  <CreateTasks  v-if='this.$store.state.activeMenu=="createNewTask"'/>
   <MoRoutine v-if='this.$store.state.activeMenu=="routine"'/>
   <ListCheckbox v-if='this.$store.state.activeMenu=="lists"'/>
   <PomodoroTec v-if='this.$store.state.activeMenu=="pomodoro"'/>
@@ -132,6 +132,16 @@ export default {
       font-family: 'Helvetica Neue', Arial, sans-serif;
       color: #b362bf;
       font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .title2 {
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      color: #b362bf;
+      font-size: 20px;
       margin-bottom: 20px;
     }
 

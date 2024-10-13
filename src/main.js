@@ -47,6 +47,9 @@ keycloak.init({
         refreshToken: keycloak.refreshToken,
         username: keycloak.tokenParsed.preferred_username,
         userId: keycloak.tokenParsed.sub,
+        firstName: keycloak.tokenParsed.given_name,  
+        lastName: keycloak.tokenParsed.family_name,  
+        email: keycloak.tokenParsed.email,         
         headers: {
           'Content-Type': 'application/json',
           'Authorization': "Bearer " + keycloak.token,

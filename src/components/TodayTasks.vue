@@ -4,8 +4,156 @@
 <v-container>
     <v-row>
       <!-- TODAY -->
-      <v-col cols="12" md="6" v-if="todayView.length">
-        <v-card class="column">
+      <v-col cols="12" md="6" >
+      <!-- Past Tasks that are NOT Done -->
+      <v-card class="column">
+          <v-card-title>
+            <h3>Today</h3>
+          </v-card-title>
+           <v-card-text>
+            <v-list class="innerSquare">
+              <v-text class="title2">Past Tasks that are NOT Done</v-text> 
+              <v-list-item v-for="task in pastTasks" :key="task._id" 
+                :class="{ 
+                  showTask1: task.importance === '1' && task.type !== 'Routine', 
+                  showTask2: task.importance === '2' && task.type !== 'Routine', 
+                  showTask3: task.importance === '3' && task.type !== 'Routine', 
+                  showTask: task.type === 'Routine', }">
+                <v-list-item-content class="textForTask">
+                  <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
+                  <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
+                  <template v-if="task.todayTime !== 'morning' && task.todayTime !== 'night'">
+                    <v-list-item-subtitle class="textForTask"> Date: {{ formatDate(task.date) }} </v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
+                    </v-list-item-subtitle>
+                  </template>
+
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-icon class="doneIcon" @click="doneTask(task, 'todayView')">mdi-check</v-icon>
+                  <v-icon class="editIcon" @click="editTask(task, 'todayView')">mdi-pencil</v-icon>
+                  <v-icon class="delIcon" @click="delTask(task, 'todayView')">mdi-delete</v-icon>
+                </v-list-item-action>
+              </v-list-item>
+              <br>
+              <v-text class="title2">Tasks For Today</v-text> 
+              <v-list-item v-for="task in tasksForToday" :key="task._id" 
+                :class="{ 
+                  showTask1: task.importance === '1' && task.type !== 'Routine', 
+                  showTask2: task.importance === '2' && task.type !== 'Routine', 
+                  showTask3: task.importance === '3' && task.type !== 'Routine', 
+                  showTask: task.type === 'Routine', }">
+                <v-list-item-content class="textForTask">
+                  <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
+                  <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
+                  <template v-if="task.todayTime !== 'morning' && task.todayTime !== 'night'">
+                    <v-list-item-subtitle class="textForTask"> Date: {{ formatDate(task.date) }} </v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
+                    </v-list-item-subtitle>
+                  </template>
+
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-icon class="doneIcon" @click="doneTask(task, 'todayView')">mdi-check</v-icon>
+                  <v-icon class="editIcon" @click="editTask(task, 'todayView')">mdi-pencil</v-icon>
+                  <v-icon class="delIcon" @click="delTask(task, 'todayView')">mdi-delete</v-icon>
+                </v-list-item-action>
+              </v-list-item>
+              <br>
+              <v-text class="title2">Morning Routine</v-text> 
+              <v-list-item v-for="task in morningRoutine" :key="task._id" 
+                :class="{ 
+                  showTask1: task.importance === '1' && task.type !== 'Routine', 
+                  showTask2: task.importance === '2' && task.type !== 'Routine', 
+                  showTask3: task.importance === '3' && task.type !== 'Routine', 
+                  showTask: task.type === 'Routine', }">
+                <v-list-item-content class="textForTask">
+                  <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
+                  <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
+                  <template v-if="task.todayTime !== 'morning' && task.todayTime !== 'night'">
+                    <v-list-item-subtitle class="textForTask"> Date: {{ formatDate(task.date) }} </v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
+                    </v-list-item-subtitle>
+                  </template>
+
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-icon class="doneIcon" @click="doneTask(task, 'todayView')">mdi-check</v-icon>
+                  <v-icon class="editIcon" @click="editTask(task, 'todayView')">mdi-pencil</v-icon>
+                  <v-icon class="delIcon" @click="delTask(task, 'todayView')">mdi-delete</v-icon>
+                </v-list-item-action>
+              </v-list-item>
+              <br>
+              <v-text class="title2">Dates and Events</v-text> 
+              <br>
+              <v-list-item v-for="task in datesAndEvents" :key="task._id" 
+                :class="{ 
+                  showTask1: task.importance === '1' && task.type !== 'Routine', 
+                  showTask2: task.importance === '2' && task.type !== 'Routine', 
+                  showTask3: task.importance === '3' && task.type !== 'Routine', 
+                  showTask: task.type === 'Routine', }">
+                <v-list-item-content class="textForTask">
+                  <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
+                  <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
+                  <template v-if="task.todayTime !== 'morning' && task.todayTime !== 'night'">
+                    <v-list-item-subtitle class="textForTask"> Date: {{ formatDate(task.date) }} </v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
+                    </v-list-item-subtitle>
+                  </template>
+
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-icon class="doneIcon" @click="doneTask(task, 'todayView')">mdi-check</v-icon>
+                  <v-icon class="editIcon" @click="editTask(task, 'todayView')">mdi-pencil</v-icon>
+                  <v-icon class="delIcon" @click="delTask(task, 'todayView')">mdi-delete</v-icon>
+                </v-list-item-action>
+              </v-list-item>
+              <br>
+              <v-text class="title2">Night Routine</v-text> 
+              <v-list-item v-for="task in nightRoutine" :key="task._id" 
+                :class="{ 
+                  showTask1: task.importance === '1' && task.type !== 'Routine', 
+                  showTask2: task.importance === '2' && task.type !== 'Routine', 
+                  showTask3: task.importance === '3' && task.type !== 'Routine', 
+                  showTask: task.type === 'Routine', }">
+                <v-list-item-content class="textForTask">
+                  <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
+                  <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
+                  <template v-if="task.todayTime !== 'morning' && task.todayTime !== 'night'">
+                    <v-list-item-subtitle class="textForTask"> Date: {{ formatDate(task.date) }} </v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
+                    </v-list-item-subtitle>
+                  </template>
+
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-icon class="doneIcon" @click="doneTask(task, 'todayView')">mdi-check</v-icon>
+                  <v-icon class="editIcon" @click="editTask(task, 'todayView')">mdi-pencil</v-icon>
+                  <v-icon class="delIcon" @click="delTask(task, 'todayView')">mdi-delete</v-icon>
+                </v-list-item-action>
+              </v-list-item>
+
+            </v-list>
+          </v-card-text>
+
+      </v-card>
+<!--  <v-col cols="12" md="6" v-if="todayView.length">
+      <v-card class="column">
           <v-card-title>
             <h3>Today</h3>
           </v-card-title>
@@ -38,7 +186,8 @@
               </v-list-item>
             </v-list>
           </v-card-text>
-        </v-card>
+        </v-card> --> 
+
       </v-col>
 
       <!-- THIS WEEK -->
@@ -272,6 +421,11 @@
   data() {
     return {
       todayView: [],
+      pastTasks: [],
+      tasksForToday: [],
+      morningRoutine: [],
+      nightRoutine: [],
+      datesAndEvents: [],
       thisweekView: [],
       thismonthView: [],
       showDatePicker: false,
@@ -324,44 +478,61 @@
 
     filtertodayView() {
       this.todayView = []; 
+      this.pastTasks = [];
+      this.tasksForToday = [];
+      this.morningRoutine = [];
+      this.nightRoutine = [];
+      this.datesAndEvents = [];
       let today = new Date();
 
       const isSameDay = (date1, date2) => {
-        console.log("eventdate",date1);
-        console.log("today",date2);
         return date1.getUTCFullYear() === date2.getUTCFullYear() &&
                date1.getUTCMonth() === date2.getUTCMonth() &&
                date1.getUTCDate() === date2.getUTCDate();
       };
 
+      function stripTime(date) {
+          const d = new Date(date);
+          d.setHours(0, 0, 0, 0); 
+          return d;
+        }
+      const todayMidnight = stripTime(today);
+
       // Filter past task not done
         this.events?.filter(e => 
-            e.noShow &&
-            e.type === "Tasks" && 
-            !e.done && 
-            new Date(e.date.getUTCDate()) < today.getUTCDate() // Check if e.date is before today
-        ).forEach(e => {
-            this.todayView.push(e);
-            console.log("Today:", today);
+            //e.noShow &&
+            e.type === "Tasks" && !e.done &&  new Date(e.date.getUTCDate()) < todayMidnight.getUTCDate() // Check if e.date is before today
+            ).forEach(e => {
+            this.pastTasks.push(e);
+            console.log("Today:", todayMidnight);
             console.log("Task date:", e.date);
         });
+            this.pastTasks.sort((a, b) => {
+              return new Date(a.date) - new Date(b.date);
+          });
 
       // Filter Tasks for today by date
       this.events?.filter(e => e.type === "Tasks" && !e.done && isSameDay(this.convertUTCtoLocalTime(new Date(e.date)), today))
-        .forEach(e => this.todayView.push(e));
+        .forEach(e => this.tasksForToday.push(e));
+         this.tasksForToday.sort((a, b) => {
+              return new Date(a.date) - new Date(b.date);
+          });
 
       // Filter tasks with morning time
-      this.events?.filter(e => e.todayTime === "morning" && !e.done && !this.todayView.includes(e))
-        .forEach(e => this.todayView.push(e));
+      this.events?.filter(e => e.todayTime === "morning" && !e.done )
+        .forEach(e => this.morningRoutine.push(e));
 
       // Filter Dates & Events for today or all-day events
-      this.events?.filter(e => e.type === "Dates & Events" && isSameDay(this.convertUTCtoLocalTime(new Date(e.date)), today) && !e.done && !this.todayView.includes(e))
-        .forEach(e => this.todayView.push(e));
+      this.events?.filter(e => e.type === "Dates & Events" && isSameDay(this.convertUTCtoLocalTime(new Date(e.date)), today) && !e.done )
+        .forEach(e => this.datesAndEvents.push(e));
+        this.datesAndEvents.sort((a, b) => {
+              return new Date(a.date) - new Date(b.date);
+          });
 
       // Filter tasks with night time
-      this.events?.filter(e => e.todayTime === "night" && !e.done && !this.todayView.includes(e))
-        .forEach(e => this.todayView.push(e));
-        console.log("Today",this.todayView);
+      this.events?.filter(e => e.todayTime === "night" && !e.done )
+        .forEach(e => this.nightRoutine.push(e));
+        console.log("Today",this.nightRoutine);
     },
 
     filterthisweekView() {
