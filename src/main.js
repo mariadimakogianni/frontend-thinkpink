@@ -39,6 +39,7 @@ keycloak.init({
     
     if (keycloak.token) {
       console.log('Initial token obtained:', keycloak.token);
+      console.log("assignedUser", keycloak.assigned_user_name);
 
       // Create an auth object
       const auth = {
@@ -58,8 +59,10 @@ keycloak.init({
 
       keycloak.tokenParsed.is_caregiver &&  (auth.isCaregiver=keycloak.tokenParsed.is_caregiver);
       auth.isCaregiver && (auth.assignedUser=keycloak.tokenParsed.assigned_user);
+      auth.isCaregiver && (auth.assignedUserName = keycloak.tokenParsed.assigned_user_name);
 
-      console.log(auth);
+      console.log("auth",auth);
+      console.log("ass user name", auth.assignedUserName)
 
       // Create the app instance
       const app = createApp(App)

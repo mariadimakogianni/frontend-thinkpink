@@ -5,12 +5,19 @@
         <v-list>
           <v-list-item>
             <v-list-item-avatar>
-              <v-icon>mdi-account-circle</v-icon>
+              <v-icon style="color: #b362bf;" >mdi-account-circle</v-icon>
             </v-list-item-avatar>
 
             <v-list-item-content>
               <v-list-item-title>{{ firstName }} {{ lastName }}</v-list-item-title>
               <v-list-item-subtitle>{{ email }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-if="this.$store.getters.getAuth.isCaregiver" >
+
+            <v-list-item-content>
+              <v-list-item-title>You are Caregiver to this user</v-list-item-title>
+              <v-list-item-subtitle>{{ assigned_user }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -43,22 +50,26 @@
                   </v-btn>
               </div>
 
-              <v-list-item @click="navigateTo('lists')" value="lists">
+              <v-list-item v-if="!this.$store.getters.getAuth.isCaregiver"
+              @click="navigateTo('lists')" value="lists">
               <font-awesome-icon :icon="['fas', 'list-check']" size="lg" style="color: #b362bf;" />
               &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;">Lists</a>
               </v-list-item>
 
-              <v-list-item @click="navigateTo('stprojects')" value="stprojects">
+              <v-list-item v-if="!this.$store.getters.getAuth.isCaregiver"
+              @click="navigateTo('stprojects')" value="stprojects">
               <font-awesome-icon :icon="['fas', 'bars-progress']" size="lg" style="color: #b362bf;" />
               &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;">Projects</a>
               </v-list-item>
 
-              <v-list-item @click="navigateTo('pomodoro')" value="pomodoro">
+              <v-list-item v-if="!this.$store.getters.getAuth.isCaregiver"
+              @click="navigateTo('pomodoro')" value="pomodoro">
               <font-awesome-icon :icon="['fas', 'school']" size="lg" style="color: #b362bf;" />
               &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;">Pomodoro</a>
               </v-list-item>
 
-              <v-list-item @click="navigateTo('spinningwheel')" value="spinningwheel">
+              <v-list-item v-if="!this.$store.getters.getAuth.isCaregiver"
+              @click="navigateTo('spinningwheel')" value="spinningwheel">
               <font-awesome-icon :icon="['fas', 'shuffle']" size="lg" style="color: #b362bf;" />
               &nbsp;&nbsp;&nbsp;&nbsp;<a style="color: #b362bf;">Spinning Wheel</a>
               </v-list-item>
@@ -88,6 +99,7 @@
       firstName: this.$store.getters.getAuth.firstName,
       lastName: this.$store.getters.getAuth.lastName,
       email: this.$store.getters.getAuth.email,
+      assigned_user:this.$store.getters.getAuth.assignedUserName,
     };
   },
 };
