@@ -134,6 +134,13 @@ export default createStore({
       }
     },
 
+    updateProjectSharedWith(state, { projectId, sharedWith }) {
+      const project = state.Projects.find((project) => project._id === projectId);
+      if (project) {
+        project.sharedWith = sharedWith;
+      }
+    },
+
     setAuth(state, auth) {
       state.auth = auth;
     }

@@ -1,27 +1,25 @@
 <template>
-  <!--- <v-card> -->
     <v-layout>
       <v-navigation-drawer permanent>
         <v-list>
-          <v-list-item>
+          <v-list-item class="user-list-item">
             <v-list-item-avatar>
-              <v-icon style="color: #b362bf;" >mdi-account-circle</v-icon>
+              <v-icon class="user-icon">mdi-account-circle</v-icon>
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-title>{{ firstName }} {{ lastName }}</v-list-item-title>
-              <v-list-item-subtitle>{{ email }}</v-list-item-subtitle>
+              <v-list-item-title class="user-title">{{ firstName }} {{ lastName }}</v-list-item-title>
+              <v-list-item-subtitle class="user-subtitle">{{ email }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-if="this.$store.getters.getAuth.isCaregiver" >
 
+          <v-list-item v-if="this.$store.getters.getAuth.isCaregiver">
             <v-list-item-content>
-              <v-list-item-title>You are Caregiver to this user</v-list-item-title>
-              <v-list-item-subtitle>{{ assigned_user }}</v-list-item-subtitle>
+              <v-list-item-subtitle class="caregiver-title">You are Caregiver to this user</v-list-item-subtitle>
+              <v-list-item-title class="caregiver-subtitle">{{ assigned_user }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
-
         <v-divider></v-divider>
 
           <v-list nav>
@@ -104,3 +102,40 @@
   },
 };
   </script>
+
+
+
+<style scoped>
+
+.user-icon {
+  color: #b362bf;
+  font-size: 30px;
+}
+
+.user-list-item {
+  padding: 10px;
+}
+
+.user-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.user-subtitle {
+  font-size: 14px;
+  color: #4C4C4C;
+}
+
+.caregiver-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4C4C4C;
+}
+
+.caregiver-subtitle {
+  font-weight: bold;
+  font-size: 16px;
+  color: #b362bf;
+}
+</style>

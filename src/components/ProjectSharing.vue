@@ -10,6 +10,30 @@
       </v-col>
     </v-row>
 
+  <v-dialog v-model="shareDialog" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">Share Project</span>
+        </v-card-title>
+        <v-card-text>
+          <v-list>
+            <v-list-item v-for="user in currentSharedWith" :key="user.email">
+              <v-list-item-content>
+                <v-list-item-title>{{ user.email }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+
+          <v-text-field label="Add user by email" v-model="newShareEmail"></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" @click="shareProjectWithEmail">Add User</v-btn>
+          <v-btn @click="closeShareDialog">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
     <v-container>
       <v-row dense>
         <v-col
@@ -23,7 +47,7 @@
                 mdi-delete
               </v-icon>
 
-               <v-icon @click="shareProject(projectIndex)">mdi-share-variant</v-icon>
+               <v-icon @click="openShareDialog(projectIndex)">mdi-share-variant</v-icon>
 
             </v-card-title>
 
@@ -78,6 +102,10 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      shareDialog: false,
+      currentProjectIndex: null,
+      newShareEmail: '',
+      currentSharedWith: [], //shared users
     };
   },
 
@@ -99,6 +127,49 @@ export default {
 
 
   methods: {
+    openShareDialog(projectIndex) {
+      this.currentProjectIndex = projectIndex;
+      this.currentSharedWith = this.projects[projectIndex].sharedWith || [];
+      this.shareDialog = true;
+    },
+
+    closeShareDialog() {
+      this.shareDialog = false;
+      this.newShareEmail = '';
+    },
+
+    async shareProjectWithEmail() {
+      const projectId = this.projects[this.currentProjectIndex]._id;
+      const email = this.newShareEmail;
+
+      if (!email) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      try {
+        const headers = this.$store.getters.getAuth.headers;
+        const response = await axios.post(
+          `http://localhost:3000/shareProject/${projectId}`, 
+          { email },
+          { headers }
+        );
+
+
+        if (response.status === 200) {
+          this.currentSharedWith = response.data.sharedWith; // Update the shared users list
+          this.newShareEmail = ''; // Reset the input field
+
+          this.$store.commit('updateProjectSharedWith', { projectId, sharedWith: response.data.sharedWith });
+        } else {
+          alert('Failed to share the project.');
+        }
+      } catch (error) {
+        console.error('Error sharing project:', error);
+        alert('Error sharing project.');
+      }
+    },
+
     getCompletionPercentage(project) {
       if (!project.items.length) return 0;
       const completedTasks = project.items.filter(item => item.done).length;

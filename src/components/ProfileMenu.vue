@@ -97,10 +97,11 @@ export default {
         };
       const headers = this.$store.getters.getAuth.headers;
       const response = await axios.put('http://localhost:3000/updateUserProfile', updatedData, { headers });
-      console.log("edit responce", this.responce);
+      console.log("edit responce", this.response);
       if (response.status === 200) {
           console.log('Profile updated successfully');
           this.editProfileDialog = false;  // Close the dialog
+          window.location.reload()
         } else {
           console.error('Failed to update profile');
         }
