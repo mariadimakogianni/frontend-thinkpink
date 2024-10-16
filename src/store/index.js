@@ -8,6 +8,7 @@ export default createStore({
     careGiver: 0,
     Events: null,
     Lists: null,
+    Projects: null,
     auth: null, 
   },
   
@@ -17,6 +18,9 @@ export default createStore({
     },
     getLists(state) {
       return state.Lists;
+    },
+    getProjects(state) {
+      return state.Projects;
     },
     getAuth(state) {
       return state.auth;
@@ -48,6 +52,7 @@ export default createStore({
         state.Events.splice(eventIndex, 1);
       }
     },
+
     SET_LISTS(state, lists) {
       state.Lists = lists;
     },
@@ -78,6 +83,57 @@ export default createStore({
         list.items.splice(itemIndex, 1);
       }
     },
+
+    setItemDoneLists(state, { listId, itemId, done }) {
+      const list = state.Lists.find(list => list._id === listId);
+      if (list) {
+        const item = list.items.find(item => item._id === itemId);
+        if (item) {
+          item.done = done;
+        }
+      }
+    },
+
+    SET_PROJECTS(state, projects) {
+      state.Projects = projects;
+    },
+    addProject(state, project) {
+      if (!Array.isArray(state.Projects)) {
+        state.Projects = [];
+      }
+      state.Projects.push(project);
+    },
+    deleteProject(state, projectId) {
+      const index = state.Projects.findIndex(project => project._id === projectId);
+      if (index !== -1) {
+        state.Projects.splice(index, 1);
+      }
+    },
+    addItemToProject(state, { projectId, item }) {
+      const project = state.Projects.find(project => project._id === projectId);
+      if (project) {
+        if (!Array.isArray(project.items)) {
+          project.items = [];
+        }
+        project.items.push(item);
+      }
+    },
+    setItemDoneProjects(state, { projectId, itemId, done }) {
+      const project = state.Projects.find(project => project._id === projectId);
+      if (project) {
+        const item = project.items.find(item => item._id === itemId);
+        if (item) {
+          item.done = done;
+        }
+      }
+    },
+    deleteItemFromProject(state, { projectId, itemIndex }) {
+      const project = state.Projects.find(project => project._id === projectId);
+      if (project && itemIndex >= 0 && itemIndex < project.items.length) {
+        project.items.splice(itemIndex, 1);
+      }
+    },
+
     setAuth(state, auth) {
       state.auth = auth;
     }
@@ -109,6 +165,20 @@ export default createStore({
         console.error('Error fetching lists:', error);
       }
     },
+
+    async fetchProjects({ state, commit }) {
+      try {
+        if (!state.auth || !state.auth.headers) {
+          throw new Error('Auth headers are not available');
+        }
+        const headers = state.auth.headers;
+        const response = await axios.get('http://localhost:3000/getProjects', { headers });
+        commit('SET_PROJECTS', response.data);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
+    },
+
     async createList({ state, commit }, newList) {
       try {
         if (!state.auth || !state.auth.headers) {
@@ -125,7 +195,26 @@ export default createStore({
       } catch (error) {
         console.error('Error creating list:', error);
       }
-    }
+    },
+
+      async createProject({ state, commit }, newProject) {
+      try {
+        if (!state.auth || !state.auth.headers) {
+          throw new Error('Auth headers are not available');
+        }
+        const headers = state.auth.headers;
+        const response = await axios.post('http://localhost:3000/createProject', newProject, { headers });
+        if (response.status === 201) {
+          newProject._id = response.data.projectId;
+          commit('addProject', newProject);
+        } else {
+          console.error('Failed to create Project on the server');
+        }
+      } catch (error) {
+        console.error('Error creating Project:', error);
+      }
+    },
+
   },
 
   modules: {

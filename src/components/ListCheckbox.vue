@@ -35,7 +35,8 @@
                   <div style="width: 100%; display: flex; align-items: center;">
                     <v-checkbox
                       v-model="list.items[itemIndex].done"
-                      class="pe-2" >
+                      class="pe-2" 
+                      @change="itemDone(listIndex, itemIndex)">
                     </v-checkbox>
 
                     <v-list-item-title
@@ -145,7 +146,27 @@ export default {
           }
         }
       },
-    
+
+      async itemDone(listIndex, itemIndex) {
+        console.log('Checkbox clicked, toggling item done status'); 
+          const list = this.lists[listIndex];
+          const item = list.items[itemIndex];
+          const listId = list._id;
+
+          try {
+            const headers = this.$store.getters.getAuth.headers;
+            const response = await axios.patch(`http://localhost:3000/updateItemDoneLists/${listId}/${item._id}`, { done: item.done }, { headers });
+
+            if (response.status === 200) {
+              this.$store.commit('setItemDoneLists', { listId, itemId: item._id, done: item.done });
+            } else {
+              console.error('Failed to update item status on the server');
+            }
+          } catch (error) {
+            console.error('Error updating item status:', error);
+          }
+        },
+
       async deleteItem(listIndex, itemIndex) {
         const list = this.lists[listIndex];
         if (!list) {
