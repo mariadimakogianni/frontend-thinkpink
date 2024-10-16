@@ -192,6 +192,7 @@ export default createStore({
           throw new Error('Auth headers are not available');
         }
         const headers = state.auth.headers;
+
         const response = await axios.post('http://localhost:3000/createList', newList, { headers });
         if (response.status === 201) {
           newList._id = response.data.listId;
@@ -210,6 +211,13 @@ export default createStore({
           throw new Error('Auth headers are not available');
         }
         const headers = state.auth.headers;
+
+        const userId = state.auth.userId; 
+        const userEmail = state.auth.email;
+        
+        newProject.ownerId = userId;
+        newProject.ownerEmail = userEmail;
+
         const response = await axios.post('http://localhost:3000/createProject', newProject, { headers });
         if (response.status === 201) {
           newProject._id = response.data.projectId;

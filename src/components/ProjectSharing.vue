@@ -11,24 +11,32 @@
     </v-row>
 
   <v-dialog v-model="shareDialog" max-width="500px">
-      <v-card>
-        <v-card-title>
+      <v-card class="share-dialog-card">
+        <v-card-title class="share-dialog-title">
           <span class="text-h5">Share Project</span>
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="share-dialog-text">
           <v-list>
-            <v-list-item v-for="user in currentSharedWith" :key="user.email">
+            <v-list-item class="owner-list-item">
               <v-list-item-content>
-                <v-list-item-title>{{ user.email }}</v-list-item-title>
+                <v-list-item-title>
+                  <strong>Owner:</strong> {{ projectOwnerEmail }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item v-for="user in currentSharedWith" :key="user.email" class="shared-list-item">
+              <v-list-item-content>
+                <v-list-item-title><strong>Shared With:</strong> {{ user.email }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
 
-          <v-text-field label="Add user by email" v-model="newShareEmail"></v-text-field>
+          <v-text-field label="Add user by email" v-model="newShareEmail" ></v-text-field>
         </v-card-text>
-        <v-card-actions>
-          <v-btn color="primary" @click="shareProjectWithEmail">Add User</v-btn>
-          <v-btn @click="closeShareDialog">Close</v-btn>
+        <v-card-actions class="share-dialog-actions">
+          <v-btn @click="shareProjectWithEmail" class="share-dialog-btn">Add User</v-btn>
+          <v-btn @click="closeShareDialog" class="share-dialog-btn">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -106,6 +114,7 @@ export default {
       currentProjectIndex: null,
       newShareEmail: '',
       currentSharedWith: [], //shared users
+      projectOwnerEmail: '', // Owner email
     };
   },
 
@@ -130,6 +139,7 @@ export default {
     openShareDialog(projectIndex) {
       this.currentProjectIndex = projectIndex;
       this.currentSharedWith = this.projects[projectIndex].sharedWith || [];
+      this.projectOwnerEmail = this.projects[projectIndex].ownerEmail;
       this.shareDialog = true;
     },
 
@@ -332,5 +342,50 @@ export default {
   padding: 8px;
 }
 
+/*  Share Dialog  */
+
+.share-dialog-card {
+  background-color: #b362bf; 
+  color: #ffe3ec; 
+}
+
+.share-dialog-title {
+  background-color: #ffe3ec; 
+  color: #b362bf; 
+  padding: 10px;
+}
+
+.share-dialog-text {
+  padding: 10px;
+  color: #fff; 
+}
+
+.owner-list-item, .shared-list-item {
+  background-color: #f3e5f5; 
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.share-dialog-actions {
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+} 
+ 
+.share-dialog-btn {
+  background-color: #ffe3ec;
+  color: #b362bf;
+  margin-right: 8px;
+}
+
+.share-dialog-btn:hover {
+  background-color: #f9f3ff;
+}
+
 
 </style>
+
+
+
+
