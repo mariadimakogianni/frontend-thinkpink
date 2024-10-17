@@ -16,12 +16,21 @@
       <v-card class="elegant-card text-center" min-width="150">
         <v-list density="compact">
 
+          <v-list-item @click="openCaregiverDialog">
+            <v-list-item-content>
+              <v-list-item-title>Become Caregiver</v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-icon>
+              <v-icon size="small">mdi-human-greeting-proximity</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+
           <v-list-item @click="openEditProfileDialog">
             <v-list-item-content>
               <v-list-item-title>Edit your Info</v-list-item-title>
             </v-list-item-content>
             <v-list-item-icon>
-              <v-icon size="x-small">mdi-account-edit</v-icon>
+              <v-icon size="small">mdi-account-edit</v-icon>
             </v-list-item-icon>
           </v-list-item>
 
@@ -30,7 +39,7 @@
               <v-list-item-title>Logout</v-list-item-title>
             </v-list-item-content>
             <v-list-item-icon>
-              <v-icon size="x-small">mdi-login</v-icon>
+              <v-icon size="small">mdi-login</v-icon>
             </v-list-item-icon>
           </v-list-item>
 
@@ -51,6 +60,24 @@
           </v-card-text>
         </v-card>
       </v-dialog>
+
+      <v-dialog v-model="caregiverDialog" max-width="500">
+      <v-card>
+        <v-card-title>Become Caregiver</v-card-title>
+        <v-card-text>
+          <v-form @submit.prevent="assignCaregiver">
+            <v-switch
+              v-model="caregiver.isCaregiver"
+              label="Are you a caregiver?"></v-switch>
+            <v-text-field
+              v-model="caregiver.userEmail"
+              label="User's Email"
+              required ></v-text-field>
+            <v-btn type="submit" color="primary">Assign</v-btn>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -66,6 +93,11 @@ export default {
       lastName: '',
       email: ''
     },
+    caregiverDialog: false,
+      caregiver: {
+        isCaregiver: false,
+        userEmail: "", 
+      },
   }),
   methods: {
     logOut(){
@@ -78,7 +110,46 @@ export default {
 
     },
 
+    openCaregiverDialog(){
+      this.caregiver = {
+          isCaregiver: this.$store.getters.getAuth.isCaregiver,
+          userEmail: this.$store.getters.getAuth.assignedUserName,
+        };
+      console.log("Assigned user email in dialog:", this.caregiver.userEmail); 
+      this.caregiverDialog = true;
+    },
+
+    async assignCaregiver() {
+          try {
+              console.log("Sending data to API:", {
+                isCaregiver: this.caregiver.isCaregiver,
+                userEmail: this.caregiver.userEmail,
+              }); 
+            
+            const headers = this.$store.getters.getAuth.headers;
+            const response = await axios.post(
+              "http://localhost:3000/assignCaregiver",
+              {
+                isCaregiver: this.caregiver.isCaregiver,
+                userEmail: this.caregiver.userEmail,
+              },
+              { headers }
+            );
+
+            if (response.status === 200) {
+              console.log("Caregiver assigned successfully");
+              this.caregiverDialog = false; 
+               window.location.reload()
+            } else {
+              console.error("Failed to assign caregiver");
+            }
+          } catch (error) {
+            console.error("Error assigning caregiver:", error);
+          }
+        },
+
     openEditProfileDialog() {
+
       //this.menu = false;
       this.profile = {
           firstName: this.$store.getters.getAuth.firstName,
