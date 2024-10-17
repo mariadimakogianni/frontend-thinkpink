@@ -144,7 +144,13 @@ export default {
           console.error("Failed to assign caregiver");
         }
       } catch (error) {
-        console.error("Error assigning caregiver:", error);
+        if (error.response && error.response.status === 400) {
+          console.error("The user is already a caregiver.");
+          alert("The selected user is already a caregiver. Please choose a different user.");
+        } else {
+          console.error("An error occurred:", error);
+          alert("An error occurred while assigning the caregiver.");
+        }
       }
     },
 

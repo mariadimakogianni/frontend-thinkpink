@@ -158,29 +158,6 @@ function stopTokenRefresh() {
 }
 
 // Function to refresh the token
-// function refreshToken() {
-//   keycloak.updateToken(30) // Refresh if token will expire in 30 seconds
-//     .then((refreshed) => {
-//       if (refreshed) {
-//         console.log('Token refreshed successfully:', keycloak.token);
-//         store.commit('setAuth', {
-//           ...store.state.auth,
-//           token: keycloak.token,
-//           refreshToken: keycloak.refreshToken,
-//           headers: {
-//               'Content-Type': 'application/json',
-//               'Authorization': "Bearer " + keycloak.token,
-//             },
-//         });
-//       } else {
-//         console.log('Token is still valid, no refresh needed');
-//       }
-//     })
-//     .catch(() => {
-//       console.error('Failed to refresh the token, logging out');
-//       keycloak.logout();
-//     });
-// }
 
 async function refreshToken() {
       try {

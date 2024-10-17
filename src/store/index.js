@@ -167,6 +167,10 @@ export default createStore({
             ...state.auth,
             token: keycloak.token,
             refreshToken: keycloak.refreshToken,
+            headers: {
+              ...state.auth.headers,
+              'Authorization': "Bearer " + keycloak.token,
+            },
           });
         } else {
           console.log('Token is still valid, no refresh needed');
