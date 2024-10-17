@@ -180,40 +180,42 @@
         this.formSelector = 1;
         this.formValid = false;
       },
-async create() {
-  if (!this.formValid) {
-    alert('Form is invalid');
-    return;
-  }
 
-  try {
-    var mydata = {};
-    Object.keys(this.$data).forEach((key) => {
-      if (key == 'formattedDate' || key == 'formSelector' || key == 'formValid' || key == 'showDatePicker') return;
-      if (this.$data[key] !== '' && this.$data[key] !== undefined) {
-        mydata[key] = this.$data[key];
-      }
-    });
-    mydata.timestamp = new Date();
-    console.log(JSON.stringify(mydata));
-    const headers = this.$store.getters.getAuth.headers;
-    var response = await axios.post('http://localhost:3000/createEvent', mydata, { headers });
-    //(response.status==401) && (()=>{alert("You have been logged out. Please login to continue.");window.reload();})
+      async create() {
+        if (!this.formValid) {
+          alert('Form is invalid');
+          return;
+        }
 
-    console.log(response);
-    // Check if the HTTP status code is 201
-    if (response.status == 201) {
-      alert('Task added!');
-    this.reset();
-    } else {
-      alert('Failed to create event. Please try again.');
-    }
-  } catch (error) {
-    console.error('An error occurred:', error);
-    alert('An error occurred while creating the event. Please try again later.');
-    this.reset();
-  }
-},
+        try {
+          var mydata = {};
+          Object.keys(this.$data).forEach((key) => {
+            if (key == 'formattedDate' || key == 'formSelector' || key == 'formValid' || key == 'showDatePicker') return;
+            if (this.$data[key] !== '' && this.$data[key] !== undefined) {
+              mydata[key] = this.$data[key];
+            }
+          });
+          mydata.timestamp = new Date();
+          console.log(JSON.stringify(mydata));
+          await this.$store.dispatch('refreshTokenIfNeeded');
+          const headers = this.$store.getters.getAuth.headers;
+          var response = await axios.post('http://localhost:3000/createEvent', mydata, { headers });
+          //(response.status==401) && (()=>{alert("You have been logged out. Please login to continue.");window.reload();})
+
+          console.log(response);
+          // Check if the HTTP status code is 201
+          if (response.status == 201) {
+            alert('Task added!');
+          this.reset();
+          } else {
+            alert('Failed to create event. Please try again.');
+          }
+        } catch (error) {
+          console.error('An error occurred:', error);
+          alert('An error occurred while creating the event. Please try again later.');
+          this.reset();
+        }
+      },
 
     },
     async mounted() {

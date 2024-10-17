@@ -158,6 +158,7 @@ export default {
       }
 
       try {
+        await this.$store.dispatch('refreshTokenIfNeeded');
         const headers = this.$store.getters.getAuth.headers;
         const response = await axios.post(
           `http://localhost:3000/shareProject/${projectId}`, 
@@ -198,6 +199,7 @@ export default {
    async deleteProject(projectIndex) {
       const projectId = this.projects[projectIndex]._id;
       try {
+        await this.$store.dispatch('refreshTokenIfNeeded');
         const headers = this.$store.getters.getAuth.headers;
         const response = await axios.delete(`http://localhost:3000/deleteProject/${projectId}`, {headers});
         if (response.status === 200) {
@@ -224,6 +226,7 @@ export default {
             const newItem = { title: newItemTitle };
             //const newItem = { newItemTitle };
           try {
+            await this.$store.dispatch('refreshTokenIfNeeded');
             const headers = this.$store.getters.getAuth.headers;
             const response = await axios.post(`http://localhost:3000/addItemToProject/${projectId}`, newItem, {headers});
             if (response.status === 200) {
@@ -246,6 +249,7 @@ export default {
           const projectId = project._id;
 
           try {
+            await this.$store.dispatch('refreshTokenIfNeeded');
             const headers = this.$store.getters.getAuth.headers;
             const response = await axios.patch(`http://localhost:3000/updateItemDoneProjects/${projectId}/${item._id}`, { done: item.done }, { headers });
 
@@ -267,6 +271,7 @@ export default {
         }
         const projectId = project._id;
         try {
+          await this.$store.dispatch('refreshTokenIfNeeded');
           const headers = this.$store.getters.getAuth.headers;
           const response = await axios.delete(`http://localhost:3000/deleteItemFromProject/${projectId}/${itemIndex}`, {headers});
           if (response.status === 200) {

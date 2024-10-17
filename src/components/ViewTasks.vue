@@ -296,7 +296,7 @@ export default {
       },
 
     formatDate(date) {
-      console.log("formatDate:",date)
+      //console.log("formatDate:",date)
       var t=new Date(date);  
       return t.toDateString();
     },
@@ -329,26 +329,28 @@ export default {
       });
     },
 
-      async doneTask(task) {
-        const eventId = task._id;
+    async doneTask(task) {
+      const eventId = task._id;
 
-        try {
-          const headers = this.$store.getters.getAuth.headers;
-          const response = await axios.put(`http://localhost:3000/doneEvent/${eventId}`, {}, { headers });
-          if (response.status === 200) {
-            console.log('Event marked as done:', response.data);
-          } else {
-            console.error('Failed to mark event as done:', response.data);
-          }
-        } catch (error) {
-          console.error('Error:', error.response ? error.response.data.message : error.message);
+      try {
+        await this.$store.dispatch('refreshTokenIfNeeded');
+        const headers = this.$store.getters.getAuth.headers;
+        const response = await axios.put(`http://localhost:3000/doneEvent/${eventId}`, {}, { headers });
+        if (response.status === 200) {
+          console.log('Event marked as done:', response.data);
+        } else {
+          console.error('Failed to mark event as done:', response.data);
         }
-        
-        this.$store.commit('setEventDone', eventId);
-      },
+      } catch (error) {
+        console.error('Error:', error.response ? error.response.data.message : error.message);
+      }
+      
+      this.$store.commit('setEventDone', eventId);
+    },
 
     async delTask(event) {
       try {
+        await this.$store.dispatch('refreshTokenIfNeeded');
         const headers = this.$store.getters.getAuth.headers;
         const response = await axios.delete(`http://localhost:3000/deleteEvent/${event._id}`, { headers });
         if (response.status === 200) {
@@ -374,6 +376,7 @@ export default {
       delete updatedEvent.showDatePicker;
 
       try {
+        await this.$store.dispatch('refreshTokenIfNeeded');
         const headers = this.$store.getters.getAuth.headers;
         const response = await axios.patch(`http://localhost:3000/editEvent/${eventId}`, updatedEvent, { headers });
 

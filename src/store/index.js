@@ -10,6 +10,7 @@ export default createStore({
     Lists: null,
     Projects: null,
     auth: null, 
+    keycloak: null,
   },
   
   getters: {
@@ -143,15 +144,45 @@ export default createStore({
 
     setAuth(state, auth) {
       state.auth = auth;
-    }
+    },
+    setKeycloak(state, keycloak) {
+      state.keycloak = keycloak;
+    },
   },
 
   actions: {
-    async fetchEvents({ state, commit }) {
+
+    async refreshTokenIfNeeded({ state, commit }) {
+      const keycloak = state.keycloak;
+      if (!keycloak) {
+        console.error('Keycloak is not initialized');
+        return;
+      }
+      try {
+        const refreshed = await keycloak.updateToken(30);
+        if (refreshed) {
+          console.log('Token was refreshed in refreshTokenIfNeeded action');
+
+          commit('setAuth', {
+            ...state.auth,
+            token: keycloak.token,
+            refreshToken: keycloak.refreshToken,
+          });
+        } else {
+          console.log('Token is still valid, no refresh needed');
+        }
+      } catch (error) {
+        console.error('Failed to refresh token', error);
+        await keycloak.logout();
+      }
+    },
+
+    async fetchEvents({ state, commit, dispatch }) {
       try {
         if (!state.auth || !state.auth.headers) {
           throw new Error('Auth headers are not available');
         }
+        await dispatch('refreshTokenIfNeeded');
         const headers = state.auth.headers;
         console.log(state.auth.headers);
         const response = await axios.get('http://localhost:3000/getEvents', { headers });
@@ -160,11 +191,12 @@ export default createStore({
         console.error('Error fetching events:', error);
       }
     },
-    async fetchLists({ state, commit }) {
+    async fetchLists({ state, commit, dispatch }) {
       try {
         if (!state.auth || !state.auth.headers) {
           throw new Error('Auth headers are not available');
         }
+        await dispatch('refreshTokenIfNeeded');
         const headers = state.auth.headers;
         const response = await axios.get('http://localhost:3000/getLists', { headers });
         commit('SET_LISTS', response.data);
@@ -173,11 +205,12 @@ export default createStore({
       }
     },
 
-    async fetchProjects({ state, commit }) {
+    async fetchProjects({ state, commit, dispatch }) {
       try {
         if (!state.auth || !state.auth.headers) {
           throw new Error('Auth headers are not available');
         }
+        await dispatch('refreshTokenIfNeeded');
         const headers = state.auth.headers;
         const response = await axios.get('http://localhost:3000/getProjects', { headers });
         commit('SET_PROJECTS', response.data);
@@ -186,11 +219,12 @@ export default createStore({
       }
     },
 
-    async createList({ state, commit }, newList) {
+    async createList({ state, commit, dispatch }, newList) {
       try {
         if (!state.auth || !state.auth.headers) {
           throw new Error('Auth headers are not available');
         }
+        await dispatch('refreshTokenIfNeeded');
         const headers = state.auth.headers;
 
         const response = await axios.post('http://localhost:3000/createList', newList, { headers });
@@ -205,11 +239,12 @@ export default createStore({
       }
     },
 
-      async createProject({ state, commit }, newProject) {
+      async createProject({ state, commit, dispatch }, newProject) {
       try {
         if (!state.auth || !state.auth.headers) {
           throw new Error('Auth headers are not available');
         }
+        await dispatch('refreshTokenIfNeeded');
         const headers = state.auth.headers;
 
         const userId = state.auth.userId; 
@@ -233,6 +268,6 @@ export default createStore({
   },
 
   modules: {
-    // If you have modules, add them here
+   
   }
 });

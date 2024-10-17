@@ -18,6 +18,8 @@ const keycloak = new Keycloak({
   clientId: 'thesis-thinkpink'
 });
 
+window.keycloak = keycloak; //keycloak instance globally available
+
 // Activity and refresh settings
 let activityTimeout;
 let refreshInterval;
@@ -59,10 +61,11 @@ keycloak.init({
 
       keycloak.tokenParsed.is_caregiver &&  (auth.isCaregiver=keycloak.tokenParsed.is_caregiver);
       auth.isCaregiver && (auth.assignedUser=keycloak.tokenParsed.assigned_user, auth.assignedUserName = keycloak.tokenParsed.assigned_user_name);
-      //auth.isCaregiver && (auth.assignedUserName = keycloak.tokenParsed.assigned_user_name);
 
       console.log("auth",auth);
       console.log("ass user name", auth.assignedUserName)
+
+      store.commit('setKeycloak', keycloak);
 
       // Create the app instance
       const app = createApp(App)
@@ -155,23 +158,51 @@ function stopTokenRefresh() {
 }
 
 // Function to refresh the token
-function refreshToken() {
-  keycloak.updateToken(30) // Refresh if token will expire in the next 30 seconds
-    .then((refreshed) => {
-      if (refreshed) {
-        console.log('Token refreshed successfully:', keycloak.token);
-        // Optionally update the global auth object if needed
-        store.commit('setAuth', {
-          ...store.state.auth,
-          token: keycloak.token,
-          refreshToken: keycloak.refreshToken,
-        });
-      } else {
-        console.log('Token is still valid, no refresh needed');
+// function refreshToken() {
+//   keycloak.updateToken(30) // Refresh if token will expire in 30 seconds
+//     .then((refreshed) => {
+//       if (refreshed) {
+//         console.log('Token refreshed successfully:', keycloak.token);
+//         store.commit('setAuth', {
+//           ...store.state.auth,
+//           token: keycloak.token,
+//           refreshToken: keycloak.refreshToken,
+//           headers: {
+//               'Content-Type': 'application/json',
+//               'Authorization': "Bearer " + keycloak.token,
+//             },
+//         });
+//       } else {
+//         console.log('Token is still valid, no refresh needed');
+//       }
+//     })
+//     .catch(() => {
+//       console.error('Failed to refresh the token, logging out');
+//       keycloak.logout();
+//     });
+// }
+
+async function refreshToken() {
+      try {
+        const refreshed =  await keycloak.updateToken(30);
+        if (refreshed) {
+          console.log('Token was refreshed in refreshToken action');
+          console.log('Token refreshed successfully:', keycloak.token);
+
+          store.commit('setAuth', {
+             ...store.state.auth,
+            token: keycloak.token,
+            refreshToken: keycloak.refreshToken,
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': "Bearer " + keycloak.token,
+            },
+          });
+        } else {
+          console.log('Token is still valid, no refresh needed');
+        }
+      } catch (error) {
+        console.error('Failed to refresh token', error);
+        keycloak.logout();
       }
-    })
-    .catch(() => {
-      console.error('Failed to refresh the token, logging out');
-      keycloak.logout();
-    });
-}
+  }

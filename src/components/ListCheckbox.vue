@@ -106,6 +106,7 @@ export default {
    async deleteList(listIndex) {
       const listId = this.lists[listIndex]._id;
       try {
+        await this.$store.dispatch('refreshTokenIfNeeded');
         const headers = this.$store.getters.getAuth.headers;
         const response = await axios.delete(`http://localhost:3000/deleteList/${listId}`, {headers});
         if (response.status === 200) {
@@ -132,6 +133,7 @@ export default {
             const newItem = { title: newItemTitle };
             //const newItem = { newItemTitle };
           try {
+            await this.$store.dispatch('refreshTokenIfNeeded');
             const headers = this.$store.getters.getAuth.headers;
             const response = await axios.post(`http://localhost:3000/addItemToList/${listId}`, newItem, {headers});
             if (response.status === 200) {
@@ -154,6 +156,7 @@ export default {
           const listId = list._id;
 
           try {
+            await this.$store.dispatch('refreshTokenIfNeeded');
             const headers = this.$store.getters.getAuth.headers;
             const response = await axios.patch(`http://localhost:3000/updateItemDoneLists/${listId}/${item._id}`, { done: item.done }, { headers });
 
@@ -175,6 +178,7 @@ export default {
         }
         const listId = list._id;
         try {
+          await this.$store.dispatch('refreshTokenIfNeeded');
           const headers = this.$store.getters.getAuth.headers;
           const response = await axios.delete(`http://localhost:3000/deleteItemFromList/${listId}/${itemIndex}`, {headers});
           if (response.status === 200) {

@@ -281,6 +281,7 @@ export default {
 
     async delTask(event) {
       try {
+        await this.$store.dispatch('refreshTokenIfNeeded');
         const headers = this.$store.getters.getAuth.headers;
         const response = await axios.delete(`http://localhost:3000/deleteEvent/${event._id}`, { headers });
         if (response.status === 200) {
@@ -307,6 +308,7 @@ export default {
     delete updatedEvent.showDatePicker;
 
     try {
+      await this.$store.dispatch('refreshTokenIfNeeded');
       const headers = this.$store.getters.getAuth.headers;
       const response = await axios.patch(`http://localhost:3000/editEvent/${eventId}`, updatedEvent, { headers });
 

@@ -120,33 +120,33 @@ export default {
     },
 
     async assignCaregiver() {
-          try {
-              console.log("Sending data to API:", {
-                isCaregiver: this.caregiver.isCaregiver,
-                userEmail: this.caregiver.userEmail,
-              }); 
-            
-            const headers = this.$store.getters.getAuth.headers;
-            const response = await axios.post(
-              "http://localhost:3000/assignCaregiver",
-              {
-                isCaregiver: this.caregiver.isCaregiver,
-                userEmail: this.caregiver.userEmail,
-              },
-              { headers }
-            );
+      try {
+          console.log("Sending data to API:", {
+            isCaregiver: this.caregiver.isCaregiver,
+            userEmail: this.caregiver.userEmail,
+          }); 
+        await this.$store.dispatch('refreshTokenIfNeeded');
+        const headers = this.$store.getters.getAuth.headers;
+        const response = await axios.post(
+          "http://localhost:3000/assignCaregiver",
+          {
+            isCaregiver: this.caregiver.isCaregiver,
+            userEmail: this.caregiver.userEmail,
+          },
+          { headers }
+        );
 
-            if (response.status === 200) {
-              console.log("Caregiver assigned successfully");
-              this.caregiverDialog = false; 
-               window.location.reload()
-            } else {
-              console.error("Failed to assign caregiver");
-            }
-          } catch (error) {
-            console.error("Error assigning caregiver:", error);
-          }
-        },
+        if (response.status === 200) {
+          console.log("Caregiver assigned successfully");
+          this.caregiverDialog = false; 
+           window.location.reload()
+        } else {
+          console.error("Failed to assign caregiver");
+        }
+      } catch (error) {
+        console.error("Error assigning caregiver:", error);
+      }
+    },
 
     openEditProfileDialog() {
 
@@ -166,6 +166,7 @@ export default {
           lastName: this.profile.lastName,
           email: this.profile.email,
         };
+      await this.$store.dispatch('refreshTokenIfNeeded');
       const headers = this.$store.getters.getAuth.headers;
       const response = await axios.put('http://localhost:3000/updateUserProfile', updatedData, { headers });
       console.log("edit responce", this.response);

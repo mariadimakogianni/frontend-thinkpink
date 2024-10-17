@@ -504,8 +504,8 @@
             e.type === "Tasks" && !e.done &&  new Date(e.date.getUTCDate()) < todayMidnight.getUTCDate() // Check if e.date is before today
             ).forEach(e => {
             this.pastTasks.push(e);
-            console.log("Today:", todayMidnight);
-            console.log("Task date:", e.date);
+            //console.log("Today:", todayMidnight);
+            //console.log("Task date:", e.date);
         });
             this.pastTasks.sort((a, b) => {
               return new Date(a.date) - new Date(b.date);
@@ -536,30 +536,30 @@
     },
 
     filterthisweekView() {
-    this.thisweekView = [];
-    let today = new Date();
-    let dayOfWeek = today.getDay();
-    let monday = new Date(today);
-    monday.setDate(today.getDate() - ((dayOfWeek + 6) % 7)); 
-    let sunday = new Date(monday);
-    sunday.setDate(monday.getDate() + 6); 
+      this.thisweekView = [];
+      let today = new Date();
+      let dayOfWeek = today.getDay();
+      let monday = new Date(today);
+      monday.setDate(today.getDate() - ((dayOfWeek + 6) % 7)); 
+      let sunday = new Date(monday);
+      sunday.setDate(monday.getDate() + 6); 
 
-    this.events?.forEach((item) => {
-        let itemDate = new Date(item.date);
-        
-        if ((item.type === "Tasks" || item.type === "Dates & Events") && !item.done) {
-            if (itemDate >= monday && itemDate <= sunday) {
-                this.thisweekView.push(item);
-            }
-        }
-    });
+      this.events?.forEach((item) => {
+          let itemDate = new Date(item.date);
+          
+          if ((item.type === "Tasks" || item.type === "Dates & Events") && !item.done) {
+              if (itemDate >= monday && itemDate <= sunday) {
+                  this.thisweekView.push(item);
+              }
+          }
+      });
 
-    this.thisweekView.sort((a, b) => {
-        return new Date(a.date) - new Date(b.date);
-    });
+      this.thisweekView.sort((a, b) => {
+          return new Date(a.date) - new Date(b.date);
+      });
 
-    console.log("thisweek", this.thisweekView);
-},
+      console.log("thisweek", this.thisweekView);
+    },
 
 
     filterthismonthView() {
@@ -587,6 +587,7 @@
         const eventId = task._id;
 
         try {
+          await this.$store.dispatch('refreshTokenIfNeeded');
           const headers = this.$store.getters.getAuth.headers;
           const response = await axios.put(`http://localhost:3000/doneEvent/${eventId}`, {} ,{ headers });
           if (response.status === 200) {
@@ -603,6 +604,7 @@
 
       async delTask(event) {
       try {
+        await this.$store.dispatch('refreshTokenIfNeeded');
         const headers = this.$store.getters.getAuth.headers;
         const response = await axios.delete(`http://localhost:3000/deleteEvent/${event._id}`, { headers });
         if (response.status === 200) {
@@ -617,34 +619,35 @@
     },
 
     async saveEdit() {
-    if (!this.editedTask || !this.editedTask._id) {
-      console.error('No task selected for editing.');
-      return;
-    }
-
-    const eventId = this.editedTask._id;
-    const updatedEvent = { ...this.editedTask };
-    delete updatedEvent.formValid;
-    delete updatedEvent.showDatePicker;
-
-    try {
-      const headers = this.$store.getters.getAuth.headers;
-      const response = await axios.patch(`http://localhost:3000/editEvent/${eventId}`, updatedEvent, { headers });
-
-      if (response.status === 200) {
-         this.$store.commit('updateEvent', response.data);
-        console.log('Event updated successfully:', response.data);
-        this.closeEdit();
-        // window.location.reload();
-        await this.$store.dispatch('fetchEvents');
-      } else {
-        console.error('Failed to update event:', response.data);
+      if (!this.editedTask || !this.editedTask._id) {
+        console.error('No task selected for editing.');
+        return;
       }
-    } catch (error) {
-      console.error('Error updating event:', error.response ? error.response.data.message : error.message);
-    }
-   
-  },
+
+      const eventId = this.editedTask._id;
+      const updatedEvent = { ...this.editedTask };
+      delete updatedEvent.formValid;
+      delete updatedEvent.showDatePicker;
+
+      try {
+        await this.$store.dispatch('refreshTokenIfNeeded');
+        const headers = this.$store.getters.getAuth.headers;
+        const response = await axios.patch(`http://localhost:3000/editEvent/${eventId}`, updatedEvent, { headers });
+
+        if (response.status === 200) {
+           this.$store.commit('updateEvent', response.data);
+          console.log('Event updated successfully:', response.data);
+          this.closeEdit();
+          // window.location.reload();
+          await this.$store.dispatch('fetchEvents');
+        } else {
+          console.error('Failed to update event:', response.data);
+        }
+      } catch (error) {
+        console.error('Error updating event:', error.response ? error.response.data.message : error.message);
+      }
+     
+    },
 
      editTask(task) {
       console.log(task.date);

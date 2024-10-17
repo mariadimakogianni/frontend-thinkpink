@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '@/store';
 
 import HomeView from '@/views/HomeView.vue';
 import TodayTasks from '@/components/TodayTasks.vue';
@@ -82,6 +83,27 @@ router.beforeEach((to, from, next) => {
 
   next()
 })
+
+router.beforeEach(async (to, from, next) => {
+  try {
+    await store.dispatch('refreshTokenIfNeeded');
+
+    const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+    const previousNearestWithMeta = from.matched.slice().reverse().find(r => r.meta && r.meta.title);
+
+    if (nearestWithTitle) {
+      document.title = nearestWithTitle.meta.title;
+    } else if (previousNearestWithMeta) {
+      document.title = previousNearestWithMeta.meta.title;
+    }
+
+    next();
+  } catch (error) {
+    console.error('Failed to refresh token:', error);
+    await store.state.keycloak.logout();
+    next(false); // cancel the navigation
+  }
+});
 
 
 export default router
