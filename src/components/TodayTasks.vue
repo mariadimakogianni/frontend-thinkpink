@@ -243,7 +243,7 @@
                       <v-text-field
                       v-model="editedTask.title"
                       label="Title"
-                      :rules="[v => !!v || 'Item is required']"
+                      :rules="[v => !!v || 'Title is required', v => v.length <= 50 || 'Title must be less than 50 characters']"
                       required
                       class="form-field"
                     ></v-text-field>
@@ -338,6 +338,7 @@
                    <!-- costum frequency -->
                   <v-col cols="12">
                     <v-text-field
+                    :rules="[v => !!v || 'Please specify a number', v => /^\d+$/.test(v) || 'Must be a number']"
                     v-if="editedTask.frequency=='Custom'"
                     v-model="editedTask.frequency2"
                     label="Every X Number of Days"

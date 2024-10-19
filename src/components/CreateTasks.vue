@@ -31,7 +31,7 @@
         label="Date & Due Date"
         v-if="type=='Tasks' ||  type=='Dates & Events'"
         @click="this.showDatePicker=1"
-        :rules="[v => !!v || 'Item is required']"
+        :rules="[v => !!v || 'Date is required']"
         required
         class="form-field"
       ></v-text-field>
@@ -94,6 +94,7 @@
 
       <v-text-field
         v-if="frequency=='Custom'"
+        :rules="[v => !!v || 'Please specify a number', v => /^\d+$/.test(v) || 'Must be a number']"
         v-model="frequency2"
         label="Every X Number of Days"
         required

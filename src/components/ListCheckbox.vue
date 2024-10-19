@@ -96,9 +96,14 @@ export default {
   // },
 
   methods: {
+
     async createNewList() {
       const newListTitle = prompt("Enter the title of the new list:");
       if (newListTitle) {
+        if (newListTitle.length > 30) {
+          alert("Title must be under 30 characters. Please try again.");
+          return; 
+        }
         const newList = { title: newListTitle, items: [] };
         await this.$store.dispatch('createList', newList);
       }
@@ -121,33 +126,37 @@ export default {
     },
 
     async addItem(listIndex) {
-        const newItemTitle = prompt("Enter a new item:");
-        if (newItemTitle) {
-          const list = this.lists[listIndex];
-           if (!list) {
-              console.error('List not found at index:', listIndex);
-              return;
-            }
-            const listId = list._id;
-            console.log('List ID:', listId); 
-            const newItem = { title: newItemTitle };
-            //const newItem = { newItemTitle };
-          try {
-            await this.$store.dispatch('refreshTokenIfNeeded');
-            const headers = this.$store.getters.getAuth.headers;
-            const response = await axios.post(`https://localhost:3000/addItemToList/${listId}`, newItem, {headers});
-            if (response.status === 200) {
-              const addedItem = response.data.newItem; 
-              this.$store.commit('addItemToList', { listId, item: addedItem });
-              console.log('Item added successfully:', newItem);
-            } else {
-              console.error('Failed to add item on the server');
-            }
-          } catch (error) {
-            console.error('Error adding item:', error);
-          }
+      const newItemTitle = prompt("Enter a new item:");
+      if (newItemTitle) {
+        if (newItemTitle.length > 35) {
+          alert("Item title must be under 35 characters. Please try again.");
+          return; 
         }
-      },
+        const list = this.lists[listIndex];
+        if (!list) {
+          console.error('List not found at index:', listIndex);
+          return;
+        }
+        const listId = list._id;
+        console.log('List ID:', listId); 
+        const newItem = { title: newItemTitle };
+        try {
+          await this.$store.dispatch('refreshTokenIfNeeded');
+          const headers = this.$store.getters.getAuth.headers;
+          const response = await axios.post(`https://localhost:3000/addItemToList/${listId}`, newItem, { headers });
+          if (response.status === 200) {
+            const addedItem = response.data.newItem; 
+            this.$store.commit('addItemToList', { listId, item: addedItem });
+            console.log('Item added successfully:', newItem);
+          } else {
+            console.error('Failed to add item on the server');
+          }
+        } catch (error) {
+          console.error('Error adding item:', error);
+        }
+      }
+    },
+
 
       async itemDone(listIndex, itemIndex) {
         console.log('Checkbox clicked, toggling item done status'); 

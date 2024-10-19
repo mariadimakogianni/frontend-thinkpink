@@ -54,7 +54,8 @@
             <v-form @submit.prevent="submitEditProfile">
               <v-text-field v-model="profile.firstName" label="First Name" required></v-text-field>
               <v-text-field v-model="profile.lastName" label="Last Name" required></v-text-field>
-              <v-text-field v-model="profile.email" label="Email" required></v-text-field>
+              <v-text-field :rules="[ v => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(v) || 'Invalid email address']" 
+                v-model="profile.email" label="Email" required></v-text-field>
               <v-btn type="submit" color="primary">Save</v-btn>
             </v-form>
           </v-card-text>
@@ -71,6 +72,7 @@
               label="Are you a caregiver?"></v-switch>
             <v-text-field
               v-model="caregiver.userEmail"
+              :rules="[ v => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(v) || 'Invalid email address']" 
               label="User's Email"
               required ></v-text-field>
             <v-btn type="submit" color="primary">Assign</v-btn>

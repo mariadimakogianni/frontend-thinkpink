@@ -188,9 +188,14 @@ export default {
       return Math.round((completedTasks / totalTasks) * 100);
     },
 
+
     async createNewProject() {
       const newProjectTitle = prompt("Enter the title of the new Project:");
       if (newProjectTitle) {
+        if (newProjectTitle.length > 30) {
+          alert("Project title must be under 30 characters. Please try again.");
+          return; 
+        }
         const newProject = { title: newProjectTitle, items: [] };
         await this.$store.dispatch('createProject', newProject);
       }
@@ -213,26 +218,29 @@ export default {
       }
     },
 
-    async addItem(projectIndex) {
+      async addItem(projectIndex) {
         const newItemTitle = prompt("Enter a new item:");
         if (newItemTitle) {
+          if (newItemTitle.length > 40) {
+            alert("Item title must be under 40 characters. Please try again.");
+            return; 
+          }
           const project = this.projects[projectIndex];
-           if (!project) {
-              console.error('project not found at index:', projectIndex);
-              return;
-            }
-            const projectId = project._id;
-            console.log('project ID:', projectId); 
-            const newItem = { title: newItemTitle };
-            //const newItem = { newItemTitle };
+          if (!project) {
+            console.error('Project not found at index:', projectIndex);
+            return;
+          }
+          const projectId = project._id;
+          console.log('Project ID:', projectId); 
+          const newItem = { title: newItemTitle };
           try {
             await this.$store.dispatch('refreshTokenIfNeeded');
             const headers = this.$store.getters.getAuth.headers;
-            const response = await axios.post(`https://localhost:3000/addItemToProject/${projectId}`, newItem, {headers});
+            const response = await axios.post(`https://localhost:3000/addItemToProject/${projectId}`, newItem, { headers });
             if (response.status === 200) {
               const addedItem = response.data.newItem; 
               this.$store.commit('addItemToProject', { projectId, item: addedItem });
-              console.log('project added successfully:', newItem);
+              console.log('Item added successfully:', newItem);
             } else {
               console.error('Failed to add item on the server');
             }

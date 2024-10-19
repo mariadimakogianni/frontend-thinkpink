@@ -20,6 +20,7 @@
             v-model="tasks[index]"
             :label="'Task ' + (index + 1)"
             :disabled="isWheelSpinning || isTaskSelected"
+            :rules="[ v => v.length <= 40 || 'Title must be less than 40 characters']"
             class="task-input-field"
           ></v-text-field>
           <v-btn
