@@ -23,3 +23,10 @@ pnpm-debug.log*
 *.sw?
 
 tags
+
+
+ssl/
+
+server.crt
+
+server.key

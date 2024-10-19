@@ -12,7 +12,7 @@
       <v-select
         v-model="type"
         :items="['Tasks','Routine','Dates & Events']"
-        :rules="[v => !!v || 'Item is required']"
+        :rules="[v => !!v || 'Type is required']"
         label="Type"
         required
         class="form-field"
@@ -21,7 +21,7 @@
       <v-text-field
         v-model="title"
         label="Title"
-        :rules="[v => !!v || 'Item is required']"
+        :rules="[v => !!v || 'Title is required', v => v.length <= 50 || 'Title must be less than 50 characters']"
         required
         class="form-field"
       ></v-text-field>
