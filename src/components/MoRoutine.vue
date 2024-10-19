@@ -283,7 +283,7 @@ export default {
       try {
         await this.$store.dispatch('refreshTokenIfNeeded');
         const headers = this.$store.getters.getAuth.headers;
-        const response = await axios.delete(`http://localhost:3000/deleteEvent/${event._id}`, { headers });
+        const response = await axios.delete(`https://localhost:3000/deleteEvent/${event._id}`, { headers });
         if (response.status === 200) {
           console.log('Task deleted:', response.data);
         } else {
@@ -310,7 +310,7 @@ export default {
     try {
       await this.$store.dispatch('refreshTokenIfNeeded');
       const headers = this.$store.getters.getAuth.headers;
-      const response = await axios.patch(`http://localhost:3000/editEvent/${eventId}`, updatedEvent, { headers });
+      const response = await axios.patch(`https://localhost:3000/editEvent/${eventId}`, updatedEvent, { headers });
 
       if (response.status === 200) {
          this.$store.commit('updateEvent', response.data);

@@ -199,7 +199,7 @@
           console.log(JSON.stringify(mydata));
           await this.$store.dispatch('refreshTokenIfNeeded');
           const headers = this.$store.getters.getAuth.headers;
-          var response = await axios.post('http://localhost:3000/createEvent', mydata, { headers });
+          var response = await axios.post('https://localhost:3000/createEvent', mydata, { headers });
           //(response.status==401) && (()=>{alert("You have been logged out. Please login to continue.");window.reload();})
 
           console.log(response);

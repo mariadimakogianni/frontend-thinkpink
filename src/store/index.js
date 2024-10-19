@@ -189,7 +189,7 @@ export default createStore({
         await dispatch('refreshTokenIfNeeded');
         const headers = state.auth.headers;
         console.log(state.auth.headers);
-        const response = await axios.get('http://localhost:3000/getEvents', { headers });
+        const response = await axios.get('https://localhost:3000/getEvents', { headers });
         commit('SET_EVENTS', response.data);
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -202,7 +202,7 @@ export default createStore({
         }
         await dispatch('refreshTokenIfNeeded');
         const headers = state.auth.headers;
-        const response = await axios.get('http://localhost:3000/getLists', { headers });
+        const response = await axios.get('https://localhost:3000/getLists', { headers });
         commit('SET_LISTS', response.data);
       } catch (error) {
         console.error('Error fetching lists:', error);
@@ -216,7 +216,7 @@ export default createStore({
         }
         await dispatch('refreshTokenIfNeeded');
         const headers = state.auth.headers;
-        const response = await axios.get('http://localhost:3000/getProjects', { headers });
+        const response = await axios.get('https://localhost:3000/getProjects', { headers });
         commit('SET_PROJECTS', response.data);
       } catch (error) {
         console.error('Error fetching projects:', error);
@@ -231,7 +231,7 @@ export default createStore({
         await dispatch('refreshTokenIfNeeded');
         const headers = state.auth.headers;
 
-        const response = await axios.post('http://localhost:3000/createList', newList, { headers });
+        const response = await axios.post('https://localhost:3000/createList', newList, { headers });
         if (response.status === 201) {
           newList._id = response.data.listId;
           commit('addList', newList);
@@ -257,7 +257,7 @@ export default createStore({
         newProject.ownerId = userId;
         newProject.ownerEmail = userEmail;
 
-        const response = await axios.post('http://localhost:3000/createProject', newProject, { headers });
+        const response = await axios.post('https://localhost:3000/createProject', newProject, { headers });
         if (response.status === 201) {
           newProject._id = response.data.projectId;
           commit('addProject', newProject);

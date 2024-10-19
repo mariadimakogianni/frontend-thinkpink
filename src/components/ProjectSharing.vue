@@ -161,7 +161,7 @@ export default {
         await this.$store.dispatch('refreshTokenIfNeeded');
         const headers = this.$store.getters.getAuth.headers;
         const response = await axios.post(
-          `http://localhost:3000/shareProject/${projectId}`, 
+          `https://localhost:3000/shareProject/${projectId}`, 
           { email },
           { headers }
         );
@@ -201,7 +201,7 @@ export default {
       try {
         await this.$store.dispatch('refreshTokenIfNeeded');
         const headers = this.$store.getters.getAuth.headers;
-        const response = await axios.delete(`http://localhost:3000/deleteProject/${projectId}`, {headers});
+        const response = await axios.delete(`https://localhost:3000/deleteProject/${projectId}`, {headers});
         if (response.status === 200) {
           this.$store.commit('deleteProject', projectId);
           console.log('Project deleted successfully:', projectId);
@@ -228,7 +228,7 @@ export default {
           try {
             await this.$store.dispatch('refreshTokenIfNeeded');
             const headers = this.$store.getters.getAuth.headers;
-            const response = await axios.post(`http://localhost:3000/addItemToProject/${projectId}`, newItem, {headers});
+            const response = await axios.post(`https://localhost:3000/addItemToProject/${projectId}`, newItem, {headers});
             if (response.status === 200) {
               const addedItem = response.data.newItem; 
               this.$store.commit('addItemToProject', { projectId, item: addedItem });
@@ -251,7 +251,7 @@ export default {
           try {
             await this.$store.dispatch('refreshTokenIfNeeded');
             const headers = this.$store.getters.getAuth.headers;
-            const response = await axios.patch(`http://localhost:3000/updateItemDoneProjects/${projectId}/${item._id}`, { done: item.done }, { headers });
+            const response = await axios.patch(`https://localhost:3000/updateItemDoneProjects/${projectId}/${item._id}`, { done: item.done }, { headers });
 
             if (response.status === 200) {
               this.$store.commit('setItemDoneProjects', { projectId, itemId: item._id, done: item.done });
@@ -273,7 +273,7 @@ export default {
         try {
           await this.$store.dispatch('refreshTokenIfNeeded');
           const headers = this.$store.getters.getAuth.headers;
-          const response = await axios.delete(`http://localhost:3000/deleteItemFromProject/${projectId}/${itemIndex}`, {headers});
+          const response = await axios.delete(`https://localhost:3000/deleteItemFromProject/${projectId}/${itemIndex}`, {headers});
           if (response.status === 200) {
             this.$store.commit('deleteItemFromProject', { projectId, itemIndex });
             console.log('Item deleted successfully from project:', projectId);

@@ -104,7 +104,7 @@ export default {
       var idToken = this.$store.getters.getAuth.idToken;
       var logoutUrl = 'http://localhost:8081/realms/ThinkPink/protocol/openid-connect/logout' +
                       '?id_token_hint=' + idToken +
-                      '&post_logout_redirect_uri=http://localhost:8080';
+                      '&post_logout_redirect_uri=https://localhost:8080';
 
       window.location.href = logoutUrl;
 
@@ -128,7 +128,7 @@ export default {
         await this.$store.dispatch('refreshTokenIfNeeded');
         const headers = this.$store.getters.getAuth.headers;
         const response = await axios.post(
-          "http://localhost:3000/assignCaregiver",
+          "https://localhost:3000/assignCaregiver",
           {
             isCaregiver: this.caregiver.isCaregiver,
             userEmail: this.caregiver.userEmail,
@@ -174,7 +174,7 @@ export default {
         };
       await this.$store.dispatch('refreshTokenIfNeeded');
       const headers = this.$store.getters.getAuth.headers;
-      const response = await axios.put('http://localhost:3000/updateUserProfile', updatedData, { headers });
+      const response = await axios.put('https://localhost:3000/updateUserProfile', updatedData, { headers });
       console.log("edit responce", this.response);
       if (response.status === 200) {
           console.log('Profile updated successfully');

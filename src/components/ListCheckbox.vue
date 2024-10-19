@@ -108,7 +108,7 @@ export default {
       try {
         await this.$store.dispatch('refreshTokenIfNeeded');
         const headers = this.$store.getters.getAuth.headers;
-        const response = await axios.delete(`http://localhost:3000/deleteList/${listId}`, {headers});
+        const response = await axios.delete(`https://localhost:3000/deleteList/${listId}`, {headers});
         if (response.status === 200) {
           this.$store.commit('deleteList', listId);
           console.log('List deleted successfully:', listId);
@@ -135,7 +135,7 @@ export default {
           try {
             await this.$store.dispatch('refreshTokenIfNeeded');
             const headers = this.$store.getters.getAuth.headers;
-            const response = await axios.post(`http://localhost:3000/addItemToList/${listId}`, newItem, {headers});
+            const response = await axios.post(`https://localhost:3000/addItemToList/${listId}`, newItem, {headers});
             if (response.status === 200) {
               const addedItem = response.data.newItem; 
               this.$store.commit('addItemToList', { listId, item: addedItem });
@@ -158,7 +158,7 @@ export default {
           try {
             await this.$store.dispatch('refreshTokenIfNeeded');
             const headers = this.$store.getters.getAuth.headers;
-            const response = await axios.patch(`http://localhost:3000/updateItemDoneLists/${listId}/${item._id}`, { done: item.done }, { headers });
+            const response = await axios.patch(`https://localhost:3000/updateItemDoneLists/${listId}/${item._id}`, { done: item.done }, { headers });
 
             if (response.status === 200) {
               this.$store.commit('setItemDoneLists', { listId, itemId: item._id, done: item.done });
@@ -180,7 +180,7 @@ export default {
         try {
           await this.$store.dispatch('refreshTokenIfNeeded');
           const headers = this.$store.getters.getAuth.headers;
-          const response = await axios.delete(`http://localhost:3000/deleteItemFromList/${listId}/${itemIndex}`, {headers});
+          const response = await axios.delete(`https://localhost:3000/deleteItemFromList/${listId}/${itemIndex}`, {headers});
           if (response.status === 200) {
             this.$store.commit('deleteItemFromList', { listId, itemIndex });
             console.log('Item deleted successfully from list:', listId);

@@ -152,41 +152,6 @@
           </v-card-text>
 
       </v-card>
-<!--  <v-col cols="12" md="6" v-if="todayView.length">
-      <v-card class="column">
-          <v-card-title>
-            <h3>Today</h3>
-          </v-card-title>
-          <v-card-text>
-            <v-list class="innerSquare">
-              <v-list-item v-for="task in todayView" :key="task._id" 
-                :class="{ 
-                  showTask1: task.importance === '1' && task.type !== 'Routine', 
-                  showTask2: task.importance === '2' && task.type !== 'Routine', 
-                  showTask3: task.importance === '3' && task.type !== 'Routine', 
-                  showTask: task.type === 'Routine', }">
-                <v-list-item-content class="textForTask">
-                  <v-list-item-title class="textForTask">{{ task.title }}</v-list-item-title>
-                  <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
-                  <template v-if="task.todayTime !== 'morning' && task.todayTime !== 'night'">
-                    <v-list-item-subtitle class="textForTask"> Date: {{ formatDate(task.date) }} </v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
-                    </v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
-                    </v-list-item-subtitle>
-                  </template>
-
-                </v-list-item-content>
-                <v-list-item-action>
-                  <v-icon class="doneIcon" @click="doneTask(task, 'todayView')">mdi-check</v-icon>
-                  <v-icon class="editIcon" @click="editTask(task, 'todayView')">mdi-pencil</v-icon>
-                  <v-icon class="delIcon" @click="delTask(task, 'todayView')">mdi-delete</v-icon>
-                </v-list-item-action>
-              </v-list-item>
-            </v-list>
-          </v-card-text>
-        </v-card> --> 
 
       </v-col>
 
@@ -498,9 +463,10 @@
         }
       const todayMidnight = stripTime(today);
 
-      // Filter past task not done
+      // Filter past task not done and noShow false and not 'Every Day'
         this.events?.filter(e => 
-            //e.noShow &&
+            e.frequency !== "Every Day" &&
+            !e.noShow &&
             e.type === "Tasks" && !e.done &&  new Date(e.date.getUTCDate()) < todayMidnight.getUTCDate() // Check if e.date is before today
             ).forEach(e => {
             this.pastTasks.push(e);
@@ -589,7 +555,7 @@
         try {
           await this.$store.dispatch('refreshTokenIfNeeded');
           const headers = this.$store.getters.getAuth.headers;
-          const response = await axios.put(`http://localhost:3000/doneEvent/${eventId}`, {} ,{ headers });
+          const response = await axios.put(`https://localhost:3000/doneEvent/${eventId}`, {} ,{ headers });
           if (response.status === 200) {
             console.log('Event marked as done:', response.data);
           } else {
@@ -606,7 +572,7 @@
       try {
         await this.$store.dispatch('refreshTokenIfNeeded');
         const headers = this.$store.getters.getAuth.headers;
-        const response = await axios.delete(`http://localhost:3000/deleteEvent/${event._id}`, { headers });
+        const response = await axios.delete(`https://localhost:3000/deleteEvent/${event._id}`, { headers });
         if (response.status === 200) {
           console.log('Task deleted:', response.data);
         } else {
@@ -632,7 +598,7 @@
       try {
         await this.$store.dispatch('refreshTokenIfNeeded');
         const headers = this.$store.getters.getAuth.headers;
-        const response = await axios.patch(`http://localhost:3000/editEvent/${eventId}`, updatedEvent, { headers });
+        const response = await axios.patch(`https://localhost:3000/editEvent/${eventId}`, updatedEvent, { headers });
 
         if (response.status === 200) {
            this.$store.commit('updateEvent', response.data);
