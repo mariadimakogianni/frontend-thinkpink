@@ -56,6 +56,15 @@
               <v-text-field v-model="profile.lastName" label="Last Name" required></v-text-field>
               <v-text-field :rules="[ v => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(v) || 'Invalid email address']" 
                 v-model="profile.email" label="Email" required></v-text-field>
+
+                <v-text-field
+                  v-model="profile.newPassword"
+                  label="New Password"
+                  type="password"/>
+                <v-text-field
+                  v-model="profile.confirmPassword"
+                  label="Confirm Password"
+                  type="password" />
               <v-btn type="submit" color="primary">Save</v-btn>
             </v-form>
           </v-card-text>
@@ -93,6 +102,8 @@ export default {
     profile: {       
       firstName: '',
       lastName: '',
+      newPassword: '', 
+      confirmPassword: '', 
       email: ''
     },
     caregiverDialog: false,
@@ -163,24 +174,33 @@ export default {
           firstName: this.$store.getters.getAuth.firstName,
           lastName: this.$store.getters.getAuth.lastName,
           email: this.$store.getters.getAuth.email,
+          newPassword: '',
+          confirmPassword: '',
         };
       this.editProfileDialog = true;
     },
 
     async submitEditProfile() {
       try {
+        if (this.profile.newPassword !== this.profile.confirmPassword) {
+          alert('Passwords dont match.');
+          return;
+        }
+
         const updatedData = {
           firstName: this.profile.firstName,
           lastName: this.profile.lastName,
           email: this.profile.email,
+          password: this.profile.newPassword, 
         };
+        
       await this.$store.dispatch('refreshTokenIfNeeded');
       const headers = this.$store.getters.getAuth.headers;
       const response = await axios.put('https://localhost:3000/updateUserProfile', updatedData, { headers });
       console.log("edit responce", this.response);
       if (response.status === 200) {
           console.log('Profile updated successfully');
-          this.editProfileDialog = false;  // Close the dialog
+          this.editProfileDialog = false; 
           window.location.reload()
         } else {
           console.error('Failed to update profile');
