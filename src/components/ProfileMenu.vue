@@ -91,6 +91,7 @@
                     <v-list-item-content>
                       <v-list-item-title>{{ user }}</v-list-item-title>
                     </v-list-item-content>
+                      <v-icon @click="removeAssignedUser(index)" >mdi-delete</v-icon>
                   </v-list-item>
                 </v-list>
 
@@ -151,6 +152,7 @@ export default {
       caregiver: {
         isCaregiver: false,
         userEmail: "", 
+        assignedUsers: [] 
       },
   }),
   methods: {
@@ -223,6 +225,34 @@ export default {
         } else {
           console.error("An error occurred:", error);
           alert("An error occurred while assigning the caregiver.");
+        }
+      }
+    },
+
+    async removeAssignedUser(index) {
+      const userEmail = this.caregiver.assignedUsers[index];
+      if (confirm(`Are you sure you want to remove ${userEmail}?`)) {
+        try {
+          await this.$store.dispatch('refreshTokenIfNeeded');
+          const headers = this.$store.getters.getAuth.headers;
+
+          const response = await axios.delete(
+            `https://localhost:3000/removeAssignedUser`,
+            {
+              headers,
+              data: { userEmail }
+            }
+          );
+
+          if (response.status === 200) {
+            alert(`${userEmail} has been removed successfully.`);
+            this.caregiver.assignedUsers.splice(index, 1); 
+          } else {
+            alert('Failed to remove the assigned user. Please try again.');
+          }
+        } catch (error) {
+          console.error('An error occurred:', error);
+          alert('An error occurred while removing the assigned user.');
         }
       }
     },
