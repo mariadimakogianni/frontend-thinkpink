@@ -5,8 +5,6 @@
   <br>
   <v-sheet width="800" class="mx-auto form-container">
 
-    <!-- <v-date-picker ref="datePicker" v-if="formSelector==1" v-model='date'></v-date-picker> -->
-
     <v-form ref="form1" v-if="formSelector==1" v-model="formValid" class="form">
 
       <v-select
@@ -196,15 +194,23 @@
               mydata[key] = this.$data[key];
             }
           });
+
           mydata.timestamp = new Date();
+
+          let userId = this.$store.getters.getAuth.userId;
+          if (this.$store.getters.getAuth.isCaregiver && this.$store.getters.getAuth.selectedUser) {
+            userId = this.$store.getters.getAuth.selectedUser;
+          }
+
+          mydata.userId = userId;
+
           console.log(JSON.stringify(mydata));
+          
           await this.$store.dispatch('refreshTokenIfNeeded');
           const headers = this.$store.getters.getAuth.headers;
           var response = await axios.post('https://localhost:3000/createEvent', mydata, { headers });
-          //(response.status==401) && (()=>{alert("You have been logged out. Please login to continue.");window.reload();})
 
           console.log(response);
-          // Check if the HTTP status code is 201
           if (response.status == 201) {
             alert('Task added!');
           this.reset();

@@ -72,6 +72,47 @@
       </v-dialog>
 
       <v-dialog v-model="caregiverDialog" max-width="500">
+        <v-card>
+          <v-card-title>Caregiver Assign</v-card-title>
+          <v-card-text>
+            <v-form @submit.prevent="assignCaregiver">
+              <v-switch
+                v-model="caregiver.isCaregiver"
+                label="Are you a caregiver?" >
+              </v-switch>
+
+              <!-- Show assigned users if the user is caregiver -->
+              <div v-if="caregiver.isCaregiver">
+                <v-subheader>Your Assigned Users</v-subheader>
+                <v-list>
+                  <v-list-item
+                    v-for="(user, index) in caregiver.assignedUsers"
+                    :key="index">
+                    <v-list-item-content>
+                      <v-list-item-title>{{ user }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+
+                <!-- Form to assign a new user -->
+                <v-text-field
+                  v-model="caregiver.userEmail"
+                  :rules="[
+                    (v) => !!v || 'Email is required',
+                    (v) => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(v) || 'Invalid email address',
+                  ]"
+                  label="User's Email to Assign"
+                  required
+                ></v-text-field>
+                <v-btn type="submit" color="primary">Assign User</v-btn>
+              </div>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+
+
+     <!--  <v-dialog v-model="caregiverDialog" max-width="500">
       <v-card>
         <v-card-title>Become Caregiver</v-card-title>
         <v-card-text>
@@ -88,7 +129,7 @@
           </v-form>
         </v-card-text>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
   </div>
 </template>
 
@@ -123,14 +164,33 @@ export default {
 
     },
 
-    openCaregiverDialog(){
+    // openCaregiverDialog(){
+    //   this.caregiver = {
+    //       isCaregiver: this.$store.getters.getAuth.isCaregiver,
+    //       userEmail: this.$store.getters.getAuth.assignedUserName,
+    //     };
+    //   console.log("Assigned user email in dialog:", this.caregiver.userEmail); 
+    //   this.caregiverDialog = true;
+    // },
+
+    openCaregiverDialog() {
+      const auth = this.$store.getters.getAuth;
+
       this.caregiver = {
-          isCaregiver: this.$store.getters.getAuth.isCaregiver,
-          userEmail: this.$store.getters.getAuth.assignedUserName,
-        };
-      console.log("Assigned user email in dialog:", this.caregiver.userEmail); 
+        isCaregiver: auth.isCaregiver === 'true' || auth.isCaregiver === true,
+        userEmail: '', 
+        assignedUsers: auth.assignedUserName || [],
+      };
+
+      // Ensure assignedUsers is an array
+      if (!Array.isArray(this.caregiver.assignedUsers)) {
+        this.caregiver.assignedUsers = [this.caregiver.assignedUsers];
+      }
+
+      console.log("Assigned user emails in dialog:", this.caregiver.assignedUsers);
       this.caregiverDialog = true;
     },
+
 
     async assignCaregiver() {
       try {
@@ -152,7 +212,7 @@ export default {
         if (response.status === 200) {
           console.log("Caregiver assigned successfully");
           this.caregiverDialog = false; 
-           window.location.reload()
+          window.location.reload()
         } else {
           console.error("Failed to assign caregiver");
         }
@@ -193,7 +253,7 @@ export default {
           email: this.profile.email,
           password: this.profile.newPassword, 
         };
-        
+
       await this.$store.dispatch('refreshTokenIfNeeded');
       const headers = this.$store.getters.getAuth.headers;
       const response = await axios.put('https://localhost:3000/updateUserProfile', updatedData, { headers });

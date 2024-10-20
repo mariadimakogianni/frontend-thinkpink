@@ -56,11 +56,27 @@ keycloak.init({
         headers: {
           'Content-Type': 'application/json',
           'Authorization': "Bearer " + keycloak.token,
-        }
+        },
+        selectedUser: null,
+        selectedUserName: null 
+
       };
 
-      keycloak.tokenParsed.is_caregiver &&  (auth.isCaregiver=keycloak.tokenParsed.is_caregiver);
-      auth.isCaregiver && (auth.assignedUser=keycloak.tokenParsed.assigned_user, auth.assignedUserName = keycloak.tokenParsed.assigned_user_name);
+      if (keycloak.tokenParsed.is_caregiver) {
+        auth.isCaregiver = keycloak.tokenParsed.is_caregiver === 'true' || keycloak.tokenParsed.is_caregiver === true;
+        auth.assignedUser = Array.isArray(keycloak.tokenParsed.assigned_user)
+          ? keycloak.tokenParsed.assigned_user
+          : [keycloak.tokenParsed.assigned_user];
+
+        auth.assignedUserName = Array.isArray(keycloak.tokenParsed.assigned_user_name)
+          ? keycloak.tokenParsed.assigned_user_name
+          : [keycloak.tokenParsed.assigned_user_name];
+    }
+
+
+
+      // keycloak.tokenParsed.is_caregiver &&  (auth.isCaregiver=keycloak.tokenParsed.is_caregiver);
+      // auth.isCaregiver && (auth.assignedUser=keycloak.tokenParsed.assigned_user, auth.assignedUserName = keycloak.tokenParsed.assigned_user_name);
 
       console.log("auth",auth);
       console.log("ass user name", auth.assignedUserName)

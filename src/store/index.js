@@ -145,6 +145,13 @@ export default createStore({
     setAuth(state, auth) {
       state.auth = auth;
     },
+
+    //For Caregivers
+    setSelectedUser(state, { selectedUser, selectedUserName }) {
+      state.auth.selectedUser = selectedUser;
+      state.auth.selectedUserName = selectedUserName;
+      //console.log("store",state.auth.selectedUser, state.auth.selectedUserName  )
+    },
     setKeycloak(state, keycloak) {
       state.keycloak = keycloak;
     },
@@ -189,12 +196,21 @@ export default createStore({
         await dispatch('refreshTokenIfNeeded');
         const headers = state.auth.headers;
         console.log(state.auth.headers);
-        const response = await axios.get('https://localhost:3000/getEvents', { headers });
+
+        let userId = state.auth.userId; 
+        if (state.auth.isCaregiver && state.auth.selectedUser) {
+          userId = state.auth.selectedUser; 
+        }
+
+
+        const response = await axios.get(`https://localhost:3000/getEvents?userId=${userId}`, { headers });
+        //const response = await axios.get('https://localhost:3000/getEvents', { headers });
         commit('SET_EVENTS', response.data);
       } catch (error) {
         console.error('Error fetching events:', error);
       }
     },
+
     async fetchLists({ state, commit, dispatch }) {
       try {
         if (!state.auth || !state.auth.headers) {

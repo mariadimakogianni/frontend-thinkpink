@@ -97,7 +97,7 @@
       firstName: this.$store.getters.getAuth.firstName,
       lastName: this.$store.getters.getAuth.lastName,
       email: this.$store.getters.getAuth.email,
-      assigned_user:this.$store.getters.getAuth.assignedUserName,
+      assigned_user:this.$store.getters.getAuth.selectedUserName,
     };
   },
 };

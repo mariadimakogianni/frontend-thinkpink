@@ -630,7 +630,7 @@
   },
 
   async mounted() {
-    this.$store.dispatch('fetchEvents',this.$auth);
+    this.$store.dispatch('fetchEvents');
 
   }
 };
