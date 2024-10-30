@@ -9,7 +9,7 @@
 
       <v-select
         v-model="type"
-        :items="['Tasks','Routine','Dates & Events']"
+        :items="['Tasks','Routine','Dates and Events']"
         :rules="[v => !!v || 'Type is required']"
         label="Type"
         required
@@ -27,7 +27,7 @@
       <v-text-field
         v-model="date"
         label="Date & Due Date"
-        v-if="type=='Tasks' ||  type=='Dates & Events'"
+        v-if="type=='Tasks' ||  type=='Dates and Events'"
         @click="this.showDatePicker=1"
         :rules="[v => !!v || 'Date is required']"
         required
@@ -61,19 +61,19 @@
         :items="['Every Day','One Time','Every Week','Every Month','Every Year','Custom']"
         label="Frequency"
         required
-        v-if="type=='Tasks' || type=='Dates & Events'"
+        v-if="type=='Tasks' || type=='Dates and Events'"
         class="form-field"
       ></v-select>
 
       <v-checkbox
         v-model="allday"
-        v-if="type=='Dates & Events'"
+        v-if="type=='Dates and Events'"
         label="All Day"
         class="form-field"
       ></v-checkbox>
 
       <v-text-field
-        v-if="!allday && type == 'Dates & Events'"
+        v-if="!allday && type == 'Dates and Events'"
         v-model="startTime"
         type="time"
         suffix="EET"
@@ -82,7 +82,7 @@
       ></v-text-field>
 
       <v-text-field
-        v-if="!allday && type=='Dates & Events'"
+        v-if="!allday && type=='Dates and Events'"
         v-model="endTime"
         type="time"
         suffix="EET"
@@ -101,7 +101,7 @@
 
       <v-select
         v-model="importance"
-        v-if="type=='Tasks' || type=='Dates & Events'"
+        v-if="type=='Tasks' || type=='Dates and Events'"
         :items="['1','2','3']"
         label="Importance"
         required

@@ -37,7 +37,7 @@
       <v-col cols="12" md="6" v-if="tasksEvents.length">
         <v-card class="column">
           <v-card-title>
-            <h3>Dates & Events</h3>
+            <h3>Dates and Events</h3>
           </v-card-title>
           <v-card-text>
             <v-list class="innerSquare">
@@ -82,8 +82,8 @@
                   <v-list-item-subtitle class="textForTask"> Date: {{ formatDate(task.date) }}
                   </v-list-item-subtitle>
                   <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
-                  <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }} </v-list-item-subtitle>
-                  <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }} </v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }} </v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }} </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-icon class="delIcon" @click="delTask(task, 'tasksDone')">mdi-delete</v-icon>
@@ -126,7 +126,7 @@
                     <v-text-field
                       v-model="date" 
                       label="Date & Due Date"
-                      v-if="editedTask.type=='Tasks' ||  editedTask.type=='Dates & Events'"
+                      v-if="editedTask.type=='Tasks' ||  editedTask.type=='Dates and Events'"
                       @click="showDatePicker=true"
                       :rules="[v => !!v || 'Item is required']"
                       required
@@ -168,7 +168,7 @@
                       :items="['Every Day','One Time','Every Week','Every Month','Every Year','Custom']"
                       label="Frequency"
                       required
-                      v-if="editedTask.type=='Tasks' || editedTask.type=='Dates & Events'"
+                      v-if="editedTask.type=='Tasks' || editedTask.type=='Dates and Events'"
                       class="form-field"
                     ></v-select>
                   </v-col>
@@ -177,7 +177,7 @@
                   <v-col cols="12">
                     <v-checkbox
                       v-model="editedTask.allday"
-                      v-if="editedTask.type=='Dates & Events'"
+                      v-if="editedTask.type=='Dates and Events'"
                       label="All Day"
                       class="form-field"
                     ></v-checkbox>
@@ -186,7 +186,7 @@
                   <!-- startTime -->
                   <v-col cols="12">
                     <v-text-field
-                      v-if="!editedTask.allday && editedTask.type == 'Dates & Events'"
+                      v-if="!editedTask.allday && editedTask.type == 'Dates and Events'"
                       v-model="editedTask.startTime"
                       type="time"
                       suffix="EET"
@@ -198,7 +198,7 @@
                   <!-- endTime -->
                   <v-col cols="12">
                     <v-text-field
-                      v-if="!editedTask.allday && editedTask.type == 'Dates & Events'"
+                      v-if="!editedTask.allday && editedTask.type == 'Dates and Events'"
                       v-model="editedTask.endTime"
                       type="time"
                       suffix="EET"
@@ -223,7 +223,7 @@
                   <v-col cols="12">
                     <v-select
                       v-model="editedTask.importance"
-                      v-if="editedTask.type=='Tasks' || editedTask.type=='Dates & Events'"
+                      v-if="editedTask.type=='Tasks' || editedTask.type=='Dates and Events'"
                       :items="['1','2','3']"
                       label="Importance"
                       required
@@ -312,18 +312,21 @@ export default {
     },
 
     filterEvents() {
+      console.log("entered")
       if (this.events) {
-        this.tasksEvents = this.events.filter(event => event.type === "Dates & Events" && !event.done);
+        this.tasksEvents = this.events.filter(event => event.type === "Dates and Events" && !event.done);
+
       }
       this.tasksEvents.sort((a, b) => {
       return new Date(a.date) - new Date(b.date);
       });
+      console.log("events",this.tasksEvents)
     },
 
     filterDone() {
       if (this.events) {
         this.tasksDone = this.events.filter(event => event.done === true && !event.noShow );
-        console.log(this.tasksDone);
+        //console.log(this.tasksDone);
       }
       this.tasksDone.sort((a, b) => {
       return new Date(a.date) - new Date(b.date);

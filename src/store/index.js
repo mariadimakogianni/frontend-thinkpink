@@ -204,7 +204,6 @@ export default createStore({
 
 
         const response = await axios.get(`https://localhost:3000/getEvents?userId=${userId}`, { headers });
-        //const response = await axios.get('https://localhost:3000/getEvents', { headers });
         commit('SET_EVENTS', response.data);
       } catch (error) {
         console.error('Error fetching events:', error);

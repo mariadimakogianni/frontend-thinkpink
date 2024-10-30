@@ -60,7 +60,6 @@ export default {
   },
   
   async mounted() {
-    //this.$store.dispatch('fetchEvents');
     if (!this.isCaregiver) {
     await this.$store.dispatch('fetchEvents');
   } else if (this.isCaregiver && this.selectedUser) {

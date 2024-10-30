@@ -25,9 +25,9 @@
                   <template v-if="task.todayTime !== 'morning' && task.todayTime !== 'night'">
                     <v-list-item-subtitle class="textForTask"> Date: {{ formatDate(task.date) }} </v-list-item-subtitle>
                     <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
+                    <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
                     </v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
+                    <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
                     </v-list-item-subtitle>
                   </template>
 
@@ -52,9 +52,9 @@
                   <template v-if="task.todayTime !== 'morning' && task.todayTime !== 'night'">
                     <v-list-item-subtitle class="textForTask"> Date: {{ formatDate(task.date) }} </v-list-item-subtitle>
                     <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
+                    <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
                     </v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
+                    <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
                     </v-list-item-subtitle>
                   </template>
 
@@ -79,9 +79,9 @@
                   <template v-if="task.todayTime !== 'morning' && task.todayTime !== 'night'">
                     <v-list-item-subtitle class="textForTask"> Date: {{ formatDate(task.date) }} </v-list-item-subtitle>
                     <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
+                    <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
                     </v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
+                    <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
                     </v-list-item-subtitle>
                   </template>
 
@@ -107,9 +107,9 @@
                   <template v-if="task.todayTime !== 'morning' && task.todayTime !== 'night'">
                     <v-list-item-subtitle class="textForTask"> Date: {{ formatDate(task.date) }} </v-list-item-subtitle>
                     <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
+                    <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
                     </v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
+                    <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
                     </v-list-item-subtitle>
                   </template>
 
@@ -134,9 +134,9 @@
                   <template v-if="task.todayTime !== 'morning' && task.todayTime !== 'night'">
                     <v-list-item-subtitle class="textForTask"> Date: {{ formatDate(task.date) }} </v-list-item-subtitle>
                     <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
+                    <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }}
                     </v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
+                    <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }}
                     </v-list-item-subtitle>
                   </template>
 
@@ -175,8 +175,8 @@
                   <v-list-item-subtitle class="textForTask"> Date: {{ formatDate(task.date) }}
                   </v-list-item-subtitle>
                   <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
-                  <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }} </v-list-item-subtitle>
-                  <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }} </v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }} </v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }} </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-icon class="doneIcon" @click="doneTask(task, 'thisweekView')">mdi-check</v-icon>
@@ -208,8 +208,8 @@
                   <v-list-item-subtitle class="textForTask description-text">{{ task.description }}</v-list-item-subtitle>
                   <v-list-item-subtitle class="textForTask"> Date: {{ formatDate(task.date) }} </v-list-item-subtitle>
                   <v-list-item-subtitle v-if="task.allday" class="textForTask">All Day</v-list-item-subtitle>
-                  <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }} </v-list-item-subtitle>
-                  <v-list-item-subtitle v-if="task.type==='Dates & Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }} </v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> Start Time: {{ task.startTime }} </v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="task.type==='Dates and Events' && !task.allday" class="textForTask"> End Time: {{ task.endTime }} </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-icon class="doneIcon" @click="doneTask(task, 'thismonthView')">mdi-check</v-icon>
@@ -254,7 +254,7 @@
                     <v-text-field
                       v-model="date" 
                       label="Date & Due Date"
-                      v-if="editedTask.type=='Tasks' ||  editedTask.type=='Dates & Events'"
+                      v-if="editedTask.type=='Tasks' ||  editedTask.type=='Dates and Events'"
                       @click="showDatePicker=true"
                       :rules="[v => !!v || 'Item is required']"
                       required
@@ -296,7 +296,7 @@
                       :items="['Every Day','One Time','Every Week','Every Month','Every Year','Custom']"
                       label="Frequency"
                       required
-                      v-if="editedTask.type=='Tasks' || editedTask.type=='Dates & Events'"
+                      v-if="editedTask.type=='Tasks' || editedTask.type=='Dates and Events'"
                       class="form-field"
                     ></v-select>
                   </v-col>
@@ -305,7 +305,7 @@
                   <v-col cols="12">
                     <v-checkbox
                       v-model="editedTask.allday"
-                      v-if="editedTask.type=='Dates & Events'"
+                      v-if="editedTask.type=='Dates and Events'"
                       label="All Day"
                       class="form-field"
                     ></v-checkbox>
@@ -314,7 +314,7 @@
                   <!-- startTime -->
                   <v-col cols="12">
                     <v-text-field
-                      v-if="!editedTask.allday && editedTask.type == 'Dates & Events'"
+                      v-if="!editedTask.allday && editedTask.type == 'Dates and Events'"
                       v-model="editedTask.startTime"
                       type="time"
                       suffix="EET"
@@ -326,7 +326,7 @@
                   <!-- endTime -->
                   <v-col cols="12">
                     <v-text-field
-                      v-if="!editedTask.allday && editedTask.type == 'Dates & Events'"
+                      v-if="!editedTask.allday && editedTask.type == 'Dates and Events'"
                       v-model="editedTask.endTime"
                       type="time"
                       suffix="EET"
@@ -351,7 +351,7 @@
                   <v-col cols="12">
                     <v-select
                     v-model="editedTask.importance"
-                    v-if="editedTask.type=='Tasks' || editedTask.type=='Dates & Events'"
+                    v-if="editedTask.type=='Tasks' || editedTask.type=='Dates and Events'"
                     :items="['1','2','3']"
                     label="Importance"
                     required
@@ -489,8 +489,8 @@
       this.events?.filter(e => e.todayTime === "morning" && !e.done )
         .forEach(e => this.morningRoutine.push(e));
 
-      // Filter Dates & Events for today or all-day events
-      this.events?.filter(e => e.type === "Dates & Events" && isSameDay(this.convertUTCtoLocalTime(new Date(e.date)), today) && !e.done )
+      // Filter Dates and Events for today or all-day events
+      this.events?.filter(e => e.type === "Dates and Events" && isSameDay(this.convertUTCtoLocalTime(new Date(e.date)), today) && !e.done )
         .forEach(e => this.datesAndEvents.push(e));
         this.datesAndEvents.sort((a, b) => {
               return new Date(a.date) - new Date(b.date);
@@ -514,7 +514,7 @@
       this.events?.forEach((item) => {
           let itemDate = new Date(item.date);
           
-          if ((item.type === "Tasks" || item.type === "Dates & Events") && !item.done) {
+          if ((item.type === "Tasks" || item.type === "Dates and Events") && !item.done) {
               if (itemDate >= monday && itemDate <= sunday) {
                   this.thisweekView.push(item);
               }
@@ -539,7 +539,7 @@
           let eventDate = new Date(item.date);
           let eventMonth = eventDate.getMonth() + 1;
           let eventYear = eventDate.getFullYear();
-          if (eventMonth === currentMonth && eventYear === currentYear && !item.done && (item.type === "Tasks" || item.type === "Dates & Events")) {
+          if (eventMonth === currentMonth && eventYear === currentYear && !item.done && (item.type === "Tasks" || item.type === "Dates and Events")) {
             this.thismonthView.push(item);
           }
         }

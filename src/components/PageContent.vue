@@ -35,8 +35,6 @@ export default {
   data: () => ({
 }),
   async mounted() {
-
-  //console.log("Hello im page content");
   }
 
 }
@@ -183,7 +181,7 @@ export default {
     }
 
     .newbutton {
-      background-color: #b362bf; /* Primary purple color */
+      background-color: #b362bf !important; /* Primary purple color */
       color: #fff !important ;
       font-size: 16px;
       text-align: center;

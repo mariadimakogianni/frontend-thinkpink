@@ -112,7 +112,7 @@ export default {
       timeRemaining: 0,
       timerInterval: null,
       notificationMessage: '',
-      notificationVisible: false, // Controls the visibility of the notification dialog
+      notificationVisible: false, 
     };
   },
   computed: {

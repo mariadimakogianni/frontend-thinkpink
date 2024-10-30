@@ -49,7 +49,7 @@
 
       <v-dialog v-model="editProfileDialog" max-width="500">
         <v-card>
-          <v-card-title>Edit Profile</v-card-title>
+          <v-card-title class="title">Edit Profile</v-card-title>
           <v-card-text>
             <v-form @submit.prevent="submitEditProfile">
               <v-text-field v-model="profile.firstName" label="First Name" required></v-text-field>
@@ -65,7 +65,7 @@
                   v-model="profile.confirmPassword"
                   label="Confirm Password"
                   type="password" />
-              <v-btn type="submit" color="primary">Save</v-btn>
+              <v-btn type="submit" style="background-color: #b362bf;">Save</v-btn>
             </v-form>
           </v-card-text>
         </v-card>
@@ -73,7 +73,7 @@
 
       <v-dialog v-model="caregiverDialog" max-width="500">
         <v-card>
-          <v-card-title>Caregiver Assign</v-card-title>
+          <v-card-title class="title" >Caregiver Assign</v-card-title>
           <v-card-text>
             <v-form @submit.prevent="assignCaregiver">
               <v-switch
@@ -105,32 +105,12 @@
                   label="User's Email to Assign"
                   required
                 ></v-text-field>
-                <v-btn type="submit" color="primary">Assign User</v-btn>
+                <v-btn type="submit" style="background-color: #b362bf;">Assign User</v-btn>
               </div>
             </v-form>
           </v-card-text>
         </v-card>
       </v-dialog>
-
-
-     <!--  <v-dialog v-model="caregiverDialog" max-width="500">
-      <v-card>
-        <v-card-title>Become Caregiver</v-card-title>
-        <v-card-text>
-          <v-form @submit.prevent="assignCaregiver">
-            <v-switch
-              v-model="caregiver.isCaregiver"
-              label="Are you a caregiver?"></v-switch>
-            <v-text-field
-              v-model="caregiver.userEmail"
-              :rules="[ v => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(v) || 'Invalid email address']" 
-              label="User's Email"
-              required ></v-text-field>
-            <v-btn type="submit" color="primary">Assign</v-btn>
-          </v-form>
-        </v-card-text>
-      </v-card>
-    </v-dialog> -->
   </div>
 </template>
 
@@ -161,19 +141,8 @@ export default {
       var logoutUrl = 'http://localhost:8081/realms/ThinkPink/protocol/openid-connect/logout' +
                       '?id_token_hint=' + idToken +
                       '&post_logout_redirect_uri=https://localhost:8080';
-
       window.location.href = logoutUrl;
-
     },
-
-    // openCaregiverDialog(){
-    //   this.caregiver = {
-    //       isCaregiver: this.$store.getters.getAuth.isCaregiver,
-    //       userEmail: this.$store.getters.getAuth.assignedUserName,
-    //     };
-    //   console.log("Assigned user email in dialog:", this.caregiver.userEmail); 
-    //   this.caregiverDialog = true;
-    // },
 
     openCaregiverDialog() {
       const auth = this.$store.getters.getAuth;
@@ -184,7 +153,6 @@ export default {
         assignedUsers: auth.assignedUserName || [],
       };
 
-      // Ensure assignedUsers is an array
       if (!Array.isArray(this.caregiver.assignedUsers)) {
         this.caregiver.assignedUsers = [this.caregiver.assignedUsers];
       }
@@ -258,8 +226,6 @@ export default {
     },
 
     openEditProfileDialog() {
-
-      //this.menu = false;
       this.profile = {
           firstName: this.$store.getters.getAuth.firstName,
           lastName: this.$store.getters.getAuth.lastName,
@@ -291,6 +257,7 @@ export default {
       if (response.status === 200) {
           console.log('Profile updated successfully');
           this.editProfileDialog = false; 
+
           window.location.reload()
         } else {
           console.error('Failed to update profile');

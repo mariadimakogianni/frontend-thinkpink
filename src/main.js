@@ -40,7 +40,7 @@ keycloak.init({
     console.log('User authenticated successfully');
     
     if (keycloak.token) {
-      console.log('Initial token obtained:', keycloak.token);
+      //console.log('Initial token obtained:', keycloak.token);
       console.log("assignedUser", keycloak.tokenParsed.assigned_user_name);
 
       // Create an auth object

@@ -86,7 +86,7 @@
                     <v-text-field
                       v-model="date" 
                       label="Date & Due Date"
-                      v-if="editedTask.type=='Tasks' ||  editedTask.type=='Dates & Events'"
+                      v-if="editedTask.type=='Tasks' ||  editedTask.type=='Dates and Events'"
                       @click="showDatePicker=true"
                       :rules="[v => !!v || 'Item is required']"
                       required
@@ -128,7 +128,7 @@
                         :items="['Every Day','One Time','Every Week','Every Month','Every Year','Custom']"
                         label="Frequency"
                         required
-                        v-if="editedTask.type=='Tasks' || editedTask.type=='Dates & Events'"
+                        v-if="editedTask.type=='Tasks' || editedTask.type=='Dates and Events'"
                         class="form-field"
                     ></v-select>
                   </v-col>
@@ -137,7 +137,7 @@
                   <v-col cols="12">
                     <v-checkbox
                       v-model="editedTask.allday"
-                      v-if="editedTask.type=='Dates & Events'"
+                      v-if="editedTask.type=='Dates and Events'"
                       label="All Day"
                       class="form-field"
                     ></v-checkbox>
@@ -146,7 +146,7 @@
                   <!-- startTime -->
                   <v-col cols="12">
                     <v-text-field
-                      v-if="!editedTask.allday && editedTask.type == 'Dates & Events'"
+                      v-if="!editedTask.allday && editedTask.type == 'Dates and Events'"
                       v-model="editedTask.startTime"
                       type="time"
                       suffix="EET"
@@ -158,7 +158,7 @@
                   <!-- endTime -->
                   <v-col cols="12">
                     <v-text-field
-                      v-if="!editedTask.allday && editedTask.type == 'Dates & Events'"
+                      v-if="!editedTask.allday && editedTask.type == 'Dates and Events'"
                       v-model="editedTask.endTime"
                       type="time"
                       suffix="EET"
@@ -183,7 +183,7 @@
                   <v-col cols="12">
                     <v-select
                       v-model="editedTask.importance"
-                      v-if="editedTask.type=='Tasks' || editedTask.type=='Dates & Events'"
+                      v-if="editedTask.type=='Tasks' || editedTask.type=='Dates and Events'"
                       :items="['1','2','3']"
                       label="Importance"
                       required
